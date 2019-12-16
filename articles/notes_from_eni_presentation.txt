@@ -1,0 +1,6 @@
+1. Eventually introduce recombination in the evolution.
+2. Shuffle genomes over instances (to increase robustness)
+3. Increase ring size to make a good pattern.
+4. Utilize computing resources most efficiently when it comes to parallelism
+5. Request documentation for source code!
+
