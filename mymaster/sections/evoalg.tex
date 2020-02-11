@@ -1,4 +1,18 @@
-Evolutionary Algorithms (EAs) are in general population-based optimization algorithms, adopting a higher-level of abstraction of an evolutionary scheme found in nature.
+Nature is exceptional at inventing new complex, resilient solutions through evolution of organisastions, from the molecular level to the ecosystems.
+In this project, biologically inspired Evolutionary Algorithms (EAs) are used to develop algorithms to run on hardware that has been developed with EAs.
+See \vref{sect:eh} for more about Evolvable Hardware.
+In biology, the processes and structure of the cells of living cellular organisms are governed by Deoxyribonucleic acid (DNA).
+DNA is usually structured in \textbf{chromosomes} where the minimal units are called \textbf{genes}, and they determine the physical characteristics and development of the organism.
+In EAs the chromosomes may take form, for example, as strings, arrays or graphs.
+Similarly, genes associate to a segment in the chromosome, which encodes a building block of the final solution.
+Another term is \textbf{allele}. Individuals inherit two alleles for each gene, one from each parent. Alleles represent alternative forms of a gene that arise by mutation, and can for example result in different \textbf{phenotypic} traits, like different pigmentation.
+The aggregation of the alleles for a specific gene is termed the \textbf{genotype} for the gene.
+Although the genotype is the most influcencal factor for the phenotype, other factors also play an important role, like environmental factors.
+\cite{trefzer_evolvable_2015}
+In EAs, there is usually only one allele per gene, which results in genotypes normally being identical to the chromosome.
+The phenotype is usually the final solution of the EA.
+
+EAs are in general population-based optimization algorithms, adopting a higher-level of abstraction of an evolutionary scheme found in nature.
 The classical Simple Genetic Algorithm (SGA) involves individuals, phenotypes, genotypes, fitness function, selection, recombination, and mutation.
 Every individual is a candidate in solution space, with their genes being the parameters of the solution, and the phenotypes being the resulting characteristics of the solution, when in contact with the environment.
 The fitness function is those parts of an environment that are designed to assess how good a solution fits with the problem.
@@ -7,11 +21,27 @@ If only the fittest individuals were to be selected, then the search would most 
 before the solution space has been desirably explored. After the first selection, individuals are recombined, and their offspring mutated.
 Now, all the exploration steps are completed, for the current generation, and the fittest individuals of the current solution-pool are then brought to the next generation.
 The evolution typically runs until certain criteria have been met, or until a set number of generations has been reached.
-The best solutions can then be saved, and the rest wiped out, for a new epoch to start. \cite{evoalg_book}
+The best solutions can then be saved, and the rest wiped out, for a new epoch to start. \cite{eiben_introduction_2015}
 The SGA has inspired mind-boggling variations of algorithms under the relatively wide EA umbrella, and among these are the
 Island Model, NeuroEvolution, ..., and ... .
 
+\subsection{Standard Types of Recombination, Mutation and Selection}
+(NEED TO BE FILLED OUT)
+Typical methods for recombination are ... .
+Here is how these work.
+Typical methods for mutation are ... .
+Here is how these work.
+
+Typical methods for selection are the roulette wheel, ... .
+Here is how these work.
+
 \subsection{The Island Model}
+As a scheme for running multiple epochs in parallel, the heuristic of islands is probably adopted because of the natural isolation that occur on islands.
+The scheme normally includes migrations, which only happens a few times over an epoch of many generations.
+The Island Model can be useful for a more distributed exploration in the search, or for processing of a higher number of solutions per time, depending on the hardware.
 
 \subsection{NeuroEvolution}
+NeuroEvolution includes the use of neural networks in the optimization algorithm, where the networks are trained on a specific solution, which is then explored further using an EA.
+
+
 
