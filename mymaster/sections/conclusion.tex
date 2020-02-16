@@ -1,0 +1,47 @@
+This project feels unique, and slightly overwhelming, considering the scope of this essay; covering theories about artifical intelligence, effectuation, evolutionary computing, evolvable hardware, neuromorphic systems, neurobiology, and theories of consciousness.
+These topics are, of course, all highly relevant in a philosophical discussion of artificial intelligence, which has become the main tag for this project.
+To deliver a theoretical contribution, the scope have to be narrowed, ideally down to a single experiment which can be examined through the lenses of a couple of thinkers.
+Which perspectives to analyze the experiment through is yet to be decided, but this chapter will propose an initial experiment:
+To evolve SNN \vrfe{sect:snn} animats \vref{sect:agent} implemented on BrainScaleS, \vref{sect:bss} to play a falling blocks game.
+This is a fair way to say that the experiment described in \cite{albantakis_evolution_2014} will be replicated on the BrainScaleS.
+To provide basis for comparison the experiment will be scalable, from an implementation with logic gates, to an implementation with contiuous variables, to an implementation on BrainScaleS.
+The comparisons can provide various answers based on the perspectives chosen.
+
+\section{The methodoly} is clear; First both the game and the animat is implemented in Python.
+The evolutionary algorithm is implemented to replicate the one used in \cite{albantakis_evolution_2014}.
+The second step would then be to implement the animat as a SNN in a simulator that has a fitting AdExp model \vref{sect:adexp},
+this simulator would most likely be NEST \cite{fardet_nest_2020} using PyNN \cite{davison_pynn_2009}.
+Before beginning the third step of implementing on BrainScaleS, the game would also need to be implemented with PyNN.
+Then the animat and the game should be ready to be ported to BrainScaleS, which will require certain compliances to the hardware constraints,
+but most of these should already be modeled in the simulation.
+All results from evolutionary runs in the three implementations should be saved to logfiles, with the specific network configurations and source codes necessary to replicate the results.
+After each of the first, second and third steps, there should be data of results and configurations that can be analyzed and re-run to produce metrics according to the perspectives chosen for the theoretical contribution.
+
+Working with evolutionary computing and the animat approach is especially interesting from a neuromorphic computing perspective.
+The BrainScaleS architecture carry several of the elements of the design that Carver Mead proposed, that is analog components and wafer-scale integration.
+In theory, such a system should be efficient solving complex differential equations with only a few transistors, given the correct hardware configuration.
+The aparrent problem is that using ordinary training methods for neural networks, like backpropagation, is inefficient and will most likely not utilize the strengths of the neuromorphic system.
+As was proposed in \cite{schuman_evolutionary_2016}, methods from evolutionary computing allow for topological and qualitative changes to the networks that might utilize the characteristics of the transistors in a way could not have been designed by humans.
+Using noise as a resource is a good example of unique transistor characteristics that could not have been done by design.
+Wolfgang Maass proposed a theoretical example of why noise would serve as a good resource \cite{maass_noise_2014}.
+Designing the experiment around the animat approach is a striking solution to the problem of finding the applicable potential of BrainScaleS.
+The opposite of the animat approach would be the competence oriented approach of training neurla networks for very specific tasks.
+The nodes of ordinary neural networks used in machine learning today will produce one specific output per specific input, which makes competence oriented training a natural solution of choice.
+The analog AdExp neurons \vref{sect:adexp} of BrainScaleS will produce different outputs based on the internal state of the specific node, which could be seen as problematic noise in the competence oriented approach, but which should really be seen as a valuable resource for robustness and functional redundancy, that is the ability to perform the same function with different parts of the system.
+An example of functional abundance is that the network has a causal structure of nodes that recognizes cats, but when one of the nodes die, there is another structure that can also recognize cats.
+Another example of what could possibly be achieved when the nodes can produce different output is that the network could use a smaller amout of nodes to produce a bigger amount of functions.
+An example would be that developers could train an ordinary ANN to perform well at recognition of cats, but the developers would then be quite sure that the same ANN would not perform well at finding punctuation errors in a text.
+Aparrently, it could seem that this example is not as valid for networks on BrainScaleS, although it is likely that the various tasks that one network would be efficient at would not be as specific as the two tasks in the example above.
+Following is a thought experiment of how animats would develop a necessary blend of competences that could not be designed.
+Imagine a world-simulator that included sound, forces like gravity and friction and objects of various shape, function and color.
+Imagine then populating the world with animats that could manipulate the world, but that simply needed to survive.
+The condition for survival could be that they needed to touch a certain number of red, round objects per day.
+The color of the objects changes when touched by an animat, so being an efficient hunter of red orbs would certainly be a matter of importance.
+The specific competences necessary for survival in this world is of course object recognition, color recognition and efficient movement.
+However, there might be other skills and finesses that play a difference, but that is not as obvious to a designer.
+Following the reasoning above, the animat approach seems a viable method for finding applications for BrainScaleS.
+The animat approach is a method for letting the agent find out which skills are necessary to complete the main task.
+Comparing the various implementations, that is in simulation and on neuromorphic hardware, it might be possible to make a measure of efficiency.
+
+Seen from the standpoint of IIT, \vref{sect:iit}, the comparison can ...
+
