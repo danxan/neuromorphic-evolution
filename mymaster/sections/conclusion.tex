@@ -1,13 +1,13 @@
-This project feels unique, and slightly overwhelming, considering the scope of this essay; covering theories about artifical intelligence, effectuation, evolutionary computing, evolvable hardware, neuromorphic systems, neurobiology, and theories of consciousness.
+This project feels unique, and slightly overwhelming, considering the diverse topics included; covering theories about artifical intelligence, effectuation, evolutionary computing, evolvable hardware, neuromorphic systems, neurobiology, and theories of consciousness.
 These topics are, of course, all highly relevant in a philosophical discussion of artificial intelligence, which has become the main tag for this project.
 To deliver a theoretical contribution, the scope have to be narrowed, ideally down to a single experiment which can be examined through the lenses of a couple of thinkers.
 Which perspectives to analyze the experiment through is yet to be decided, but this chapter will propose an initial experiment:
-To evolve SNN \vrfe{sect:snn} animats \vref{sect:agent} implemented on BrainScaleS, \vref{sect:bss} to play a falling blocks game.
+To evolve SNN \vref{sect:snn} animats \vref{sect:agent} implemented on BrainScaleS, \vref{sect:bss} to play a falling blocks game.
 This is a fair way to say that the experiment described in \cite{albantakis_evolution_2014} will be replicated on the BrainScaleS.
 To provide basis for comparison the experiment will be scalable, from an implementation with logic gates, to an implementation with contiuous variables, to an implementation on BrainScaleS.
 The comparisons can provide various answers based on the perspectives chosen.
 
-\section{The methodoly} is clear; First both the game and the animat is implemented in Python.
+\subsection{The methodoly} is clear; First both the game and the animat is implemented in Python.
 The evolutionary algorithm is implemented to replicate the one used in \cite{albantakis_evolution_2014}.
 The second step would then be to implement the animat as a SNN in a simulator that has a fitting AdExp model \vref{sect:adexp},
 this simulator would most likely be NEST \cite{fardet_nest_2020} using PyNN \cite{davison_pynn_2009}.
@@ -17,15 +17,17 @@ but most of these should already be modeled in the simulation.
 All results from evolutionary runs in the three implementations should be saved to logfiles, with the specific network configurations and source codes necessary to replicate the results.
 After each of the first, second and third steps, there should be data of results and configurations that can be analyzed and re-run to produce metrics according to the perspectives chosen for the theoretical contribution.
 
-Working with evolutionary computing and the animat approach is especially interesting from a neuromorphic computing perspective.
+\paragraph{From the perspective of efficiency in neuromorphic systems}, an animat approach could be interesting in terms of finding circuit designs that better utilize the characteristics of the architecture.
 The BrainScaleS architecture carry several of the elements of the design that Carver Mead proposed, that is analog components and wafer-scale integration.
 In theory, such a system should be efficient solving complex differential equations with only a few transistors, given the correct hardware configuration.
 The aparrent problem is that using ordinary training methods for neural networks, like backpropagation, is inefficient and will most likely not utilize the strengths of the neuromorphic system.
 As was proposed in \cite{schuman_evolutionary_2016}, methods from evolutionary computing allow for topological and qualitative changes to the networks that might utilize the characteristics of the transistors in a way could not have been designed by humans.
 Using noise as a resource is a good example of unique transistor characteristics that could not have been done by design.
 Wolfgang Maass proposed a theoretical example of why noise would serve as a good resource \cite{maass_noise_2014}.
-Designing the experiment around the animat approach is a striking solution to the problem of finding the applicable potential of BrainScaleS.
-The opposite of the animat approach would be the competence oriented approach of training neurla networks for very specific tasks.
+Comparing the various implementations, that is in simulation and on neuromorphic hardware, it might be possible to make a measure of efficiency.
+
+\paragraph{From the perspective of applications of neuromorphic systems}, an animat approach seems like a striking solution because of how the approach is meant to evolve systems that work well in an environment even though none of the underlying conceptual structures solves tasks that would seem necessary to succeed.
+The opposite of the animat approach would be the competence oriented approach of training neural networks for very specific tasks.
 The nodes of ordinary neural networks used in machine learning today will produce one specific output per specific input, which makes competence oriented training a natural solution of choice.
 The analog AdExp neurons \vref{sect:adexp} of BrainScaleS will produce different outputs based on the internal state of the specific node, which could be seen as problematic noise in the competence oriented approach, but which should really be seen as a valuable resource for robustness and functional redundancy, that is the ability to perform the same function with different parts of the system.
 An example of functional abundance is that the network has a causal structure of nodes that recognizes cats, but when one of the nodes die, there is another structure that can also recognize cats.
@@ -41,7 +43,34 @@ The specific competences necessary for survival in this world is of course objec
 However, there might be other skills and finesses that play a difference, but that is not as obvious to a designer.
 Following the reasoning above, the animat approach seems a viable method for finding applications for BrainScaleS.
 The animat approach is a method for letting the agent find out which skills are necessary to complete the main task.
-Comparing the various implementations, that is in simulation and on neuromorphic hardware, it might be possible to make a measure of efficiency.
+If the comparisons show that the animats have a higher fitness on BrainScaleS, then this would probably help make suggestions as to how to make real-world applications with the BrainScaleS technology.
 
-Seen from the standpoint of IIT, \vref{sect:iit}, the comparison can ...
+\paragraph{From the perspective of Integrated Information Theory}, an experiment involving evolution of networks on analog components can be useful in validating parts of the theory.
+There is an interesting corollary from IIT 3.0 saying that even though a neural network performs very complex functions, it would not be conscious if it was simulated by means of approximation, as is done on von Neumann computers, \vref{sect:iit}.
+Neural networks on BrainScaleS are physical, and the functionality of each neuron and synapse is provided by only a few analog components, where the synapses also implement adaptive learning, through plasticity \vref{sect:bss}.
+As discussed in the same section, the on-wafer communication between neurons is continuous, highly connected, and dependent on the varying internal states of the components that carry the signals.
+IIT supporters would generally deny that artificial intelligence based on the technology used today could be conscious, but do not outright the same claims for the BrainScaleS system.
+Additionaly, BrainScaleS was built to closely emulate biological neural networks, including the relationship between synapses and neurons when it comes to weakness or cell death.
+Biological evolution proves that systems that individuals that are more robust to failure and adaptive to changing environments will make it more often than their peers.
+Robustness and adaptiveness are traits that also follow systems considered highly integrated by IIT.
+Given that BrainScaleS has a speedup factor of 10 000 compared to biological wall time, there is a possibility that evolution also is a component that can make a theoretical contribution to IIT.
+
+\paragraph{From the perspective of Artificial Intelligence discussion} the exploration of neuromorphic systems is interesting because the architectures of the field is built to better simulate the brain.
+Building a "thinking machine" was, in a way, always the purpose of the computer, at least for many of it's pioneers.
+Modern information theory and computer architecture partly came from trying to replicate the form and function of human intelligence and the brain.
+George Boole, the father of logic algebra, the mathematics that led to combinatorics and the transistor, was concerned with capturing human reasoning.
+John von Neumann loosely based his architecture, the most popular of today, on analogies to neurons and the brain.
+Alan Turing, who helped bring von Neumann architecture to the world, published works on artificial intelligence that still has direct influence on modern researchers.
+Viewing history from this perspective, one may wonder if further development of computing itself requires that we continue to pursue the brain in terms of hardware.
+Carver Mead, a professor on transistors, and a close friend of Gordon Moore, whom the famous ``Moore's law'' stems from, was the one who coined neuromorphic electronic systems.
+Turing also proposed ways to develop and test artificial intelligence, one of those was the "Child-Machine", which has later turned into the "Animat".
+The animat has not turned out to be an effective way of developing artificial intelligence on arithmetic computers, which is nothing else than approximations of very complex functions.
+There is no reason to believe that Turing, or anyone else from the past, could have found better answers to questions of today than the people asking the questions today.
+However, there is reason to believe that a system could develop intelligence like a child does develop intelligence, given the right physical and mechanical conditions, and maybe BrainScaleS has got just that.
+
+
+
+
+
+
 
