@@ -1,22 +1,26 @@
-The Human Brain Project, a European Flagship, is developing a European research infrastructure advancing brain research, medicine, and brain-inspired information technology for both industry and science.
+\paragraph{The Human Brain Project} is a European Flagship which is developing a European research infrastructure advancing brain research, medicine, and brain-inspired information technology for both industry and science.
 The project is now entering its third phase, with over 100 partnering institutions from over 20 countries in Europe, as well as over 100 partering projects.
 There are 12 subprojects in HBP, that span the development of six ICT-based Platforms.
 One of these six platforms is the Neuromorphic Computing (NMC) Platform, with two systems;
 the mixed-signal VLSI BrainScaleS (Brain-inspired multiScale computation in neuromorphic hybrid systemS) and the massively parallel digital SpiNNaker (Spiking Neural Network architecture).\cite{amunts_human_2016}.
-As mentioned in \vref{sect:eh} the BrainScaleS system is based on physical, analog, models of neurons and synapses, while the programmable interconnections are digital \cite{zoschke_full_2017}
-The system is has an accelerated speed-up factor of 1000-10000 compared to biology, as relevant time constants are scaled down, with the goal of emulating various evolutionary mechanisms of the brain in one single set-up.
-The emphasis on the system is to use our knowledge of biology to model physical electronic neurons that neuroscientists can access and study at a much higher rate, due to our limited access to biological neurons.
+
+\paragraph{The main applicaiton} that BrainScaleS was designed for was the study of physical neural dynamics at a higher rate than available in biology.
+Thus, BrainScaleS was designed with a speed-up factor for 1000 - 10 000 compared to biological wall time.
+Modeling of biological neurons and synapses are realized with physical, analog components, while the interconnections are digital and programmable to increase efficiency \cite{zoschke_full_2017}.
 In addition to brain research, it is thought that this neuromorphic system will enable new applications in robotics, artificial intelligence and human-machine interfaces.
 Using a physical model keeps a one-to-one relationship between the neurons and synapses of the biological example and the model,
 preserving the fault tolerance concerning loss which is inherent in the biological brain.
-By using only a few transistors to emulate the neuron's differential equations compared to several millions involved in the same task while solving these equations numerically in a microprocessor core, the power consumption is reduced by several orders of magnitude.
+
+\pargraph{The power- and material costs} of simulating the neuron's differential equations is reduced by several orders of magnitude by using only a few analog components per neuron, compared to several millions involved in the same task while solving these equations numerically in a microprocessor core.
 \cite{schemmel_wafer-scale_2010}
 As the neurons on the HICANN chip is emulated with analog electronics rather than with a high number of arithmetic operations, the circuitry is power efficient, and a complete HICANN consumes only $1.3 W/cm^2$.
 The wafer module as a whole is designed for a worst-case power consumption of 2 kW.
 \cite{zoschke_full_2017}
 
-The accelerated network has extreme requirements in terms of communication bandwith, and this is met by employing wafer scale integration for the inter-chip connectivity\cite{zoschke_full_2017}.
-The wafer scale integration is in accordance with the proposal of C. Mead, which proposed interconnecting chips with analog components by integrating the production wafer \cite{mead_neuromorphic_1990}.
+
+\paragraph{The current BrainScaleS implementation} is at the Kirchhoff-Institute for Physics at Heidelberg University, enables up to 20 wafer modules, with up to 200 000 neurons and 40 000 000 synapses, per wafer.
+Wafer-Scale integation was chosen to allow for the extrememe bandwith requirements of the accelerated system \cite{zoschke_full_2017}.
+The Wafer-Scale integration is partly in accordance with the proposal of C. Mead, which proposed interconnecting chips with analog components by integrating the production wafer \cite{mead_neuromorphic_1990}.
 The base chips on the BrainScaleS wafer is the HICANN, see \vref{sect:hicann}.
 A single 200 mm wafer carries 384 HICANN chips, and is mounted into a module which delivers power and handles data traffic using FPGAs.
 In addition to delivering signals to and from each wafer, the FPGAs are used to configure the chips. \cite{zoschke_full_2017}.
@@ -26,10 +30,9 @@ On the wafer, one FPGA controls 8 HICANN chips that together account for one ret
 Every HICANN has two full-duplex serial LVDS links with separate clock and data lines to the FPGA module, and each link is capable of transmitting two GBit/s.
 The input count per neuron can be increased to 14336 synapses per neuron, by combining up to 64 adjacent neurons.
 This leads to a transmission requirement of 1.4 GEvents/s per neuron, which is why the silicon wafer is kept as a whole, to produce shorter transmission lines and a lower capacitive load.
-The current BrainScaleS implementation,c at the Kirchhoff-Institute for Physics at Heidelberg University, enables up to 20 wafer modules, with up to 200 000 neurons and 40 000 000 synapses, per wafer.
 \cite{zoschke_full_2017}
 
-\subsection{The Neuron Model}\label{sect:adexp} at the basis of the HICANN is called the Adaptive Exponential Integrate-and-Fire model (AdExp) \cite{brette_adaptive_2005}.
+\subsubsection{The Neuron Model}\label{sect:adexp} at the basis of the HICANN is called the Adaptive Exponential Integrate-and-Fire model (AdExp) \cite{brette_adaptive_2005}.
 The AdExp model was co-developed by the FACETS project \cite{schemmel_wafer-scale_2010}, a pre-decessor to the BranScaleS project, which is now part of the NMC platform of HBP.
 The model contains several additions compared to the standard Integrate-and-Fire model (IAF):
 \begin{equation}\label{eq:adexp-membrane}
@@ -67,11 +70,11 @@ The Izhikevich neuron is a very popular model because it gives accurate represen
     \captionof{figure}{Example of firing modes of the AdExp neuron circuit, taken from \cite{schemmel_wafer-scale_2010}.}
 \end{figure}
 
-\subsection{Communication} on a wafer happens on several levels; There is the communication happening between the local neurons and synapses, then there is Layer 1 (L1) and Layer 2 (L2) channels depending on how far the communication reaches.
+\subsubsection{Communication} on a wafer happens on several levels; There is the communication happening between the local neurons and synapses, then there is Layer 1 (L1) and Layer 2 (L2) channels depending on how far the communication reaches.
 The nature of inter-neuron communication is discussed here as it is of interest when considering how close the system is to nature,
 but also to any analyzis involving Integrated Information Theory, \vref{sect:iit}.
 
-The neuron circuits are integrated together with their respective synapses in a structure called the Analog Network Core (ANC), shown in \cref{fig:anc}.
+\paragraph{The composing structure} of the neurons, with their respective synapses, is called the Analog Network Core (ANC), shown in \cref{fig:anc}.
 The neurons are constructed by Dendrite Membrane (DenMem) circtuis that allow neurons with up to 14336 synaptic inputs per neuron.
 The synaptic weights, stored in a four bit SRAM, are represented by a current generated by a DAC.
 Short-Term Depression (STD) and Spike-Timing Dependent Plasticity (STDP) are implemented by the use of capacitors modulating the signals, and by an algorithm that manipulates the digitally stored weights.
@@ -91,7 +94,7 @@ The cores are highly integrated systems working in a contiuous-time mode.
   \captionof{figure}{Schematic diagram of a synapse circuit, taken from \cite{schemmel_wafer-scale_2010}.}
 \end{figure}
 
-Between ANCs there is the L1 channel, a real-time, serial event protocol operating at up to 2 Gb/s.
+\paragraph{The communication protocol} between ANCs is L1;  a real-time, serial event protocol operating at up to 2 Gb/s.
 The protocol uses two time-frame bits and 6 address data bits, and is designed for continuous-time transmission \cite{schemmel_wafer-scale_2008}.
 This digital protocol was implemented to limit the power consumption \cite{schemmel_wafer-scale_2010}.
 To support the channel density requirements of an accelerated system where each neuron can receive over 10k pre-synaptic inputs, Wafer-Scale integration was selected \cite{schemmel_wafer-scale_2010}.
@@ -102,14 +105,3 @@ To allow for inter-wafer communication, each HICANN chip has a L2 channel.
 Due to latency issues involved with real-time long-range communication, L2 is based on packets-switching and digitzed time stamps \cite{schemmel_wafer-scale_2010} \cite{thakur_large-scale_2018}.
 This digital communication in-between wafers, or with the host computer, is handled by FPGAs \cite{zoschke_full_2017}.
 Therefore, inter-neuron communication between wafers has a lower level of integration.
-
-
-
-
-
-
-
-
-
-
-\subsection{Communication} between neurons

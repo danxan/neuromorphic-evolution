@@ -1,7 +1,7 @@
 %\documentclass[journal]{IEEEtran} % for double column
 \documentclass[UKenglish]{ifimaster}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc, url, varioref}
+\usepackage[T1]{fontenc, url}
 \urlstyle{sf}
 \usepackage[english]{babel}
 \usepackage{textcomp, csquotes, varioref, graphicx, wrapfig}
@@ -26,10 +26,13 @@
 Will we ever build a neural substrate able to contain our human consciousness?
 \end{abstract}
 
+\setcounter{tocdepth}{3}
 \tableofcontents{}
 
-\section{Introduction}\label{sect:intro}
+\chapter{Introduction}\label{sect:intro}
 \subfile{sections/introduction}
+
+\chapter{Background theory}
 
 \section{Evolutionary Algorithms}\label{sect:ea}
 \subfile{sections/evoalg}
@@ -46,11 +49,11 @@ Will we ever build a neural substrate able to contain our human consciousness?
 \section{Integrated Information Theory}\label{sect:iit}
 \subfile{sections/iit}
 
-\section{Related Works}
+\chapter{Related Works}
 \subfile{sections/albantakis}
 
-\section{Conclusion}
-
+\chapter{Conclusion}
+\subfile{sections/conclusion}
 
 \printbibliography
 \end{document}
