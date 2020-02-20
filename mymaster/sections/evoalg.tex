@@ -1,28 +1,27 @@
-\paragraph{Nature} is exceptional at inventing new complex, resilient solutions through evolution of organisastions, from the molecular level to the ecosystems.
-In this project, biologically inspired Evolutionary Algorithms (EAs) are used to develop algorithms to run on hardware that has been developed with EAs.
+\paragraph{Nature} is exceptional at inventing new complex, resilient solutions through the evolution of organizations, from the molecular level to the ecosystems.
+This project uses biologically inspired Evolutionary Algorithms (EAs) to develop algorithms to run on hardware.
 See \vref{sect:eh} for more about Evolvable Hardware.
-In biology, the processes and structure of the cells of living cellular organisms are governed by Deoxyribonucleic acid (DNA).
-DNA is usually structured in \textbf{chromosomes} where the minimal units are called \textbf{genes}, and they determine the physical characteristics and development of the organism.
-In EAs the chromosomes may take form, for example, as strings, arrays or graphs.
-Similarly, genes associate to a segment in the chromosome, which encodes a building block of the final solution.
-Another term is \textbf{allele}. Individuals inherit two alleles for each gene, one from each parent. Alleles represent alternative forms of a gene that arise by mutation, and can for example result in different \textbf{phenotypic} traits, like different pigmentation.
+In biology, Deoxyribonucleic acid (DNA) governs the processes and structure of the cells of living cellular organisms ).
+The minimal units of DNA are called \textbf{genes}, and they are structured in \textbf{chromosomes}. They determine the physical characteristics and development of the organism.
+In EAs, the chromosomes may take the form of data structures like strings, arrays, or graphs where each segment of the data structure is a gene.
+Another term is \textbf{allele}. Individuals inherit two alleles for each gene, one from each parent. Alleles represent alternative forms of a gene that arise by mutation and can, for example, result in different \textbf{phenotypic} traits, like different pigmentation.
 The aggregation of the alleles for a specific gene is termed the \textbf{genotype} for the gene.
-Although the genotype is the most influcencal factor for the phenotype, other factors also play an important role, like environmental factors.
+Although the genotype is the most influential factor for the phenotype, other factors also play an important role, like environmental factors.
 \cite{trefzer_evolvable_2015}
 In EAs, there is usually only one allele per gene, which results in genotypes normally being identical to the chromosome.
 The phenotype is usually the final solution of the EA.
 
 \paragraph{EAs in general} are population-based optimization algorithms, adopting a higher-level of abstraction of an evolutionary scheme found in nature.
 The classical Simple Genetic Algorithm (SGA) involves individuals, phenotypes, genotypes, fitness function, selection, recombination, and mutation.
-Every individual is a candidate in solution space, with their genes being the parameters of the solution, and the phenotypes being the resulting characteristics of the solution, when in contact with the environment.
+A \textbf{gentotype} in EAs is each candidate solution, with its genes being the parameters of the solution. A \textbf{phenotype} is the resulting characteristic of a particular solution when in contact with the environment.
 The fitness function is those parts of an environment that are designed to assess how good a solution fits with the problem.
-As in nature, only the fittest individuals are stochastically selected to recombine or survive, based on their more deterministic fitness levels.
-If only the fittest individuals were to be selected, then the search would most likely end in the first available local optima,
-before the solution space has been desirably explored. After the first selection, individuals are recombined, and their offspring mutated.
-Now, all the exploration steps are completed, for the current generation, and the fittest individuals of the current solution-pool are then brought to the next generation.
-The evolution typically runs until certain criteria have been met, or until a set number of generations has been reached.
-The best solutions can then be saved, and the rest wiped out, for a new epoch to start. \cite{eiben_introduction_2015}
-The SGA has inspired mind-boggling variations of algorithms under the relatively wide EA umbrella,and examples of these are the
+As in nature, individuals are stochastically selected to recombine or survive based on their more deterministic fitness levels.
+If only the fittest individuals were to be selected, then the search would most likely end prematurely in the first available local optima.
+After the first selection, individuals are recombined, and their offspring mutated.
+In optimization algorithms like EAs, there needs to be a balance between how much the best solutions are \textbf{exploited}, and how much the solution space is \textbf{explored} for new solutions.
+The evolution typically runs until certain criteria are met or until a set number of generations has been reached.
+\cite{eiben_introduction_2015}
+The SGA has inspired mind-boggling variations of algorithms under the relatively wide EA umbrella, and examples of these are the
 Island Model \cite{schuman_parallel_2016} and Evolutionary Optimization \cite{schuman_evolutionary_2016}.
 
 

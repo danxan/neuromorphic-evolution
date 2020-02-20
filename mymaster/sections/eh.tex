@@ -1,19 +1,19 @@
 Developers of electronic systems need to optimize for both robustness and efficiency\cite{mead_neuromorphic_1990}.
 Evolutionary processes give rise to diversity at every level of biology and lead to systems with high functional redundancy, which enables elements that are structurally different to perform the same function under certain conditions. At the same time, they can have distinct functions in other conditions \cite{trefzer_evolvable_2015}.
 The high utilization of the characteristics of the elements in biological systems leads to high efficiency in terms of both energy and material, and this inspires researchers in the design of artificial systems \cite{mead_neuromorphic_1990}.
-Inspired by biology, Evolvable Hardware (EH) is an attempt to copy these aforementioned traits of biological systems by applying EAs to hardware design.
+Inspired by biology, Evolvable Hardware (EH) is an attempt to copy these traits mentioned above of biological systems by applying EAs to hardware design.
 See \vref{sect:ea} for an explanation of EAs.
 
-There are two main classes of EH, Extrinsic and Intrinsic EH.
+\paragraph{There are two main classes of EH}, Extrinsic and Intrinsic EH.
 Extrinsic EH is the approach of evaluating the evolved electronic circuit through simulation rather than through actual building and testing.
-This approach might be an advantage in terms of costs and hardware design, but is limited by the simulation and will not fully utilize the specific device characteristics.
+This approach might be an advantage in terms of costs and hardware design but is limited by the simulation and will not fully utilize the specific device characteristics.
 Intrinsic EH, on the other hand, is characterized by the evaluation of configurations on programmable hardware.
 This approach might lead to high utilization of the actual device but is limited by a pre-built design, which might be costly to change.
 Therefore, Intrinsic EH is often configurable, which again might lead to results that are very complicated to understand from a human perspective.
 Common challenges with Extrinsic EH are that the solution can only be as good as the model of the simulation. The model of the EH can "overfit" with the simulation, resulting in a "reality gap."
 \cite{haddow_challenges_2011}
 
-As mentioned, development of EH is commonly conducted on Field-Programmable devices, either digital or analog.
+\paragraph{The standard hardware} for the development of EH is Field-Programmable devices, either digital or analog.
 Digital devices are typically Field-Programmable Gate Arrays (FPGAs).
 Analog devices are typically Field-Programmable Analog/Transistor Arrays (FPAAs/FPTAs).
 While there are excellent synthesis tools for digital circuitry, analog electronics development is lacking these same kinds of tools.
@@ -22,7 +22,7 @@ The Heidelberg FPTA has been one out of several successful architectures in this
 including analog filters, comparators, Digital to Analog Converters (DACs), Analog to Digital Converters (ADC), and Operational Amplifiers (Op-Amps)\cite{trefzer_operational_2005}.
 \cite{trefzer_evolvable_2015}
 
-Since the peak of EH, over 20 years ago, the size and complexity of the problems solved by EH have not increased much, and the solutions seldom compete with traditional designs \cite{haddow_challenges_2011}.
+\paragraph{Since the peak of EH}, over 20 years ago, the size and complexity of the problems solved by EH have not increased much, and the solutions seldom compete with traditional designs \cite{haddow_challenges_2011}.
 As mentioned earlier, Mead proposed neuromorphic systems in 1990 in the EH peak \cite{mead_neuromorphic_1990}.
 Furthermore, a natural way to realize such systems are through configurable circuits.
 A specialized branch of EH that spawned in the early 2000s was the Networks-on-Chip (NoC) paradigm,
@@ -39,6 +39,10 @@ While using analog circuitry to model neurons and synapses, the HICANN uses a di
 Manufactured in a 180 nm CMOS technology, the HICANN features 114,688 programmable dynamic synapses and up to 512 neurons \cite{zoschke_full_2017}.
 \cite{haddow_challenges_2011}\cite{trefzer_evolvable_2015}
 The HICANN is an essential component of the Physical Neuromorphic System of the Human Brain Project (HBP) \cite{markram_introducing_2011}, also known as BrainScaleS \cite{meier_mixed-signal_2015}, see \vref{sect:bss}.
+
+
+
+
 
 
 
