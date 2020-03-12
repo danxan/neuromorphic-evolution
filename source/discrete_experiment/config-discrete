@@ -2,14 +2,14 @@
 
 [NEAT]
 fitness_criterion     = max
-fitness_threshold     = 50
-pop_size              = 150
+fitness_threshold     = 100
+pop_size              = 300
 reset_on_extinction   = False
 no_fitness_termination = False
 
 [DefaultGenome]
 # node activation options
-activation_default      = sigmoid
+activation_default      = OR_gate
 activation_mutate_rate  = 0.3
 activation_options      = OR_gate AND_gate XOR_gate
 
@@ -47,7 +47,7 @@ node_add_prob           = 0.1
 node_delete_prob        = 0.1
 
 # network parameters
-num_hidden              = 1
+num_hidden              = 0
 num_inputs              = 2
 num_outputs             = 2
 

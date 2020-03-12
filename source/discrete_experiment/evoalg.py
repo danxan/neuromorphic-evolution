@@ -10,11 +10,11 @@ from animat import Animat
 from game import Game
 
 def eval_genomes(genomes, config):
-    num_games = 20
+    num_games = 100
     for genime_id, genome in genomes:
         genome.fitness = 0
         net = neat.nn.RecurrentNetwork.create(genome, config)
-        game = Game(16)
+        game = Game(64)
         for i in range(num_games):
             genome.fitness += game.run(net)
 
@@ -78,7 +78,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 50
+    num_gen = 500
     winner = p.run(eval_genomes, num_gen)
 
     # Display the winning genome
@@ -86,12 +86,12 @@ def run(config_file):
 
     # Show output of the most fit genome against training data.
     print('\nOutput:')
-    game = Game(16)
+    game = Game(64)
     winner_net = neat.nn.RecurrentNetwork.create(winner, config)
     print(f'WINNER FITNESS {winner.fitness}')
     winner.fitness = 0
     i = 0
-    num_games = 20
+    num_games = 100
     while i < num_games:
         ret = game.run_print(winner_net)
         print(f'Game returned {ret}')
