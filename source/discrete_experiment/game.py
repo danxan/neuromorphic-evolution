@@ -17,6 +17,18 @@ class Game:
     #def update_state(self):
     def _update_paddle(self, motor_out):
         # moves positon along axis of freedom, checks for boundaries
+        if motor_out[0] > motor_out[1] and self.paddle_pos > 0:
+            self.paddle_pos -= 1
+        elif motor_out[0] < motor_out[1] and self.paddle_pos < self.game_width-1:
+            self.paddle_pos += 1
+        elif motor_out[0] < 1E-3 and motor_out[1] < 1E-3:
+            if self.paddle_pos == 0:
+                self.paddle_pos += 1
+            elif self.paddle_pos == self.game_width-1:
+                self.paddle_pos -= 1
+            else:
+                self.paddle_pos += random.randint(-1,1)
+        '''
         if motor_out[0] > 0.5 and motor_out[1] > 0.5:
             self.paddle_pos = self.paddle_pos
         elif motor_out[1] > 0.5 and self.paddle_pos < self.game_width-1:
@@ -25,6 +37,7 @@ class Game:
             self.paddle_pos -= 1 # move left
         else:
             self.paddle_pos = self.paddle_pos
+        '''
 
     def _update_block(self):
             self.board[self.block_pos[0]][self.block_pos[1]] = 0 # remove block from old pos
@@ -69,7 +82,7 @@ class Game:
                 sens_in = [10,0]
                 #print("sensed block on left sensor")
             else:
-                sens_in = [0,0]
+                sens_in = [-10,-10]
                 #print("didnt sense block")
 
             motor_out = animat.activate(sens_in)
@@ -105,7 +118,7 @@ class Game:
                 sens_in = [10,0]
                 print("sensed block on left sensor")
             else:
-                sens_in = [0,0]
+                sens_in = [-10,-10]
                 print("didnt sense block")
 
             #self._print_game()
