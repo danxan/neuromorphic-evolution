@@ -11,7 +11,7 @@ from game import Game
 time_const = 0.01
 
 def eval_genomes(genomes, config):
-    num_games = 10
+    num_games = 50
     for genime_id, genome in genomes:
         genome.fitness = 0
         net = neat.ctrnn.CTRNN.create(genome, config, time_const)
@@ -79,7 +79,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 40
+    num_gen = 80
     winner = p.run(eval_genomes, num_gen)
 
     # Display the winning genome
@@ -92,7 +92,7 @@ def run(config_file):
     print(f'WINNER FITNESS {winner.fitness}')
     winner.fitness = 0
     i = 0
-    num_games = 10
+    num_games = 50
     while i < num_games:
         ret = game.run_print(winner_net)
         print(f'Game returned {ret}')
