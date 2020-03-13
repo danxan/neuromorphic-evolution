@@ -14,16 +14,20 @@ class Game:
 
     #def update_state(self):
     def _update_paddle(self, motor_out):
-        if motor_out[0] > 0.8:
+        if motor_out[0] > 0.6:
             self.paddle_pos = self.paddle_pos
-        elif motor_out[0] > 0.7 and self.paddle_pos < self.game_width-1:
+        elif motor_out[0] > 0.4 and self.paddle_pos < self.game_width-1:
             self.paddle_pos += 1
-        elif motor_out[0] > 0.4 and self.paddle_pos > 0:
+        elif motor_out[0] > 0.2 and self.paddle_pos > 0:
             self.paddle_pos -= 1
-        elif motor_out[0] > 0.1:
+        elif motor_out[0] > 0.1 and self.paddle_pos > 0 and self.paddle_pos < self.game_width-1:
+            self.paddle_pos += random.randint(-1,1)
+        elif motor_out[0] > 0.1 and self.paddle_pos == 0:
+            self.paddle_pos += 1
+        elif motor_out[0] > 0.1 and self.paddle_pos == self.game_width-1:
+            self.paddle_pos -= 1
+        elif motor_out[0] > 0.01:
             self.paddle_pos = self.paddle_pos
-        elif motor_out[0] > 1E-20 and self.paddle_pos > 0 and self.paddle_pos < self.game_width-1:
-            self.paddle_pos = random.randint(-1,1)
 
 
     def _update_block(self):
@@ -72,16 +76,16 @@ class Game:
             for i in range(10):
                 # The animat views the board with its two sensors. Has a view of one unit to the left or right.
                 if self.block_pos[1] == self.paddle_pos:
-                    sens_in = [1,1]
+                    sens_in = [0.8,0.8]
                     #print("sensed block on both sensors")
                 elif self.block_pos[1] - 1 == self.paddle_pos:
                     #print("sensed block on right sensor")
-                    sens_in = [1,0]
+                    sens_in = [0.8,0]
                 elif self.block_pos[1] + 1 == self.paddle_pos:
-                    sens_in = [0,1]
+                    sens_in = [0,0.8]
                     #print("sensed block on left sensor")
                 else:
-                    sens_in = [0,0]
+                    sens_in = [0.1,0.1]
                     #print("didnt sense block")
 
                 output = animat.advance(sens_in, 0.002, 0.002)
@@ -89,6 +93,7 @@ class Game:
                 outputs.append(output)
                 self._update_paddle(outputs[-1])
             #self._print_game()
+            animat.reset()
         #print(f'MOTOR OUT: {outputs}')
 
         if self.block_pos[0] == self.game_height-1:
@@ -122,16 +127,16 @@ class Game:
             for i in range(10):
                 # The animat views the board with its two sensors. Has a view of one unit to the left or right.
                 if self.block_pos[1] == self.paddle_pos:
-                    sens_in = [1,1]
+                    sens_in = [0.8,0.8]
                     print("sensed block on both sensors")
                 elif self.block_pos[1] - 1 == self.paddle_pos:
                     print("sensed block on right sensor")
-                    sens_in = [1,0]
+                    sens_in = [0.8,0]
                 elif self.block_pos[1] + 1 == self.paddle_pos:
-                    sens_in = [0,1]
+                    sens_in = [0,0.8]
                     print("sensed block on left sensor")
                 else:
-                    sens_in = [0,0]
+                    sens_in = [0.1,0.1]
                     print("didnt sense block")
 
                 #self._print_game()
@@ -143,8 +148,11 @@ class Game:
                 outputs.append(output)
                 self._update_paddle(outputs[-1])
                 print(f'MOTOR OUT: {outputs[-1]}')
+                #animat.reset()
             #self._print_game()
-        #print(f'MOTOR OUT: {outputs}')
+            animat.reset()
+
+        print(f'MOTOR OUT: {outputs}')
 
         if self.block_pos[0] == self.game_height-1:
             if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
