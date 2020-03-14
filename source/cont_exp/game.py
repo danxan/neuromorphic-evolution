@@ -20,15 +20,25 @@ class Game:
             self.paddle_pos += 1
         elif motor_out[0] > 0.2 and self.paddle_pos > 0:
             self.paddle_pos -= 1
-        elif motor_out[0] > 0.1 and self.paddle_pos > 0 and self.paddle_pos < self.game_width-1:
-            self.paddle_pos += random.randint(-1,1)
+        elif motor_out[0] < 0.1:
+            if motor_out[0] > 0.05:
+                self.paddle_pos += 1
+            elif motor_out[0] > 0.0001:
+                self.paddle_pos -= 1
+
+        '''
         elif motor_out[0] > 0.1 and self.paddle_pos == 0:
             self.paddle_pos += 1
         elif motor_out[0] > 0.1 and self.paddle_pos == self.game_width-1:
             self.paddle_pos -= 1
         elif motor_out[0] > 0.01:
             self.paddle_pos = self.paddle_pos
+        '''
 
+        '''
+        elif motor_out[0] > 0.1 and self.paddle_pos > 0 and self.paddle_pos < self.game_width-1:
+            self.paddle_pos += random.randint(-1,1)
+        '''
 
     def _update_block(self):
             self.board[self.block_pos[0]][self.block_pos[1]] = 0 # remove block from old pos
