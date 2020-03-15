@@ -14,6 +14,20 @@ class Game:
 
     #def update_state(self):
     def _update_paddle(self, motor_out):
+        if motor_out[0] > 0.4 and motor_out[1] > 0.4:
+            self.paddle_pos = self.paddle_pos
+        elif motor_out[1] > motor_out[0] and self.paddle_pos < self.game_width-1:
+            self.paddle_pos += 1
+        elif motor_out[0] > motor_out[1] and self.paddle_pos > 0:
+            self.paddle_pos -= 1
+        '''
+        elif motor_out[0] < 0.1 and motor_out[1] < 0.1:
+            if motor_out[1] > motor_out[0] and self.paddle_pos < self.game_width-1:
+                self.paddle_pos += 1
+            elif motor_out[0] > motor_out[1] and self.paddle_pos > 0:
+                self.paddle_pos -= 1
+        '''
+        '''
         if motor_out[0] > 0.6:
             self.paddle_pos = self.paddle_pos
         elif motor_out[0] > 0.4 and self.paddle_pos < self.game_width-1:
@@ -21,10 +35,11 @@ class Game:
         elif motor_out[0] > 0.2 and self.paddle_pos > 0:
             self.paddle_pos -= 1
         elif motor_out[0] < 0.1:
-            if motor_out[0] > 0.05:
+            if motor_out[0] > 0.05 and self.paddle_pos > self.game_width-1:
                 self.paddle_pos += 1
-            elif motor_out[0] > 0.0001:
+            elif motor_out[0] > 0.0001 and self.paddle_pos > 0:
                 self.paddle_pos -= 1
+        '''
 
         '''
         elif motor_out[0] > 0.1 and self.paddle_pos == 0:
