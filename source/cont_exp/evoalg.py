@@ -23,19 +23,19 @@ def eval_genomes(genomes, config):
 def OR_gate(x):
     try:
         if any(x) > 0.5:
-            return 1
+            return np.max(x)
         else:
             return 0
     except TypeError as te:
         if x > 0.5:
-            return 1
+            return x
         else:
             return 0
 
 def AND_gate(x):
     try:
         if all(x) > 0.5:
-            return 1
+            return np.mean(x)
         else:
             return 0
     except TypeError as te:
@@ -47,12 +47,12 @@ def AND_gate(x):
 def XOR_gate(x):
     try:
         if len(x[x > 0]) == 1:
-            return 1
+            return np.max(x)
         else:
             return 0
     except TypeError as te:
         if x > 0.5:
-            return 1
+            return x
         else:
             return 0
 
@@ -79,7 +79,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 50
+    num_gen = 200
     winner = p.run(eval_genomes, num_gen)
 
     # Display the winning genome
@@ -94,13 +94,13 @@ def run(config_file):
     i = 0
     num_games = 50
     while i < num_games:
-        ret = game.run_print(winner_net)
+        ret = game.run(winner_net)
         print(f'Game returned {ret}')
         winner.fitness += ret
         i+=1
     print(f'\nOver {num_games} games, a winner scored {winner.fitness}.\n')
 
-    print(f'node evals {winner_net.node_evals}')
+
     print(f'input nodes {winner_net.input_nodes}')
     print(f'output nodes {winner_net.output_nodes}')
     #Using regex to find the names ofv
