@@ -94,7 +94,7 @@ def run(config_file):
     i = 0
     num_games = 50
     while i < num_games:
-        ret = game.run(winner_net)
+        ret = game.run_print(winner_net)
         print(f'Game returned {ret}')
         winner.fitness += ret
         i+=1

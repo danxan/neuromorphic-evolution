@@ -20,11 +20,13 @@ class Game:
             self.paddle_pos += 1
         elif motor_out[0] > motor_out[1] and self.paddle_pos > 0:
             self.paddle_pos -= 1
+        '''
         elif motor_out[0] < 0.1 and motor_out[1] < 0.1:
             if motor_out[0] > motor_out[1] and self.paddle_pos < self.game_width-1:
                 self.paddle_pos += 1
             elif motor_out[1] > motor_out[0] and self.paddle_pos > 0:
                 self.paddle_pos -= 1
+        '''
         '''
         elif motor_out[0] < 0.1 and motor_out[1] < 0.1:
             if motor_out[1] > motor_out[0] and self.paddle_pos < self.game_width-1:
@@ -123,7 +125,8 @@ class Game:
                 outputs.append(output)
                 self._update_paddle(outputs[-1])
             #self._print_game()
-            animat.reset()
+            if self.block_pos[0]%3 == 0:
+                animat.reset()
         #print(f'MOTOR OUT: {outputs}')
 
         if self.block_pos[0] == self.game_height-1:
@@ -180,7 +183,8 @@ class Game:
                 print(f'MOTOR OUT: {outputs[-1]}')
                 #animat.reset()
             #self._print_game()
-            animat.reset()
+            if self.block_pos[0]%3 == 0:
+                animat.reset()
 
         #print(f'MOTOR OUT: {outputs}')
 
