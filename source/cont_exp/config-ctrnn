@@ -2,10 +2,10 @@
 
 [NEAT]
 fitness_criterion     = max
-fitness_threshold     = 100
-pop_size              = 300
+fitness_threshold     = 250
+pop_size              = 400
 reset_on_extinction   = True
-no_fitness_termination = False
+no_fitness_termination = True
 
 [DefaultGenome]
 # node activation options
@@ -65,9 +65,9 @@ weight_init_mean        = 0.0
 weight_init_stdev       = 0.0
 weight_max_value        = 15
 weight_min_value        = -15
-weight_mutate_power     = 0.4
-weight_mutate_rate      = 0.8
-weight_replace_rate     = 0.4
+weight_mutate_power     = 0.9
+weight_mutate_rate      = 0.9
+weight_replace_rate     = 0.9
 
 
 [DefaultSpeciesSet]
@@ -76,8 +76,8 @@ compatibility_threshold = 3.0
 [DefaultStagnation]
 species_fitness_func = max
 max_stagnation       = 20
-species_elitism      = 2
+species_elitism      = 5
 
 [DefaultReproduction]
-elitism            = 3
-survival_threshold = 0.2
+elitism            = 5
+survival_threshold = 0.4

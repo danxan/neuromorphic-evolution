@@ -117,19 +117,19 @@ class Game:
             # catch
             if self.block_size == 1:
                 if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
-                    return 2 # point
+                    return self.game_width-3 # point
                 else:
-                    return -1
+                    return 1 - ( (self.game_width-3)/2 )
             # avoid
             elif self.block_size == 2:
                 # is the left side of the block on the right side of the paddle
                 if self.block_pos[1] > self.paddle_pos + 1:
-                    return 2
+                    return ( (self.game_width-3)/2 )
                 # is the right side of the block on the left side of the paddle
                 elif self.block_pos[1] + self.block_size-1 < self.paddle_pos - 1:
-                    return 2
+                    return ( (self.game_width-3)/2 )
                 else:
-                    return -1
+                    return -self.game_width-3
 
 
 

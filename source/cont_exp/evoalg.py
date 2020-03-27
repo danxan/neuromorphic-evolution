@@ -15,10 +15,11 @@ def eval_genomes(genomes, config):
     for genime_id, genome in genomes:
         genome.fitness = 0
         net = neat.ctrnn.CTRNN.create(genome, config, time_const)
-        game = Game(32)
+        game = Game(8)
         for i in range(num_games):
             genome.fitness += game.run(net)
 
+#TODO: Check what x can be...
 # New activation functions
 def OR_gate(x):
     try:
@@ -44,6 +45,7 @@ def AND_gate(x):
         else:
             return 0
 
+#TODO: Tror ikke at denne fungerer... Checkout out aggregation..
 def XOR_gate(x):
     try:
         if len(x[x > 0]) == 1:
@@ -68,9 +70,12 @@ def run(config_file):
     config.genome_config.add_activation('AND_gate', AND_gate)
     config.genome_config.add_activation('XOR_gate', XOR_gate)
 
-    print(f'init pop')
+    #print(f'init pop')
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
+    # Restore from checkpoint
+    #print(f"restore pop")
+    #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-59")
 
     # Add a stdout reporter to show progress in the terminal
     p.add_reporter(neat.StdOutReporter(True))
@@ -79,22 +84,23 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 200
+    num_gen = 500
     winner = p.run(eval_genomes, num_gen)
+
 
     # Display the winning genome
     print(f'\nBest genome:\n{winner}')
 
     # Show output of the most fit genome against training data.
     print('\nOutput:')
-    game = Game(32)
+    game = Game(8)
     winner_net = neat.ctrnn.CTRNN.create(winner, config, time_const)
     print(f'WINNER FITNESS {winner.fitness}')
     winner.fitness = 0
     i = 0
     num_games = 50
     while i < num_games:
-        ret = game.run_print(winner_net)
+        ret = game.run(winner_net)
         print(f'Game returned {ret}')
         winner.fitness += ret
         i+=1
