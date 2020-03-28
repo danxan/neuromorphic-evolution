@@ -16,14 +16,14 @@ class Game:
 
     #def update_state(self):
     def _update_paddle(self, motor_out):
-        if motor_out[0] < 0.01 and motor_out[1] < 0.01:
+        if motor_out[0] < 0.001 or motor_out[0] > 1:
             self.paddle_pos = self.paddle_pos
-        elif motor_out[1] > motor_out[0]:
+        elif motor_out[0] > 0.5
             if self.paddle_pos == self.game_width-1:
                 self.paddle_pos = 0
             else:
                 self.paddle_pos += 1
-        elif motor_out[0] > motor_out[1]:
+        elif motor_out[0] < 0.5:
             if self.paddle_pos == 0:
                 self.paddle_pos = self.game_width-1
             else:
