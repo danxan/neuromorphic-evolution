@@ -18,7 +18,7 @@ class Game:
     def _update_paddle(self, motor_out):
         if motor_out[0] < 0.001 or motor_out[0] > 1:
             self.paddle_pos = self.paddle_pos
-        elif motor_out[0] > 0.5
+        elif motor_out[0] > 0.5:
             if self.paddle_pos == self.game_width-1:
                 self.paddle_pos = 0
             else:
