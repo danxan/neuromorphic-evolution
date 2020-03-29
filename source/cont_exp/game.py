@@ -16,14 +16,14 @@ class Game:
 
     #def update_state(self):
     def _update_paddle(self, motor_out):
-        if motor_out[0] < 0.001 or motor_out[0] > 1:
+        if motor_out[0] < 0.01 and motor_out[1] < 0.01:
             self.paddle_pos = self.paddle_pos
-        elif motor_out[0] > 0.5:
+        elif motor_out[1] > motor_out[0]:
             if self.paddle_pos == self.game_width-1:
                 self.paddle_pos = 0
             else:
                 self.paddle_pos += 1
-        elif motor_out[0] < 0.5:
+        elif motor_out[0] > motor_out[1]:
             if self.paddle_pos == 0:
                 self.paddle_pos = self.game_width-1
             else:
@@ -82,7 +82,7 @@ class Game:
 
         #RESET GAME
         self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
-        self.block_size = random.randint(1,2)
+        self.block_size = 1 # random.randint(1,2)
         #self.board[self.block_pos[0]][self.block_pos[1]] = 1
         self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
 
@@ -117,9 +117,10 @@ class Game:
             # catch
             if self.block_size == 1:
                 if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
-                    return self.game_width-3 # point
+                    return 1 # point
                 else:
-                    return 1 - ( (self.game_width-3)/2 )
+                    return 0
+            '''
             # avoid
             elif self.block_size == 2:
                 # is the left side of the block on the right side of the paddle
@@ -130,6 +131,7 @@ class Game:
                     return ( (self.game_width-3)/2 )
                 else:
                     return -self.game_width-3
+            '''
 
 
 
