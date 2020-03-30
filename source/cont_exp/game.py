@@ -110,8 +110,8 @@ class Game:
                 outputs.append(output)
                 self._update_paddle(outputs[-1])
             #self._print_game()
-            #if self.block_pos[0]%5 == 0:
-                #animat.reset()
+            if self.block_pos[0]%2 == 0:
+                animat.reset()
         #print(f'MOTOR OUT: {outputs}')
 
         if self.block_pos[0] == self.game_height-1:
