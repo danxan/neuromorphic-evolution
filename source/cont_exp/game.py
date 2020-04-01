@@ -92,17 +92,14 @@ class Game:
 
             for i in range(5):
                 # The animat views the board with its two sensors. Has a view of one unit to the left or right.
-                if self.block_pos[1] == self.paddle_pos or self.block_pos[1] + self.block_size-1 == self.paddle_pos:
-                    sens_in = [0.8,0.8]
-                    #print("sensed block on both sensors")
-                elif self.block_pos[1] == self.paddle_pos - 1 or self.block_pos[1] + self.block_size-1 == self.paddle_pos -1:
+                if self.block_pos[1] == self.paddle_pos - 1 or self.block_pos[1] + self.block_size-1 == self.paddle_pos -1:
                     #print("sensed block on right sensor")
                     sens_in = [0.8,0]
                 elif self.block_pos[1] == self.paddle_pos +1 or self.block_pos[1] + self.block_size-1 == self.paddle_pos +1:
                     sens_in = [0,0.8]
                     #print("sensed block on left sensor")
                 else:
-                    sens_in = [0.1,0.1]
+                    sens_in = [0,0]
                     #print("didnt sense block")
 
                 output = animat.advance(sens_in, 0.002, 0.002)
