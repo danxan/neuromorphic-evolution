@@ -14,7 +14,7 @@ def eval_genomes(genomes, config):
     num_games = 50
     for genime_id, genome in genomes:
         genome.fitness = 0
-        net = neat.nn.feed_forward.FeedForwardNetwork.create(genome, config)
+        net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
         game = Game(8)
         for i in range(num_games):
             genome.fitness += game.run(net)
@@ -115,7 +115,7 @@ def run(config_file):
     # Show output of the most fit genome against training data.
     print('\nOutput:')
     game = Game(8)
-    winner_net = neat.nn.feed_forward.FeedForwardNetwork.create(winner, config)
+    winner_net = neat.nn.recurrent.RecurrentNetwork.create(winner, config)
     print(f'WINNER FITNESS {winner.fitness}')
     winner.fitness = 0
     i = 0
