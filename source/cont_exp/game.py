@@ -16,14 +16,16 @@ class Game:
 
     #def update_state(self):
     def _update_paddle(self, motor_out):
-        if motor_out[0] < 0.01 and motor_out[1] < 0.01:
+        if motor_out[0] == 0 and motor_out[1] == 0:
             self.paddle_pos = self.paddle_pos
-        elif motor_out[1] > motor_out[0]:
+        elif motor_out[0] == 1 and motor_out[1] == 1:
+            self.paddle_pos = self.paddle_pos
+        elif motor_out[1] == 1:
             if self.paddle_pos == self.game_width-1:
                 self.paddle_pos = self.paddle_pos
             else:
                 self.paddle_pos += 1
-        elif motor_out[0] > motor_out[1]:
+        elif motor_out[0] == 1:
             if self.paddle_pos == 0:
                 self.paddle_pos = self.paddle_pos
             else:
@@ -94,9 +96,9 @@ class Game:
                 # The animat views the board with its two sensors. Has a view of one unit to the left or right.
                 if self.block_pos[1] == self.paddle_pos - 1 or self.block_pos[1] + self.block_size-1 == self.paddle_pos -1:
                     #print("sensed block on right sensor")
-                    sens_in = [0.8,0]
+                    sens_in = [1,0]
                 elif self.block_pos[1] == self.paddle_pos +1 or self.block_pos[1] + self.block_size-1 == self.paddle_pos +1:
-                    sens_in = [0,0.8]
+                    sens_in = [0,1]
                     #print("sensed block on left sensor")
                 else:
                     sens_in = [0,0]

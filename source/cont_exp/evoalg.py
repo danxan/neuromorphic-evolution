@@ -19,11 +19,12 @@ def eval_genomes(genomes, config):
         for i in range(num_games):
             genome.fitness += game.run(net)
 
+# Aggregation functions o
 #TODO: Check what x can be...
 # New activation functions
 def OR_gate(x):
     try:
-        if any(x) > 0.5:
+        if any(x) == 1:
             return np.max(x)
         else:
             return 0
@@ -58,6 +59,23 @@ def XOR_gate(x):
         else:
             return 0
 
+def or_aggregation(x):
+    if any(x) == 1:
+        return 1
+    else:
+        return 0
+
+def and_aggregation(x):
+    if all(x) == 1:
+        return 1
+    else:
+        return 0
+
+def xor_aggregation(x):
+    if x.count(1) == 1:
+        return 1
+    else:
+        return 0
 
 def run(config_file):
     # Load configuration
@@ -69,6 +87,9 @@ def run(config_file):
     config.genome_config.add_activation('OR_gate', OR_gate)
     config.genome_config.add_activation('AND_gate', AND_gate)
     config.genome_config.add_activation('XOR_gate', XOR_gate)
+    config.genome_config.add_aggregation('or_aggregation', or_aggregation)
+    config.genome_config.add_aggregation('and_aggregation', and_aggregation)
+    config.genome_config.add_aggregation('xor_aggregation', xor_aggregation)
 
     #print(f'init pop')
     # Create the population, which is the top-level object for a NEAT run.
