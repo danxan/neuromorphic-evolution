@@ -2,35 +2,16 @@ digraph {
 	node [fontsize=9 height=0.2 shape=circle width=0.2]
 	IA [fillcolor=lightgray shape=box style=filled]
 	IB [fillcolor=lightgray shape=box style=filled]
-	"OA
-XOR" [fillcolor=lightblue style=filled]
-	"OB
-AND" [fillcolor=lightblue style=filled]
-	870 [fillcolor=white style=filled]
-	1033 [fillcolor=white style=filled]
-	652 [fillcolor=white style=filled]
-	2866 [fillcolor=white style=filled]
-	247 [fillcolor=white style=filled]
-	2585 [fillcolor=white style=filled]
-	IB -> "OA
-XOR" [color=red penwidth=0.26511972518190985 style=solid]
-	IB -> "OB
-AND" [color=green penwidth=0.44439891870112436 style=solid]
-	AND -> "OA
-XOR" [color=green penwidth=0.2223988041802151 style=dotted]
-	AND -> AND [color=green penwidth=0.4249525853809706 style=solid]
-	IA -> OR [color=green penwidth=0.3470788339644254 style=dotted]
-	AND -> "OB
-AND" [color=red penwidth=0.28155673518189617 style=solid]
-	XOR -> "OB
-AND" [color=red penwidth=0.26078089764804324 style=dotted]
-	OR -> XOR [color=green penwidth=0.2487188200853865 style=solid]
-	1033 -> "OB
-AND" [color=green penwidth=0.20772091738767576 style=solid]
-	AND -> "OA
-XOR" [color=green penwidth=0.5738318278442679 style=solid]
-	"OA
-XOR" -> 2866 [color=green penwidth=0.3112992002649394 style=dotted]
-	XOR -> OR [color=green penwidth=0.31685594035575293 style=solid]
-	2866 -> AND [color=green penwidth=0.4715085942984605 style=solid]
+	OA [fillcolor=lightblue style=filled]
+	OB [fillcolor=lightblue style=filled]
+	323 [fillcolor=white style=filled]
+	324 [fillcolor=white style=filled]
+	325 [fillcolor=white style=filled]
+	IA -> 323 [color=green penwidth=0.10696727098009429 style=solid]
+	IB -> 323 [color=red penwidth=0.1 style=solid]
+	IB -> 325 [color=red penwidth=0.19752530692346462 style=solid]
+	323 -> OA [color=red penwidth=0.1 style=solid]
+	323 -> OB [color=green penwidth=0.23709912591567464 style=solid]
+	324 -> OB [color=red penwidth=0.1 style=solid]
+	325 -> OA [color=red penwidth=0.16527630110786878 style=solid]
 }
