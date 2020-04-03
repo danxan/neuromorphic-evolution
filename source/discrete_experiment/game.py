@@ -27,7 +27,7 @@ class Game:
                 self.paddle_pos += 1
         elif motor_out[0] == 1:
             if self.paddle_pos == 0:
-                self.paddle_pos = self.paddle_pos
+                self.paddle_pos = self.game_width-1
             else:
                 self.paddle_pos -= 1
 
@@ -76,7 +76,7 @@ class Game:
 
         #RESET GAME
         self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
-        self.block_size = random.randint(1,2)
+        self.block_size = 1 #random.randint(1,2)
         #self.board[self.block_pos[0]][self.block_pos[1]] = 1
         self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
 
@@ -105,7 +105,7 @@ class Game:
                     return 1 #self.game_width-3 # point
                 else:
                     return 0
-
+            '''
             # avoid
             elif self.block_size == 2:
                 # is the left side of the block on the right side of the paddle
@@ -116,6 +116,7 @@ class Game:
                     return 1 # ( (self.game_width-3)/2 )
                 else:
                     return 0
+            '''
 
     def run_print(self, animat):
         '''
