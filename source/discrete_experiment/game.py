@@ -22,12 +22,12 @@ class Game:
             self.paddle_pos = self.paddle_pos
         elif motor_out[1] == 1:
             if self.paddle_pos == self.game_width-1:
-                self.paddle_pos = self.game_width-1
+                self.paddle_pos = 0
             else:
                 self.paddle_pos += 1
         elif motor_out[0] == 1:
             if self.paddle_pos == 0:
-                self.paddle_pos = 0
+                self.paddle_pos = self.game_width-1
             else:
                 self.paddle_pos -= 1
 
@@ -41,7 +41,7 @@ class Game:
         self.block_pos[0] += 1 # move down
         if self.block_pos[1] == self.game_width - 1:
             if self.direction == 1:
-                self.block_pos[1] = self.block_pos[1]
+                self.block_pos[1] = 0
             elif self.direction == -1:
                 self.block_pos[1] = self.game_width - 2
             elif self.direction == 0:
@@ -50,7 +50,7 @@ class Game:
             if self.direction == 1:
                 self.block_pos[1] = 1
             elif self.direction == -1:
-                self.block_pos[1] = self.block_pos[1]
+                self.block_pos[1] = self.game_width-1
             elif self.direction == 0:
                 self.block_pos[1] = self.block_pos[1]
         else:
