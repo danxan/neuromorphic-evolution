@@ -76,7 +76,7 @@ class Game:
 
         #RESET GAME
         self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
-        self.block_size = 1 #random.randint(1,2)
+        self.block_size = random.randint(1,2)
         #self.board[self.block_pos[0]][self.block_pos[1]] = 1
         self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
 
