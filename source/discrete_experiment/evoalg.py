@@ -11,7 +11,7 @@ from game import Game
 time_const = 0.01
 
 def eval_genomes(genomes, config):
-    num_games = 50
+    num_games = 128
     for genime_id, genome in genomes:
         genome.fitness = 0
         net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
@@ -19,8 +19,6 @@ def eval_genomes(genomes, config):
         for i in range(num_games):
             genome.fitness += game.run(net)
 
-# Aggregation functions o
-#TODO: Check what x can be...
 # New activation functions
 def OR_gate(x):
     try:
@@ -46,7 +44,6 @@ def AND_gate(x):
         else:
             return 0
 
-#TODO: Tror ikke at denne fungerer... Checkout out aggregation..
 def XOR_gate(x):
     try:
         if len(x[x > 0]) == 1:
@@ -77,6 +74,22 @@ def xor_aggregation(x):
     else:
         return 0
 
+def copy_aggregation(x):
+    if mean(x) > 0:
+        return 1
+    elif mean(x) < 0:
+        return -1
+    else:
+        return 0
+
+def not_aggregation(x):
+    if mean(x) > 0:
+        return -1
+    elif mean(x) < 0:
+        return 1
+    else:
+        return 0
+
 def run(config_file):
     # Load configuration
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
@@ -90,13 +103,15 @@ def run(config_file):
     config.genome_config.add_aggregation('or_aggregation', or_aggregation)
     config.genome_config.add_aggregation('and_aggregation', and_aggregation)
     config.genome_config.add_aggregation('xor_aggregation', xor_aggregation)
+    config.genome_config.add_aggregation('copy_aggregation', xor_aggregation)
+    config.genome_config.add_aggregation('not_aggregation', xor_aggregation)
 
     #print(f'init pop')
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
     # Restore from checkpoint
-    #print(f"restore pop")
-    #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-59")
+    print(f"restore pop")
+    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-17190")
 
     # Add a stdout reporter to show progress in the terminal
     p.add_reporter(neat.StdOutReporter(True))
@@ -105,7 +120,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 150
+    num_gen = 60000
     winner = p.run(eval_genomes, num_gen)
 
 

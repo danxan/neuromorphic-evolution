@@ -4,12 +4,14 @@ import random
 class Game:
     '''
     For now the block only has the size of one unit
+
+    Game size is fixed for now. Disregard parameter.
     '''
     def __init__(self, game_width):
         self.game_cnt = 0
         self.direction = 0
-        self.game_width = game_width
-        self.game_height = 3*game_width
+        self.game_width = 16
+        self.game_height = 36
 
         # The height is three times the width, to make the game possible.
         self.board = np.zeros((self.game_height, self.game_width))
@@ -32,9 +34,6 @@ class Game:
                 self.paddle_pos -= 1
 
     def _update_block(self):
-        if self.game_cnt%3 == 0:
-            self.direction = random.randint(-1,1)
-
         #self.board[self.block_pos[0]][self.block_pos[1]] = 0 # remove block from old pos
 
         # Update position
@@ -76,23 +75,46 @@ class Game:
 
         #RESET GAME
         self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
-        self.block_size = random.randint(1,2)
+        # Set block size with a "coin flip"
+        if random.randint(0,1) == 1:
+            self.block_size = 1
+        else:
+            self.block_size = 3
         #self.board[self.block_pos[0]][self.block_pos[1]] = 1
         self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
+        self.direction = random.randint(-1,1)
 
         while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
             self._update_block()
-
-            # The animat views the board with its two sensors. Has a view of one unit to the left or right.
-            if self.block_pos[1] == self.paddle_pos - 1 or self.block_pos[1] + self.block_size-1 == self.paddle_pos -1:
-                #print("sensed block on right sensor")
-                sens_in = [1,0]
-            elif self.block_pos[1] == self.paddle_pos +1 or self.block_pos[1] + self.block_size-1 == self.paddle_pos +1:
-                sens_in = [0,1]
-                #print("sensed block on left sensor")
-            else:
-                sens_in = [0,0]
-                #print("didnt sense block")
+            if self.block_size == 1:
+                # The animat views the board with its two sensors. Has a view of one unit to the left or right.
+                if self.block_pos[1] == self.paddle_pos - 1:
+                    #print("sensed block on right sensor")
+                    sens_in = [1,0]
+                elif self.block_pos[1] == self.paddle_pos +1:
+                    sens_in = [0,1]
+                    #print("sensed block on left sensor")
+                else:
+                    sens_in = [0,0]
+                    #print("didnt sense block")
+            if self.block_size == 3:
+                # The animat views the board with its two sensors. Has a view of one unit to the left or right.
+                if self.block_pos[1] == self.paddle_pos-1:
+                    sens_in = [1,1]
+                elif self.block_pos[1] == self.paddle_pos:
+                    sens_in = [0,1]
+                elif self.block_pos[1] == self.paddle_pos+1:
+                    sens_in = [0,1]
+                elif self.block_pos[1]+1 == self.paddle_pos-1:
+                    sens_in = [1,0]
+                elif self.block_pos[1]+1 == self.paddle_pos+1:
+                    sens_in = [0,1]
+                elif self.block_pos[1]+2 == self.paddle_pos-1:
+                    sens_in = [1,0]
+                elif self.block_pos[1]+2 == self.paddle_pos:
+                    sens_in = [1,0]
+                else:
+                    sens_in = [0,0]
 
             output = animat.activate(sens_in)
             self._update_paddle(output)
@@ -101,20 +123,46 @@ class Game:
         if self.block_pos[0] == self.game_height-1:
             # catch
             if self.block_size == 1:
-                if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
-                    return 1 #self.game_width-3 # point
+                if self.paddle_pos == 0:
+                    if self.game_width-1 == self.block_pos[1] or 1 == self.block_pos[1]:
+                        return 1
+                    else:
+                        return 0
+                elif self.paddle_pos == self.game_width-1:
+                    if self.game_width-2 == self.block_pos[1] or 0 == self.block_pos[1]:
+                        return 1
+                    else:
+                        return 0
                 else:
-                    return 0
+                    if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
+                        return 1 #self.game_width-3 # point
+                    else:
+                        return 0
             # avoid
-            elif self.block_size == 2:
-                # is the left side of the block on the right side of the paddle
-                if self.block_pos[1] > self.paddle_pos + 1:
-                    return 1 # ( (self.game_width-3)/2 )
-                # is the right side of the block on the left side of the paddle
-                elif self.block_pos[1] + self.block_size-1 < self.paddle_pos - 1:
-                    return 1 # ( (self.game_width-3)/2 )
+            elif self.block_size == 3:
+                if self.paddle_pos == 0:
+                    if self.block_pos[1]+2 >= self.game_width-1:
+                        return 0
+                    elif self.block_pos[1] <= 1:
+                        return 0
+                    else:
+                        return 1
+                elif self.paddle_pos == self.game_width-1:
+                    if self.block_pos[1]+2 >= self.game_width-2:
+                        return 0
+                    elif self.block_pos[1] <= 0:
+                        return 0
+                    else:
+                        return 1
                 else:
-                    return 0
+                    # is the left side of the block on the right side of the paddle
+                    if self.block_pos[1] > self.paddle_pos + 1:
+                        return 1 # ( (self.game_width-3)/2 )
+                    # is the right side of the block on the left side of the paddle
+                    elif self.block_pos[1] + 2 < self.paddle_pos - 1:
+                        return 1 # ( (self.game_width-3)/2 )
+                    else:
+                        return 0
 
     def run_print(self, animat):
         '''
