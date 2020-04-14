@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
 import sys
 import os
+os.environ["PATH"] += os.pathsep +  "/home/daniesis/neuromorphic2/nmenv/lib/python3.5/site-packages/graphviz"
 import numpy as np
 import re
 
@@ -18,6 +20,7 @@ def eval_genomes(genomes, config):
         game = Game(8)
         for i in range(num_games):
             genome.fitness += game.run(net)
+        genome.fitness = 1.02**(genome.fitness)
 
 # New activation functions
 def OR_gate(x):
@@ -110,8 +113,8 @@ def run(config_file):
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
     # Restore from checkpoint
-    print(f"restore pop")
-    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-17190")
+    print("restore pop")
+    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-9999")
 
     # Add a stdout reporter to show progress in the terminal
     p.add_reporter(neat.StdOutReporter(True))
@@ -120,31 +123,31 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 60000
+    num_gen = 1
     winner = p.run(eval_genomes, num_gen)
 
 
     # Display the winning genome
-    print(f'\nBest genome:\n{winner}')
+    print('\nBest genome:\n%f', winner)
 
     # Show output of the most fit genome against training data.
     print('\nOutput:')
     game = Game(8)
     winner_net = neat.nn.recurrent.RecurrentNetwork.create(winner, config)
-    print(f'WINNER FITNESS {winner.fitness}')
+    print("WINNER FITNESS %f" %winner.fitness)
     winner.fitness = 0
     i = 0
     num_games = 50
     while i < num_games:
         ret = game.run(winner_net)
-        print(f'Game returned {ret}')
+        print("Game returned %f" % ret)
         winner.fitness += ret
         i+=1
-    print(f'\nOver {num_games} games, a winner scored {winner.fitness}.\n')
+    print('\nOver %f games, a winner scored %f.\n' %(num_games, winner.fitness))
 
 
-    print(f'input nodes {winner_net.input_nodes}')
-    print(f'output nodes {winner_net.output_nodes}')
+    #print('input nodes %f' % winner_net.input_nodes)
+    #print('output nodes' % winner_net.output_nodes)
     #Using regex to find the names ofv
     p = re.compile('(AND|OR|XOR)')
     node_names = {-1:'IA', -2:'IB', 0:'OA', 1:'OB'}

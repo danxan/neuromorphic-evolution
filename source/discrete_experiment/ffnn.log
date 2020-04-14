@@ -1,0 +1,112 @@
+restore pop
+
+ ****** Running generation 9999 ****** 
+
+Population's average fitness: 3.06588 stdev: 0.36994
+Best fitness: 4.24436 - size: (6, 13) - species 5 - id 15
+Average adjusted fitness: 0.380
+Mean genetic distance 2.264, standard deviation 1.086
+Population of 96 members in 2 species:
+   ID   age  size  fitness  adj fit  stag
+  ====  ===  ====  =======  =======  ====
+     5  9999    50      4.2    0.385  6084
+    14  9998    46      4.0    0.375  1148
+Total extinctions: 0
+Generation time: 4.626 sec
+Saving checkpoint to neat-checkpoint-9999
+
+Best individual in generation 9999 meets fitness threshold - complexity: (6, 13)
+
+Best genome:
+%f Key: 15
+Fitness: 4.244363182552547
+Nodes:
+	0 DefaultNodeGene(key=0, bias=0.23478376532554757, response=-0.3633361231746, activation=clamped, aggregation=and_aggregation)
+	1 DefaultNodeGene(key=1, bias=1.0415358569205249, response=0.637522530181107, activation=clamped, aggregation=copy_aggregation)
+	170 DefaultNodeGene(key=170, bias=0.10441980876434699, response=-0.06697495064321238, activation=clamped, aggregation=and_aggregation)
+	171 DefaultNodeGene(key=171, bias=-0.16476015230077817, response=1.4979390487935604, activation=clamped, aggregation=or_aggregation)
+	172 DefaultNodeGene(key=172, bias=-0.05217908915523101, response=0.03298993685117398, activation=clamped, aggregation=xor_aggregation)
+	173 DefaultNodeGene(key=173, bias=1.1083304170232537, response=-0.15342448174422088, activation=clamped, aggregation=not_aggregation)
+Connections:
+	DefaultConnectionGene(key=(-2, 0), weight=0.08720575652138302, enabled=True)
+	DefaultConnectionGene(key=(-2, 1), weight=0.520009017726405, enabled=False)
+	DefaultConnectionGene(key=(-2, 170), weight=-0.33471189362163606, enabled=True)
+	DefaultConnectionGene(key=(-2, 171), weight=0.3883250129459554, enabled=False)
+	DefaultConnectionGene(key=(-2, 172), weight=0.06989950508266363, enabled=False)
+	DefaultConnectionGene(key=(-2, 173), weight=0.38498576409532054, enabled=True)
+	DefaultConnectionGene(key=(-1, 0), weight=0.0, enabled=False)
+	DefaultConnectionGene(key=(-1, 1), weight=0.2450999516119351, enabled=True)
+	DefaultConnectionGene(key=(-1, 170), weight=0.009012995076149832, enabled=False)
+	DefaultConnectionGene(key=(-1, 171), weight=-0.5061403415049711, enabled=False)
+	DefaultConnectionGene(key=(-1, 172), weight=0.40887267594639143, enabled=True)
+	DefaultConnectionGene(key=(-1, 173), weight=0.07628271691124192, enabled=True)
+	DefaultConnectionGene(key=(0, 0), weight=0.6252390635386832, enabled=False)
+	DefaultConnectionGene(key=(1, 1), weight=-0.5279849374214716, enabled=True)
+	DefaultConnectionGene(key=(170, 0), weight=0.0, enabled=False)
+	DefaultConnectionGene(key=(170, 1), weight=-0.13571432251454582, enabled=False)
+	DefaultConnectionGene(key=(170, 170), weight=-0.7737348997053297, enabled=False)
+	DefaultConnectionGene(key=(171, 0), weight=0.7627418379984006, enabled=True)
+	DefaultConnectionGene(key=(171, 1), weight=-0.08111999679082985, enabled=True)
+	DefaultConnectionGene(key=(171, 171), weight=0.6516890687381736, enabled=False)
+	DefaultConnectionGene(key=(172, 0), weight=-0.10178396295059272, enabled=True)
+	DefaultConnectionGene(key=(172, 1), weight=-2.107390714155449, enabled=False)
+	DefaultConnectionGene(key=(172, 172), weight=0.002595761156972465, enabled=True)
+	DefaultConnectionGene(key=(173, 0), weight=0.3340151211044899, enabled=True)
+	DefaultConnectionGene(key=(173, 1), weight=-0.3128641502935027, enabled=True)
+	DefaultConnectionGene(key=(173, 173), weight=0.1459850924959161, enabled=False)
+
+Output:
+WINNER FITNESS 4.244363
+Game returned 1.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 1.000000
+
+Over 50.000000 games, a winner scored 22.000000.
+

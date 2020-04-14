@@ -179,39 +179,39 @@ class Game:
         outputs = [[init1, init2]]
 
         #RESET GAME
-        print(f"NEW GAME!")
+        # print(f"NEW GAME!")
         self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
         self.board[self.block_pos[0]][self.block_pos[1]] = 1
         self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
 
         while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
-            print("GAME UPDATE")
+            # print("GAME UPDATE")
             self._update_block()
 
             for i in range(10):
                 # The animat views the board with its two sensors. Has a view of one unit to the left or right.
                 if self.block_pos[1] == self.paddle_pos:
                     sens_in = [0.8,0.8]
-                    print("sensed block on both sensors")
+                    # print("sensed block on both sensors")
                 elif self.block_pos[1] - 1 == self.paddle_pos:
-                    print("sensed block on right sensor")
+                    # print("sensed block on right sensor")
                     sens_in = [0.8,0]
                 elif self.block_pos[1] + 1 == self.paddle_pos:
                     sens_in = [0,0.8]
-                    print("sensed block on left sensor")
+                    # print("sensed block on left sensor")
                 else:
                     sens_in = [0.1,0.1]
-                    print("didnt sense block")
+                    # print("didnt sense block")
 
                 #self._print_game()
-                print(f'PADDLE POS IS {self.paddle_pos}')
-                print(f'BLOCK POS is {self.block_pos[1]}')
+                # print(f'PADDLE POS IS {self.paddle_pos}')
+                # print(f'BLOCK POS is {self.block_pos[1]}')
 
                 output = animat.advance(sens_in, 0.002, 0.002)
                 times.append(animat.time_seconds)
                 outputs.append(output)
                 self._update_paddle(outputs[-1])
-                print(f'MOTOR OUT: {outputs[-1]}')
+                # print(f'MOTOR OUT: {outputs[-1]}')
                 #animat.reset()
             #self._print_game()
 
