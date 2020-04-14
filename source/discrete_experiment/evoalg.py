@@ -123,7 +123,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 1
+    num_gen = 2
     winner = p.run(eval_genomes, num_gen)
 
 
@@ -161,11 +161,11 @@ def run(config_file):
     '''
 
 
-    visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
     visualize.plot_stats(stats, ylog=False, view=True)
     visualize.plot_species(stats, view=True)
+    visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
 
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-4')
+    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-9999')
     p.run(eval_genomes, 10)
 if __name__ == '__main__':
     # Detemine path to configuration file. This path manipulation is
