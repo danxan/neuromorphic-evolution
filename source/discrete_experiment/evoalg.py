@@ -160,7 +160,6 @@ def run(config_file):
             node_names[node] = str(node_names[node]) + '\n' + str(p.search(str(activation)).group(0))
     '''
 
-
     visualize.plot_stats(stats, ylog=False, view=True)
     visualize.plot_species(stats, view=True)
     visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
