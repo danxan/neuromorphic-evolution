@@ -2,81 +2,69 @@ restore pop
 
  ****** Running generation 9999 ****** 
 
-Population's average fitness: 3.06588 stdev: 0.36994
-Best fitness: 4.24436 - size: (6, 13) - species 5 - id 15
-Average adjusted fitness: 0.380
-Mean genetic distance 2.264, standard deviation 1.086
+Population's average fitness: 3.06119 stdev: 0.35011
+Best fitness: 3.84425 - size: (6, 14) - species 14 - id 10
+Average adjusted fitness: 0.593
+Mean genetic distance 2.304, standard deviation 1.026
 Population of 96 members in 2 species:
    ID   age  size  fitness  adj fit  stag
   ====  ===  ====  =======  =======  ====
-     5  9999    50      4.2    0.385  6084
-    14  9998    46      4.0    0.375  1148
+     5  9999    47      3.6    0.587  6084
+    14  9998    49      3.8    0.598  1148
 Total extinctions: 0
-Generation time: 4.626 sec
+Generation time: 4.436 sec
 Saving checkpoint to neat-checkpoint-9999
 
-Best individual in generation 9999 meets fitness threshold - complexity: (6, 13)
+Best individual in generation 9999 meets fitness threshold - complexity: (6, 14)
 
 Best genome:
-%f Key: 15
-Fitness: 4.244363182552547
+%f Key: 10
+Fitness: 3.8442505025455977
 Nodes:
-	0 DefaultNodeGene(key=0, bias=0.23478376532554757, response=-0.3633361231746, activation=clamped, aggregation=and_aggregation)
-	1 DefaultNodeGene(key=1, bias=1.0415358569205249, response=0.637522530181107, activation=clamped, aggregation=copy_aggregation)
-	170 DefaultNodeGene(key=170, bias=0.10441980876434699, response=-0.06697495064321238, activation=clamped, aggregation=and_aggregation)
-	171 DefaultNodeGene(key=171, bias=-0.16476015230077817, response=1.4979390487935604, activation=clamped, aggregation=or_aggregation)
-	172 DefaultNodeGene(key=172, bias=-0.05217908915523101, response=0.03298993685117398, activation=clamped, aggregation=xor_aggregation)
-	173 DefaultNodeGene(key=173, bias=1.1083304170232537, response=-0.15342448174422088, activation=clamped, aggregation=not_aggregation)
+	0 DefaultNodeGene(key=0, bias=0.2616917181011789, response=0.2357978290997833, activation=clamped, aggregation=xor_aggregation)
+	1 DefaultNodeGene(key=1, bias=0.0, response=0.5262856600467369, activation=clamped, aggregation=or_aggregation)
+	150 DefaultNodeGene(key=150, bias=1.5496466638850597, response=-0.7804588270528224, activation=clamped, aggregation=or_aggregation)
+	151 DefaultNodeGene(key=151, bias=-0.15427814365040704, response=1.2820352372951447, activation=clamped, aggregation=not_aggregation)
+	152 DefaultNodeGene(key=152, bias=-0.23949609701263774, response=-0.11257426693890714, activation=clamped, aggregation=and_aggregation)
+	153 DefaultNodeGene(key=153, bias=0.4033665893562052, response=0.8179003681357412, activation=clamped, aggregation=not_aggregation)
 Connections:
-	DefaultConnectionGene(key=(-2, 0), weight=0.08720575652138302, enabled=True)
-	DefaultConnectionGene(key=(-2, 1), weight=0.520009017726405, enabled=False)
-	DefaultConnectionGene(key=(-2, 170), weight=-0.33471189362163606, enabled=True)
-	DefaultConnectionGene(key=(-2, 171), weight=0.3883250129459554, enabled=False)
-	DefaultConnectionGene(key=(-2, 172), weight=0.06989950508266363, enabled=False)
-	DefaultConnectionGene(key=(-2, 173), weight=0.38498576409532054, enabled=True)
-	DefaultConnectionGene(key=(-1, 0), weight=0.0, enabled=False)
-	DefaultConnectionGene(key=(-1, 1), weight=0.2450999516119351, enabled=True)
-	DefaultConnectionGene(key=(-1, 170), weight=0.009012995076149832, enabled=False)
-	DefaultConnectionGene(key=(-1, 171), weight=-0.5061403415049711, enabled=False)
-	DefaultConnectionGene(key=(-1, 172), weight=0.40887267594639143, enabled=True)
-	DefaultConnectionGene(key=(-1, 173), weight=0.07628271691124192, enabled=True)
-	DefaultConnectionGene(key=(0, 0), weight=0.6252390635386832, enabled=False)
-	DefaultConnectionGene(key=(1, 1), weight=-0.5279849374214716, enabled=True)
-	DefaultConnectionGene(key=(170, 0), weight=0.0, enabled=False)
-	DefaultConnectionGene(key=(170, 1), weight=-0.13571432251454582, enabled=False)
-	DefaultConnectionGene(key=(170, 170), weight=-0.7737348997053297, enabled=False)
-	DefaultConnectionGene(key=(171, 0), weight=0.7627418379984006, enabled=True)
-	DefaultConnectionGene(key=(171, 1), weight=-0.08111999679082985, enabled=True)
-	DefaultConnectionGene(key=(171, 171), weight=0.6516890687381736, enabled=False)
-	DefaultConnectionGene(key=(172, 0), weight=-0.10178396295059272, enabled=True)
-	DefaultConnectionGene(key=(172, 1), weight=-2.107390714155449, enabled=False)
-	DefaultConnectionGene(key=(172, 172), weight=0.002595761156972465, enabled=True)
-	DefaultConnectionGene(key=(173, 0), weight=0.3340151211044899, enabled=True)
-	DefaultConnectionGene(key=(173, 1), weight=-0.3128641502935027, enabled=True)
-	DefaultConnectionGene(key=(173, 173), weight=0.1459850924959161, enabled=False)
+	DefaultConnectionGene(key=(-2, 0), weight=0.0, enabled=False)
+	DefaultConnectionGene(key=(-2, 1), weight=0.08551273006805332, enabled=True)
+	DefaultConnectionGene(key=(-2, 150), weight=0.04744561697103378, enabled=True)
+	DefaultConnectionGene(key=(-2, 151), weight=0.12146806751740019, enabled=False)
+	DefaultConnectionGene(key=(-2, 152), weight=0.31973969592722745, enabled=True)
+	DefaultConnectionGene(key=(-2, 153), weight=-0.6274496876763381, enabled=False)
+	DefaultConnectionGene(key=(-1, 0), weight=0.6297751048497318, enabled=True)
+	DefaultConnectionGene(key=(-1, 1), weight=-0.48952054847018933, enabled=True)
+	DefaultConnectionGene(key=(-1, 150), weight=0.0, enabled=False)
+	DefaultConnectionGene(key=(-1, 151), weight=-0.41636678143465206, enabled=False)
+	DefaultConnectionGene(key=(-1, 152), weight=0.18438067288992424, enabled=True)
+	DefaultConnectionGene(key=(-1, 153), weight=1.6205691753959606, enabled=True)
+	DefaultConnectionGene(key=(0, 0), weight=0.11767672983188869, enabled=True)
+	DefaultConnectionGene(key=(1, 1), weight=0.4325831891267126, enabled=True)
+	DefaultConnectionGene(key=(150, 0), weight=0.1689187449216885, enabled=False)
+	DefaultConnectionGene(key=(150, 1), weight=-0.06340063576110183, enabled=True)
+	DefaultConnectionGene(key=(150, 150), weight=0.7624204834622788, enabled=True)
+	DefaultConnectionGene(key=(151, 0), weight=-0.8258285417431457, enabled=False)
+	DefaultConnectionGene(key=(151, 1), weight=-0.2021165620062811, enabled=False)
+	DefaultConnectionGene(key=(151, 151), weight=-0.13780676556068083, enabled=False)
+	DefaultConnectionGene(key=(152, 0), weight=-2.2539108720163408, enabled=False)
+	DefaultConnectionGene(key=(152, 1), weight=-0.2052266444025605, enabled=False)
+	DefaultConnectionGene(key=(152, 152), weight=-0.45104239719858785, enabled=True)
+	DefaultConnectionGene(key=(153, 0), weight=0.0, enabled=False)
+	DefaultConnectionGene(key=(153, 1), weight=0.09482460347008306, enabled=True)
+	DefaultConnectionGene(key=(153, 153), weight=0.0, enabled=True)
 
 Output:
-WINNER FITNESS 4.244363
-Game returned 1.000000
+WINNER FITNESS 3.844251
 Game returned 0.000000
 Game returned 1.000000
 Game returned 1.000000
 Game returned 0.000000
 Game returned 0.000000
-Game returned 1.000000
-Game returned 0.000000
 Game returned 0.000000
 Game returned 1.000000
 Game returned 0.000000
-Game returned 1.000000
-Game returned 1.000000
-Game returned 0.000000
-Game returned 0.000000
-Game returned 1.000000
-Game returned 0.000000
-Game returned 0.000000
-Game returned 0.000000
-Game returned 1.000000
 Game returned 1.000000
 Game returned 0.000000
 Game returned 0.000000
@@ -86,27 +74,39 @@ Game returned 0.000000
 Game returned 0.000000
 Game returned 1.000000
 Game returned 0.000000
-Game returned 0.000000
-Game returned 1.000000
-Game returned 0.000000
-Game returned 1.000000
-Game returned 0.000000
-Game returned 0.000000
-Game returned 0.000000
-Game returned 0.000000
-Game returned 0.000000
 Game returned 1.000000
 Game returned 0.000000
 Game returned 0.000000
 Game returned 1.000000
 Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
 Game returned 1.000000
 Game returned 1.000000
 Game returned 1.000000
 Game returned 0.000000
-Game returned 1.000000
 Game returned 0.000000
 Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 0.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 1.000000
+Game returned 0.000000
+Game returned 0.000000
 
-Over 50.000000 games, a winner scored 22.000000.
+Over 50.000000 games, a winner scored 19.000000.
 
