@@ -9,13 +9,13 @@ no_fitness_termination = True
 
 [DefaultGenome]
 # node activation options
-activation_default      = clamped
+activation_default      = sigmoid
 activation_mutate_rate  = 0.0
 activation_options      = OR_gate AND_gate XOR_gate sigmoid
 
 # node aggregation options
-aggregation_default     = copy_aggregation
-aggregation_mutate_rate = 0.5
+aggregation_default     = sum
+aggregation_mutate_rate = 0.0
 aggregation_options     = or_aggregation and_aggregation xor_aggregation copy_aggregation not_aggregation
 
 # node bias options

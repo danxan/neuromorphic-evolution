@@ -113,8 +113,8 @@ def run(config_file):
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
     # Restore from checkpoint
-    print("restore pop")
-    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-10089")
+    #print("restore pop")
+    #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-10089")
 
     # Add a stdout reporter to show progress in the terminal
     p.add_reporter(neat.StdOutReporter(True))
@@ -123,7 +123,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 2
+    num_gen = 10000
     winner = p.run(eval_genomes, num_gen)
 
 
@@ -164,7 +164,7 @@ def run(config_file):
     visualize.plot_species(stats, view=True)
     visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
 
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-10089')
+    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-9999')
     p.run(eval_genomes, 10)
 if __name__ == '__main__':
     # Detemine path to configuration file. This path manipulation is
