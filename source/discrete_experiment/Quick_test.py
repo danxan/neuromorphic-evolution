@@ -1,4 +1,6 @@
 ## SOME FUN TESTING
+import sys
+import os
 import numpy as np
 import scipy as sp
 import time
@@ -116,6 +118,14 @@ if __name__ == "__main__":
     t2=time.time()
     List_ann=[ANN(genome,names[i]) for i in range(nets)]
 
+    # redirect print
+    local_dir = os.path.dirname(__file__)
+    original = sys.stdout
+    log_path = os.path.join(local_dir, 'quicktest.log')
+    sys.stdout = open('quicktest.log', 'w')
+
+
+
     for iteration in range(itses):
       ti=time.time()
       for ann in List_ann:
@@ -162,5 +172,9 @@ if __name__ == "__main__":
 
     print("{} generations with {} ANNs took {}".format(itses,nets,time.time()-t2))
     plt.plot(scoreMean)
+    plt.savefig('scoreMean.png')
     plt.plot(scoreMax)
+    plt.savefig('scoreMax.png')
 
+    # redirect print
+    sys.stdout = original
