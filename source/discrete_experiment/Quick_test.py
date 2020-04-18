@@ -5,7 +5,10 @@ import numpy as np
 import scipy as sp
 import time
 import copy
-import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
+
 
 def org_seed(nodes):
   genome=list(np.random.randint(1,nodes+2,size=[1,nodes]))
