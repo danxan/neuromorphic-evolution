@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import copy
 
 class Game:
     '''
@@ -11,54 +12,36 @@ class Game:
         self.game_cnt = 0
         self.direction = 0
         self.game_width = 16
-        self.game_height = 36
+        self.game_height = 32
 
-        # The height is three times the width, to make the game possible.
-        self.board = np.zeros((self.game_height, self.game_width))
+    def move_paddle(self, board, ann):
+      #Function that controls paddle
+      idx=[i for i in range(len(board[0])) if board[-1,i]==1]
+      sens_in = [0,0]
+      for x in range(len(board)-1):
+        idx2=[i for i in range(len(board[0])) if board[x,i]==1]
+        if idx2:
+          sens_in[0]=len(board)-x if idx[0] in idx2 else 0
+          sens_in[1]=len(board)-x if idx[2] in idx2 else 0
+          break
+      motor_out = ann.activate(sens_in)
+      return motor_out
 
-    #def update_state(self):
-    def _update_paddle(self, motor_out):
-        if motor_out[0] == 0 and motor_out[1] == 0:
-            self.paddle_pos = self.paddle_pos
-        elif motor_out[0] == 1 and motor_out[1] == 1:
-            self.paddle_pos = self.paddle_pos
-        elif motor_out[1] == 1:
-            if self.paddle_pos == self.game_width-1:
-                self.paddle_pos = 0
-            else:
-                self.paddle_pos += 1
-        elif motor_out[0] == 1:
-            if self.paddle_pos == 0:
-                self.paddle_pos = self.game_width-1
-            else:
-                self.paddle_pos -= 1
+    def update(self, board,row):
+        board[row]=board[row]+self.input_func(copy.deepcopy(board[row-1]), self.direction) #move the block
+        board[row-1]=np.zeros(len(board[row-1])) #flush previous line
 
-    def _update_block(self):
-        #self.board[self.block_pos[0]][self.block_pos[1]] = 0 # remove block from old pos
+    def input_func(self, bottom_row,direction):
+      #Function for moving something one step.
+      #b=input array, d=direction (0,1)
+      b=list(bottom_row)
+      if direction==-1: #move left
+        return np.array([b[-1]]+b[0:-1])
+      elif direction==1: #move right
+        return np.array(b[1:]+[b[0]])
+      else:
+        return np.array(b)
 
-        # Update position
-        self.block_pos[0] += 1 # move down
-        if self.block_pos[1] == self.game_width - 1:
-            if self.direction == 1:
-                self.block_pos[1] = 0
-            elif self.direction == -1:
-                self.block_pos[1] = self.game_width - 2
-            elif self.direction == 0:
-                self.block_pos[1] = self.block_pos[1]
-        elif self.block_pos[1] == 0:
-            if self.direction == 1:
-                self.block_pos[1] = 1
-            elif self.direction == -1:
-                self.block_pos[1] = self.game_width -1
-            elif self.direction == 0:
-                self.block_pos[1] = self.block_pos[1]
-        else:
-            self.block_pos[1] += self.direction
-
-        #self.board[self.block_pos[0]][self.block_pos[1]] = 1 # set block in new pos
-
-        self.game_cnt += 1
-        #print(f'(updated game count: {self.game_cnt}')
 
     def _print_game(self):
         vizboard = self.board
@@ -72,162 +55,32 @@ class Game:
         '''
         It takes an animat player to play the game.
         '''
-
         #RESET GAME
-        self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
+        # The height is three times the width, to make the game possible.
+        self.board = np.zeros((self.game_height, self.game_width))
+        # initializes paddle based on w=16 and h=32
+        self.board[31, 7:10] = 1
         # Set block size with a "coin flip"
-        if random.randint(0,1) == 1:
+        p = random.randint(0,1)
+        if p == 1:
             self.block_size = 1
         else:
             self.block_size = 3
-        #self.board[self.block_pos[0]][self.block_pos[1]] = 1
-        self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
+
         self.direction = random.randint(-1,1)
 
-        while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
-            self._update_block()
-            if self.block_size == 1:
-                # The animat views the board with its two sensors. Has a view of one unit to the left or right.
-                if self.block_pos[1] == self.paddle_pos - 1:
-                    #print("sensed block on right sensor")
-                    sens_in = [1,0]
-                elif self.block_pos[1] == self.paddle_pos +1:
-                    sens_in = [0,1]
-                    #print("sensed block on left sensor")
-                else:
-                    sens_in = [0,0]
-                    #print("didnt sense block")
-            if self.block_size == 3:
-                # The animat views the board with its two sensors. Has a view of one unit to the left or right.
-                if self.block_pos[1] == self.paddle_pos-1:
-                    sens_in = [1,1]
-                elif self.block_pos[1] == self.paddle_pos:
-                    sens_in = [0,1]
-                elif self.block_pos[1] == self.paddle_pos+1:
-                    sens_in = [0,1]
-                elif self.block_pos[1]+1 == self.paddle_pos-1:
-                    sens_in = [1,0]
-                elif self.block_pos[1]+1 == self.paddle_pos+1:
-                    sens_in = [0,1]
-                elif self.block_pos[1]+2 == self.paddle_pos-1:
-                    sens_in = [1,0]
-                elif self.block_pos[1]+2 == self.paddle_pos:
-                    sens_in = [1,0]
-                else:
-                    sens_in = [0,0]
+        for h in range(1, self.game_height) : # until the block is at the bottom of the board
+            motor_out = self.move_paddle(self.board, animat)
+            self.board[-1] = self.input_func(self.board[-1], motor_out)
+            self.update(self.board, h)
 
-            output = animat.activate(sens_in)
-            self._update_paddle(output)
-            #self._print_game()
+        u,c = np.unique(self.board[-1],return_counts=True) #check values in bottom line (0=nothing, 1=paddle/block, 2=paddle+block)
 
-        if self.block_pos[0] == self.game_height-1:
-            # catch
-            if self.block_size == 1:
-                if self.paddle_pos == 0:
-                    if self.game_width-1 == self.block_pos[1] or 1 == self.block_pos[1]:
-                        return 1
-                    else:
-                        return 0
-                elif self.paddle_pos == self.game_width-1:
-                    if self.game_width-2 == self.block_pos[1] or 0 == self.block_pos[1]:
-                        return 1
-                    else:
-                        return 0
-                else:
-                    if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
-                        return 1 #self.game_width-3 # point
-                    else:
-                        return 0
-            # avoid
-            elif self.block_size == 3:
-                if self.paddle_pos == 0:
-                    if self.block_pos[1]+2 >= self.game_width-1:
-                        return 0
-                    elif self.block_pos[1] <= 1:
-                        return 0
-                    else:
-                        return 1
-                elif self.paddle_pos == self.game_width-1:
-                    if self.block_pos[1]+2 >= self.game_width-2:
-                        return 0
-                    elif self.block_pos[1] <= 0:
-                        return 0
-                    else:
-                        return 1
-                else:
-                    # is the left side of the block on the right side of the paddle
-                    if self.block_pos[1] > self.paddle_pos + 1:
-                        return 1 # ( (self.game_width-3)/2 )
-                    # is the right side of the block on the left side of the paddle
-                    elif self.block_pos[1] + 2 < self.paddle_pos - 1:
-                        return 1 # ( (self.game_width-3)/2 )
-                    else:
-                        return 0
-
-    def run_print(self, animat):
-        '''
-        It takes an animat player to play the game.
-        '''
-
-        init1 = 0.0
-        init2 = 0.0
-
-        animat.set_node_value(-1, init1)
-        animat.set_node_value(-2, init2)
-
-        times = [0.0]
-        outputs = [[init1, init2]]
-
-        #RESET GAME
-        # print(f"NEW GAME!")
-        self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
-        self.board[self.block_pos[0]][self.block_pos[1]] = 1
-        self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
-
-        while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
-            # print("GAME UPDATE")
-            self._update_block()
-
-            for i in range(10):
-                # The animat views the board with its two sensors. Has a view of one unit to the left or right.
-                if self.block_pos[1] == self.paddle_pos:
-                    sens_in = [0.8,0.8]
-                    # print("sensed block on both sensors")
-                elif self.block_pos[1] - 1 == self.paddle_pos:
-                    # print("sensed block on right sensor")
-                    sens_in = [0.8,0]
-                elif self.block_pos[1] + 1 == self.paddle_pos:
-                    sens_in = [0,0.8]
-                    # print("sensed block on left sensor")
-                else:
-                    sens_in = [0.1,0.1]
-                    # print("didnt sense block")
-
-                #self._print_game()
-                # print(f'PADDLE POS IS {self.paddle_pos}')
-                # print(f'BLOCK POS is {self.block_pos[1]}')
-
-                output = animat.advance(sens_in, 0.002, 0.002)
-                times.append(animat.time_seconds)
-                outputs.append(output)
-                self._update_paddle(outputs[-1])
-                # print(f'MOTOR OUT: {outputs[-1]}')
-                #animat.reset()
-            #self._print_game()
-
-        #print(f'MOTOR OUT: {outputs}')
-
-        if self.block_pos[0] == self.game_height-1:
-            if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
-                return 1 # point
-            else:
-                return 0
-
-if __name__ == '__main__':
-    num_nodes = 8
-    animat = Animat(num_nodes)
-    game_width = 8
-    game = Game(game_width)
-    game.run(animat)
+        if p==0 and 2 in u:
+            return 1
+        elif p==1 and 2 not in u:
+            return 1
+        else:
+            return 0
 
 

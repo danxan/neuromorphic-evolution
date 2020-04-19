@@ -15,7 +15,7 @@ time_const = 0.01
 def eval_genomes(genomes, config):
     num_games = 128
     for genime_id, genome in genomes:
-        genome.fitness = 0
+        genome.fitness = 1
         net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
         game = Game(8)
         for i in range(num_games):
