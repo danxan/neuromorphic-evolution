@@ -135,7 +135,7 @@ if __name__ == "__main__":
         for i in range(its): #trials
           a = np.zeros([h,w]) #make game board
           p = np.random.rand() #rand number
-          a[l,4:5]=1 #make paddle
+          a[l,4:6]=1 #make paddle
 
           if p>0.5: #50/50 if short or long block, i.e. trial type
             a[0,4:5]=1
