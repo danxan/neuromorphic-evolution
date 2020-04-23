@@ -84,10 +84,10 @@ class Game:
         u,c = np.unique(self.board[-1],return_counts=True) #check values in bottom line (0=nothing, 1=paddle/block, 2=paddle+block)
 
         if p==0 and 2 in u:
-            return 0
+            return 1
         elif p==1 and 2 not in u:
-            return 0
+            return 1
         else:
-            return -1
+            return 0
 
 
