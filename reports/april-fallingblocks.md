@@ -57,6 +57,7 @@ The position of the block and the paddle are stored as integers in a vector, and
 The update is based on the direction of the block or the decision of the agent, and the update-functions contain several if-conditions that make up for the contraints of the environment.
 When a unit of the block is vertically aligned with the position of a sensor, the sensor will light up.
 
+####Paddle update-function
 The function for updating the paddle is implemented as follows:
 ```
 def _update_paddle(self, motor_out):
@@ -76,6 +77,7 @@ def _update_paddle(self, motor_out):
             self.paddle_pos -= 1
 ```
 
+####Block update-function
 The function for updating the block is implemented as follows:
 ```
 def _update_block(self):
@@ -86,13 +88,13 @@ def _update_block(self):
         elif self.direction == -1:
             self.block_pos[1] = self.game_width - 2 # move left
         elif self.direction == 0:
-            self.block_pos[1] = self.block_pos[1] # no vertical movement / falling straight down
+            self.block_pos[1] = self.block_pos[1] # no horisontal movement / falling straight down
     elif self.block_pos[1] == 0: # handle edge-case on the left
         if self.direction == 1: # move right
             self.block_pos[1] = 1
         elif self.direction == -1: # wrap-around
             self.block_pos[1] = self.game_width -1
-        elif self.direction == 0:  # no vertical movement / falling straight down
+        elif self.direction == 0:  # no horisontal movement / falling straight down
             self.block_pos[1] = self.block_pos[1]
     else:
         self.block_pos[1] += self.direction
@@ -100,6 +102,103 @@ def _update_block(self):
 
 These update-functions should be efficient and error-free.
 
+####Game Run function
+I divide this explanation into two parts, before and after the block hits the lower edge.
+#####Before the block hits the lower edge.
+The code below is simply a loop that first updates the block.
+Then the position of the block and paddle are compared to create input to the network.
+The network decides an output which determines the update of the paddle.
+
+```
+def run(self, animat):
+    '''
+    Arg animat: The neural network object with 2 input and 2 output, needs a method activate()
+    '''
+    # Reset game
+    self.block_pos = [0, random.randint(0,self.game_width-1)] # position is in height, width (rows, columns)
+    # the block pos is always indicating the leftmost unit of the block
+    # the paddle pos is always indicating the middle unit of the paddle
+    p = random.randint(0,1) # coin flip
+    if p == 1:
+        self.block_size = 1
+    else:
+        self.block_size = 3
+
+    self.paddle_pos = 18 # the paddle's position is always at the lower edge and can be represented with one integer.
+    self.direction = random.randint(-1,1)
+
+    while self.block_pos[0] < self.game_height-1: # until the block as at the bottom of the board
+        self._update_block()
+        # The horisontal position of the block and sensors are compared.
+        if self.block_size == 1: #
+            if self.block_pos[1] == self.paddle_pos - 1: # left sensor lights up
+                sens_in = [1,0]
+            elif self.block_pos[1] == self.paddle_pos + 1: # right sensor lights up
+                sens_in = [0,1]
+            else: # no sensors light up
+                sens_in = [0,0]
+        if self.block_size == 3:
+            if self.block_pos[1] == self.paddle_pos-1: # block of size 3 aligns perfectly with a paddle of size 3.
+                sens_in = [1,1]
+            elif self.block_pos[1] == self.paddle_pos:
+                sens_in = [0,1]
+            elif self.block_pos[1] == self.paddle_pos+1:
+                sens_in = [0,1]
+            elif self.block_pos[1]+1 == self.paddle_pos-1:
+                sens_in = [1,0]
+            elif self.block_pos[1]+1 == self.paddle_pos+1:
+                sens_in = [0,1]
+            elif self.block_pos[1]+2 == self.paddle_pos-1:
+                sens_in = [1,0]
+            elif self.block_pos[1]+2 == self.paddle_pos:
+                sens_in = [1,0]
+            else:
+                sens_in = [0,0]
+
+        output = animat.activate(sens_in)
+        self._update_paddle(output)
+```
+
+#####After the block hits the lower edge.
+At the last timestep there are no updates and the final positions of the block and the paddle are compared.
+```
+if self.block_pos[0] == self.game_height-1:
+    # catch
+    if self.block_size == 1:
+        if self.paddle_pos == 0: # handle left edge-case wraparound
+            if self.game_width-1 == self.block_pos[1] or 1 == self.block_pos[1] or 0 == self.block_pos[1]:
+                return 1
+            else:
+                return 0
+        elif self.paddle_pos == self.game_width-1:
+            if self.game_width-2 == self.block_pos[1] or 0 == self.block_pos[1] or self.game_width-1==self.block_pos[1]:
+                return 1
+            else:
+                return 0
+    # avoid
+    elif self.block_size == 3:
+        if self.paddle_pos == 0:
+            if self.block_pos[1]+2 >= self.game_width-1:
+                return 0
+            elif self.block_pos[1] <= 1:
+                return 0
+            else:
+                return 1 # successfully avoided
+        elif self.paddle_pos == self.game_width-1:
+            if self.block_pos[1] >= self.game_width-3:
+                return 0
+            elif self.block_pos[1] <= 0:
+                return 0
+            else:
+                return 1 # successfully avoided
+        else:
+            # is the left side of the block on the right side of the paddle
+            if self.block_pos[1] > self.paddle_pos + 1:
+                return 1
+            elif self.block_pos[1] + 2 < self.paddle_pos - 1:
+                return 1
+            else:
+                return 0 # successfully avoided
 
 
 
