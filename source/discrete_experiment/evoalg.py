@@ -20,7 +20,6 @@ def eval_genomes(genomes, config):
         game = Game(8)
         for i in range(num_games):
             genome.fitness += game.run(net)
-        genome.fitness = 1.02**(genome.fitness)
 
 # New activation functions
 def OR_gate(x):
@@ -114,7 +113,7 @@ def run(config_file):
     p = neat.Population(config)
     # Restore from checkpoint
     print("restore pop")
-    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-118")
+    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-2895")
 
     # Add a stdout reporter to show progress in the terminal
     p.add_reporter(neat.StdOutReporter(True))
@@ -123,7 +122,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 2000
+    num_gen = 1000
     winner = p.run(eval_genomes, num_gen)
 
 
@@ -164,7 +163,7 @@ def run(config_file):
     visualize.plot_species(stats, view=True)
     visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
 
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-118')
+    #p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-61')
     p.run(eval_genomes, 10)
 if __name__ == '__main__':
     # Detemine path to configuration file. This path manipulation is

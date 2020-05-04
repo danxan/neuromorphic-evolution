@@ -61,7 +61,7 @@ class Game:
         # initializes paddle based on w=16 and h=32
         self.board[-1, 7:10] = 1
         # Set block size with a "coin flip"
-        p = random.randint(0,1)
+        p = 0 #random.randint(0,1)
 
         if p==0: #50/50 if short or long block, i.e. trial type
             # block size 1
