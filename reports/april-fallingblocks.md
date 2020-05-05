@@ -1,44 +1,44 @@
-#Introduction
+# The Falling Blocks Game
 * Two versions of the falling blocks game has been implemented. A solution to the game is found using a simple GA without crossover, but no good solution is found when using NEAT.
 In this report I will describe the game, the solutions and the results.
 
-#The Falling Blocks Game
+# Introduction
 *This section will give a general description of the game, and then each of its elements. After each description, a description of the implementation is given.*
 The game consists of a 2-dimensional environment in which there are spawned a block and a paddle with sensors and motors.
 The neural network agent is supposed to control the paddle, to either catch or avoid the block.
 Whether the block is to be caught or avoided is to be determined based on observation of the block size.
 
 The various tasks of the game:
-###Task 1:
+### Task 1:
 * Catch blocks of size 1
 * Avoid blocks of size 3
-###Task 2:
+### Task 2:
 * Catch blocks of size 1
 * Avoid blocks of size 2
-###Task 3:
+### Task 3:
 * Catch blocks of size 1
 * Catch blocks of size 4
 * Avoid blocks of size 2
 * Avoid blocks of size 3
-###Task 4:
+### Task 4:
 * Catch blocks of size 3
 * Catch blocks of size 6
 * Avoid blocks of size 4
 * Avoid blocks of size 5
 
-##The Environment
+## The Environment
 The environment in which the block and paddle are spawned is 2-dimensional, but the lateral edges are wrapped around.
 This means that the block and paddle can move from the right edge to the left edge with one step to the right(, and the other way around).
 The size of the environment is 36 units high and 16 units wide.
 
-##The Block
+## The Block
 The block is always initialized at a random position on the upper edge of the environment, with a random falling-direction which is either straight down, diagonal down-left or diagonal down-right.
 During the game instance, the falling direction will never change.
 The block will be initialized with different sizes, where each size determines whether the agent should catch or avoid the block.
 
 The block falls with one unit per time-step.
 
-##The Paddle
+## The Paddle
 The paddle is initialized in the middle position at the lower edge of the environment.
 The paddle always has a size of 3 units. Where a sensor is placed at the first and third unit - the edges of the paddle.
 This means the paddle has a "blind spot" on its second unit.
@@ -50,16 +50,16 @@ This implies that each neural network has 2 input nodes and 2 output nodes, whil
 
 The paddle can be moved one unit per timestep.
 
-##Implementation
-###A:
+## Implementation
+### A:
 The height and width of the environment is simply constraints limiting the number of possible positions and the duration of the game.
 The position of the block and the paddle are stored as integers in a vector, and updated at every timestep.
 The update is based on the direction of the block or the decision of the agent, and the update-functions contain several if-conditions that make up for the contraints of the environment.
 When a unit of the block is vertically aligned with the position of a sensor, the sensor will light up.
 
-####Paddle update-function
+#### A: Paddle update-function
 The function for updating the paddle is implemented as follows:
-```
+```python3
 def _update_paddle(self, motor_out):
     if motor_out[0] == 0 and motor_out[1] == 0:
         self.paddle_pos = self.paddle_pos # nothing happens
@@ -77,9 +77,9 @@ def _update_paddle(self, motor_out):
             self.paddle_pos -= 1
 ```
 
-####Block update-function
+#### A: Block update-function
 The function for updating the block is implemented as follows:
-```
+```python3
 def _update_block(self):
     self.block_pos[0] += 1 # move down
     if self.block_pos[1] == self.game_width -1: # handle edge-case on the right
@@ -102,14 +102,14 @@ def _update_block(self):
 
 These update-functions should be efficient and error-free.
 
-####Game Run function
+#### A: Game Run function
 I divide this explanation into two parts, before and after the block hits the lower edge.
-#####Before the block hits the lower edge.
+##### A: Before the block hits the lower edge.
 The code below is simply a loop that first updates the block.
 Then the position of the block and paddle are compared to create input to the network.
 The network decides an output which determines the update of the paddle.
 
-```
+```python3
 def run(self, animat):
     '''
     Arg animat: The neural network object with 2 input and 2 output, needs a method activate()
@@ -159,9 +159,9 @@ def run(self, animat):
         self._update_paddle(output)
 ```
 
-#####After the block hits the lower edge.
+##### A: After the block hits the lower edge.
 At the last timestep there are no updates and the final positions of the block and the paddle are compared.
-```
+```python3
 if self.block_pos[0] == self.game_height-1:
     # catch
     if self.block_size == 1:
@@ -199,8 +199,103 @@ if self.block_pos[0] == self.game_height-1:
                 return 1
             else:
                 return 0 # successfully avoided
+```
 
+#### A: Results
+This implementation had good results when it was more simple, without wrap-around, with only one task. Wrap-around made is especially hard.
 
+### B:
+Here the environment is implemented as a 2-dimensional numpy array of zeros.
+The block and paddle are initialized as ones, which are moved each timestep.
+The rules for movement are still one step per timestep.
+The block is always falling  down, and has a falling direction of left, right or straight.
+Sensors light up if there's another index containing one in the column of the first or third unit of the paddle.
+The agent moves the paddle by activating one of the motors.
+Success is asserted by checking if there are, or are not, indices containing two in the bottom row.
 
+Below are descriptions of the methods in this game-implementation:
+#### B: Move Paddle:
+This method asserts the position of the block related to the position of the paddle, activates the network with an input and returns an output for the motor.
+Its a computationally heavy check, but should be foolproof in terms of logical errors.
+```python3
+def move_paddle(self, board, ann):
+    idx = [i for i in range(len(board[0])) if board[-1,i]==1] # save the indices where the paddle is
+    sens_in = [0,0]
+    for x in range(len(board)-1): # check all rows
+        idx2 = [i for i in range(len(board[0])) if board[x,i]==1] # save indices of block
+        if idx2:
+            # sends the height of the block to the sensor if it aligns
+            sens_in[0] = len(board)-x if idx[0] in idx2 else 0
+            sens_in[1] = len(board)-x if idx[2] in idx2 else 0
+            break
+    motor_out = ann.activate(sens_in)
+    return motor_out
+```
 
+#### B: Update Block:
+This method simply takes the 2-dimensional array and the row number,
+then it moves the previous row to the current row,
+while using input_func() to move the block one step horisontally.
+```python3
+def update(self, board, row):
+    # move the block
+    board[row] = board[row] + self.input_func(copy.deepcopy(board[row-1]),self.direction)
+    # flush previous line
+    board[row-1] = np.zeros(len(board[row-1]))
+```
 
+#### B: Move something one step:
+```python3
+def input_func(self, b, d):
+    """
+    Args:
+        b: input array
+        d: an array of two elements. The combination determines the direction for something to be moved.
+    """
+    b = list(bottom_row)
+    if d[0] > d[1]: # move left
+        return np.array([b[-1] + b[0:-1])
+    elif d[0] < d[1]: # move right
+        return np.array(b[1:]+b[0])
+    else:
+        return np.array(b)
+```
+#### B: Game Run:
+```python3
+def run(self, animat):
+    # RESET GAME
+    self.board = np.zeros((self.game_height, self.game_width))
+    # initializes the paddle based on w=16 and h=36
+    self.board[-1, 7:10] = 1
+    # Set block size with a "coin flip"
+    p = random.randint(0,1)
+
+    if p == 0:
+        # block size 1
+        beg = random.randint(0, self.game_width-2)
+        end = beg+1
+        self.board[0, beg:end] = 1
+    else:
+        # block size 3
+        beg = random.randint(0, self.game_width-4)
+        end = beg+3
+        self.board[0, beg:end] = 1
+
+    # the direction is later based on the bigger value
+    self.direction = [random.randint(-1,1), random.randint(-1,1)]
+
+    for h in range(1, self.game_height): # until the block is at the bottom of the board
+        motor_out = self.move_paddle(self.board, animat)
+        self.board[-1] = self.input_func(self.board[-1], motor_out) # moving paddle
+        self.update(self.board, h)
+
+    # check values in bottom line (0=nothing, 1=paddle/block, 2=paddle+block)
+    u, c = np.unique(self.board[-1], return_counts=True)
+
+    if p == 2 and 2 in u:
+        return 1
+    elif p == 1 and 2 not in u:
+        return 1
+    else:
+        return 0
+```
