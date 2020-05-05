@@ -13,7 +13,7 @@ from game import Game
 time_const = 0.01
 
 def eval_genomes(genomes, config):
-    num_games = 128
+    num_games = 30
     for genime_id, genome in genomes:
         genome.fitness = 0
         net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
@@ -112,8 +112,8 @@ def run(config_file):
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
     # Restore from checkpoint
-    print("restore pop")
-    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-2895")
+    # print("restore pop")
+    # p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-2895")
 
     # Add a stdout reporter to show progress in the terminal
     p.add_reporter(neat.StdOutReporter(True))
@@ -122,7 +122,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 1000
+    num_gen = 100
     winner = p.run(eval_genomes, num_gen)
 
 
@@ -136,7 +136,7 @@ def run(config_file):
     print("WINNER FITNESS %f" %winner.fitness)
     winner.fitness = 0
     i = 0
-    num_games = 50
+    num_games = 30
     while i < num_games:
         ret = game.run(winner_net)
         print("Game returned %f" % ret)
