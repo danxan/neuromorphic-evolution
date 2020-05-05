@@ -39,11 +39,11 @@ class Game:
             b: input array
             d: an array of two elements. The combination determines the direction for something to be moved.
         """
-        b = list(bottom_row)
+        b = list(b)
         if d[0] > d[1]: # move left
-            return np.array([b[-1] + b[0:-1])
+            return np.array([b[-1]] + b[0:-1])
         elif d[0] < d[1]: # move right
-            return np.array(b[1:]+b[0])
+            return np.array(b[1:]+[b[0]])
         else:
             return np.array(b)
 
@@ -82,7 +82,7 @@ class Game:
             self.update(self.board, h)
 
         # check values in bottom line (0=nothing, 1=paddle/block, 2=paddle+block)
-        u, c = np.unique(self.board[-1], return_counts=true)
+        u, c = np.unique(self.board[-1], return_counts=True)
 
         if p == 2 and 2 in u:
             return 1

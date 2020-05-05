@@ -252,22 +252,22 @@ def input_func(self, b, d):
         b: input array
         d: an array of two elements. The combination determines the direction for something to be moved.
     """
-    b = list(bottom_row)
+    b = list(b)
     if d[0] > d[1]: # move left
-        return np.array([b[-1] + b[0:-1])
+        return np.array([b[-1]] + b[0:-1])
     elif d[0] < d[1]: # move right
-        return np.array(b[1:]+b[0])
+        return np.array(b[1:]+[b[0]])
     else:
         return np.array(b)
 ```
 #### B: Game Run:
 ```python3
 def run(self, animat):
-    # RESET GAME
+    # reset game
     self.board = np.zeros((self.game_height, self.game_width))
     # initializes the paddle based on w=16 and h=36
     self.board[-1, 7:10] = 1
-    # Set block size with a "coin flip"
+    # set block size with a "coin flip"
     p = random.randint(0,1)
 
     if p == 0:
