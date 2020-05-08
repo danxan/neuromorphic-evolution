@@ -11,8 +11,8 @@ class Game:
     def __init__(self, game_width):
         self.game_cnt = 0
         self.direction = [0,0]
-        self.game_width = 16
-        self.game_height = 36
+        self.game_width = 8
+        self.game_height = 16
 
     def move_paddle(self, board, ann):
         idx = [i for i in range(len(board[0])) if board[-1,i]==1] # save the indices where the paddle is
@@ -49,16 +49,14 @@ class Game:
 
     def _print_game(self):
         vizboard = self.board
-        vizboard[:][:] = 0
-        vizboard[self.block_pos[0]][self.block_pos[1]] = 1
-        vizboard[self.game_height-1][self.paddle_pos] = 2
         print(vizboard)
 
-    def run(self, animat):
+    def run(self, animat, print=False):
         # reset game
         self.board = np.zeros((self.game_height, self.game_width))
         # initializes the paddle based on w=16 and h=36
-        self.board[-1, 7:10] = 1
+        mid = int(self.game_width/2)
+        self.board[-1, mid-1:mid+2] = 1
         # set block size with a "coin flip"
         p = random.randint(0,1)
 
@@ -77,14 +75,17 @@ class Game:
         self.direction = [random.randint(-1,1), random.randint(-1,1)]
 
         for h in range(1, self.game_height): # until the block is at the bottom of the board
+            self.update(self.board, h)
             motor_out = self.move_paddle(self.board, animat)
             self.board[-1] = self.input_func(self.board[-1], motor_out) # moving paddle
-            self.update(self.board, h)
+            if print == True:
+                self._print_game()
+
 
         # check values in bottom line (0=nothing, 1=paddle/block, 2=paddle+block)
         u, c = np.unique(self.board[-1], return_counts=True)
 
-        if p == 2 and 2 in u:
+        if p == 0 and 2 in u:
             return 1
         elif p == 1 and 2 not in u:
             return 1
