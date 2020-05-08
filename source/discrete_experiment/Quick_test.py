@@ -102,7 +102,7 @@ if __name__ == "__main__":
              "Dag","Frode","Lenin"]
 
     increase=0.9 # if below 1, worse performing nets change more. If above, worse performing nets change less
-    its = 12
+    its = 128
     nets = 12
     itses = 36000
     w,h=10,10
@@ -120,6 +120,7 @@ if __name__ == "__main__":
     lg=len(genome)
     t2=time.time()
     List_ann=[ANN(genome,names[i]) for i in range(nets)]
+    # List_ann=[ANN(genome,i) for i in range(nets)]
 
     # redirect print
     local_dir = os.path.dirname(__file__)
