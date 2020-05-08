@@ -51,7 +51,7 @@ This implies that each neural network has 2 input nodes and 2 output nodes, whil
 The paddle can be moved one unit per timestep.
 
 ## Implementation
-### A:
+### Implementation A:
 The height and width of the environment is simply constraints limiting the number of possible positions and the duration of the game.
 The position of the block and the paddle are stored as integers in a vector, and updated at every timestep.
 The update is based on the direction of the block or the decision of the agent, and the update-functions contain several if-conditions that make up for the contraints of the environment.
@@ -204,7 +204,10 @@ if self.block_pos[0] == self.game_height-1:
 #### A: Results
 This implementation had good results when it was more simple, without wrap-around, with only one task. Wrap-around made is especially hard.
 
-### B:
+### Implementation B:
+*The following implementation of the game is written twice, once for NEAT and once as a single python script.
+The NEAT implementation B1, and the single script will be called implementation B2.*
+
 Here the environment is implemented as a 2-dimensional numpy array of zeros.
 The block and paddle are initialized as ones, which are moved each timestep.
 The rules for movement are still one step per timestep.
@@ -213,8 +216,8 @@ Sensors light up if there's another index containing one in the column of the fi
 The agent moves the paddle by activating one of the motors.
 Success is asserted by checking if there are, or are not, indices containing two in the bottom row.
 
-Below are descriptions of the methods in this game-implementation:
-#### B: Move Paddle:
+*Below are descriptions of the methods in the game-implementation for NEAT:*
+#### B1: Move Paddle:
 This method asserts the position of the block related to the position of the paddle, activates the network with an input and returns an output for the motor.
 Its a computationally heavy check, but should be foolproof in terms of logical errors.
 ```python3
@@ -232,7 +235,7 @@ def move_paddle(self, board, ann):
     return motor_out
 ```
 
-#### B: Update Block:
+#### B1 Update Block:
 This method simply takes the 2-dimensional array and the row number,
 then it moves the previous row to the current row,
 while using input_func() to move the block one step horisontally.
@@ -244,7 +247,7 @@ def update(self, board, row):
     board[row-1] = np.zeros(len(board[row-1]))
 ```
 
-#### B: Move something one step:
+#### B1 Move something one step:
 ```python3
 def input_func(self, b, d):
     """
@@ -260,7 +263,7 @@ def input_func(self, b, d):
     else:
         return np.array(b)
 ```
-#### B: Game Run:
+#### B1 Game Run:
 ```python3
 def run(self, animat):
     # reset game
@@ -299,3 +302,16 @@ def run(self, animat):
     else:
         return 0
 ```
+
+*Below are descriptions of the methods in the game-implementation for NEAT:*
+*This implementation is essentially the same as the one above, but with a simple genetic algorithm written in the script itself.*
+#### B2: Creating the Genome
+
+```python3
+def org_seed(nodes):
+    genome = list(np.random.randint(1, nodes+2, size=[1,nodes]))
+    genome.extend(list(np.random.rand(9,nodes)))
+    return genome
+```
+
+
