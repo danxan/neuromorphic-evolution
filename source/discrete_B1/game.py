@@ -16,6 +16,8 @@ class Game:
         self.game_width = 8
         self.game_height = 16
 
+        self.moves_cnt = 0
+
         # The height is three times the width, to make the game possible.
         self.board = np.zeros((self.game_height, self.game_width))
 
@@ -28,11 +30,13 @@ class Game:
         elif motor_out[0] == 1 and motor_out[1] == 1:
             self.paddle_pos = self.paddle_pos
         elif motor_out[1] == 1:
+            self.moves_cnt += 1
             if self.paddle_pos == self.game_width-1:
                 self.paddle_pos = 0
             else:
                 self.paddle_pos += 1
         elif motor_out[0] == 1:
+            self.moves_cnt += 1
             if self.paddle_pos == 0:
                 self.paddle_pos = self.game_width-1
             else:
@@ -72,7 +76,8 @@ class Game:
         if self.block_size == 3:
             vizboard[self.block_pos[0]][self.block_pos[1]:self.block_pos[1]+3] = 1
         vizboard[self.game_height-1][self.paddle_pos-1:self.paddle_pos+2] = 1
-        self.screen.print(vizboard)
+#        self.screen.print(vizboard)
+        print(vizboard)
 
 
     def run(self, animat, d=False):
@@ -89,7 +94,7 @@ class Game:
         else:
             self.block_size = 3
         #self.board[self.block_pos[0]][self.block_pos[1]] = 1
-        self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
+        self.paddle_pos = random.randint(0, self.game_width-1)# along the x-axis / cols
         self.direction = random.randint(-1,1)
 
         while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
@@ -126,11 +131,15 @@ class Game:
 
             output = animat.activate(sens_in)
             self._update_paddle(output)
+
             if d == True:
                 self._print_game()
 
         # at the last time-step
         if self.block_pos[0] == self.game_height-1:
+            # TESTING "KILLING LASER"
+            if self.moves_cnt == 0:
+                return 0
 
             w = self.game_width
 
@@ -140,12 +149,12 @@ class Game:
             paddle_start = self.paddle_pos-1
             paddle_end = self.paddle_pos+1
 
-            print('block: %d, %d',start, end)
-            print('paddle: %d, %d',paddle_start, paddle_end)
+            #print('block: %d, %d',start, end)
+            #print('paddle: %d, %d',paddle_start, paddle_end)
             for i in range(start, end, 1):
                 for j in range(paddle_start, paddle_end+1, 1):
                     crash = (i%w) == (j%w)
-                    print(i, "==", j , "|", i%w, "==", j%w , "|", crash)
+                    #print(i, "==", j , "|", i%w, "==", j%w , "|", crash)
                     if crash: break
                 if crash: break
 
