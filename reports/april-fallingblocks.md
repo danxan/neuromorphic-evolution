@@ -124,7 +124,7 @@ def run(self, animat):
     else:
         self.block_size = 3
 
-    self.paddle_pos = 18 # the paddle's position is always at the lower edge and can be represented with one integer.
+    self.paddle_pos = int(self.game_width/2) # along the x-axis / cols
     self.direction = random.randint(-1,1)
 
     while self.block_pos[0] < self.game_height-1: # until the block as at the bottom of the board
@@ -175,6 +175,11 @@ if self.block_pos[0] == self.game_height-1:
                 return 1
             else:
                 return 0
+        else:
+            if self.paddle_pos-1 == self.block_pos[1] or self.paddle_pos == self.block_pos[1] or self.paddle_pos+1 == self.block_pos[1]: # paddle size is 3
+                return 1 #self.game_width-3 # point
+            else:
+                return 0
     # avoid
     elif self.block_size == 3:
         if self.paddle_pos == 0:
@@ -194,11 +199,11 @@ if self.block_pos[0] == self.game_height-1:
         else:
             # is the left side of the block on the right side of the paddle
             if self.block_pos[1] > self.paddle_pos + 1:
-                return 1
+                return 0
             elif self.block_pos[1] + 2 < self.paddle_pos - 1:
-                return 1
+                return 0
             else:
-                return 0 # successfully avoided
+                return 1 # successfully avoided
 ```
 
 #### A: Results
@@ -306,7 +311,6 @@ def run(self, animat):
 *Below are descriptions of the methods in the game-implementation for NEAT:*
 *This implementation is essentially the same as the one above, but with a simple genetic algorithm written in the script itself.*
 #### B2: Creating the Genome
-
 ```python3
 def org_seed(nodes):
     genome = list(np.random.randint(1, nodes+2, size=[1,nodes]))
@@ -314,4 +318,35 @@ def org_seed(nodes):
     return genome
 ```
 
+#### B2: Updating the Block
+```python3
+def udate(a, x):
+    a[x] = a[x] + input_func(copy.deepcopy(a[x-1]), np.random.randint(-1,2)) # move the block
+    a[x-1] = y # flush previous line
+```
 
+#### B2: Running the ANN
+```python3
+def output_func(c, ann):
+    idx = [i for i in range(len(c[0])) if c[-1, i] == 1]
+    dist = [0, 0]
+    for x in range(len(c)-1):
+        idx2 = [i for i in range(len(c[0])) if c[x, i] == 1]
+        if idx:
+            dist[0] = len(c)-x if idx[0] in idx2 else 0
+            dist[1] = len(c)-x if idx[1] in idx2 else 0
+            break
+    d = ann.input_output(dist)
+    return d
+```
+
+#### B2: Function for moving something one step
+```python3
+def input_func(b, d):
+    # Function for moving something one step.
+    # b = input array, d = direction
+    if d > 0:
+        return np.array([b[-1]]+b[0:-1])
+    else:
+        return np.array(b)
+```
