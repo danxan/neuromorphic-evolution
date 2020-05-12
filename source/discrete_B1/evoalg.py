@@ -18,13 +18,14 @@ def eval_genomes(genomes, config):
     num_games = 128
     for genome_id, genome in genomes:
         genome.fitness = 0
-        net = neat.nn.FeedForwardNetwork.create(genome, config)
+        net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
         game = Game(8)
         for i in range(num_games):
             ret = game.run(net)
             # print('game return: %d' %ret)
             genome.fitness += ret
             # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
+        genome.fitness = 1.02**(genome.fitness*128)
 
 # New activation functions
 def OR_gate(x):
@@ -127,7 +128,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     # Run for up to 300 generations.
-    num_gen = 10000
+    num_gen = 100
     winner = p.run(eval_genomes, num_gen)
 
 
@@ -137,7 +138,7 @@ def run(config_file):
     # Show output of the most fit genome against training data.
     print('\nOutput:')
     game = Game(8)
-    winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
+    winner_net = neat.nn.recurrent.RecurrentNetwork.create(winner, config)
     print("WINNER FITNESS %f" %winner.fitness)
     winner.fitness = 0
     i = 0
@@ -147,7 +148,8 @@ def run(config_file):
         print("Game returned %f" % ret)
         winner.fitness += ret
         i+=1
-    print('\nOver %f games, a winner scored %f.\n' %(num_games, winner.fitness))
+    winner.fitness = 1.02**(winner.fitness*128)
+    print('\nOver %f games, a winner scored %f, which gave fitness %f.\n' %(num_games, (np.log(winner.fitness)/np.log(1.02))/128, winner.fitness))
 
 
     #print('input nodes %f' % winner_net.input_nodes)
@@ -181,8 +183,8 @@ if __name__ == '__main__':
 
     # redirect print
     original = sys.stdout
-    log_path = os.path.join(local_dir, 'ffnn.log')
-    sys.stdout = open('ffnn.log', 'w')
+    log_path = os.path.join(local_dir, 'recurrentnn.log')
+    sys.stdout = open('recurrentnn.log', 'w')
 
     # run program
     run(config_path)
