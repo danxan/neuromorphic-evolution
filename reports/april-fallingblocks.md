@@ -311,7 +311,7 @@ def run(self, animat):
 
 *Below are descriptions of the methods in the game-implementation for NEAT:*
 *This implementation is essentially the same as the one above, but with a simple genetic algorithm written in the script itself.*
-#### B2: Creating the Genome
+#### B2: Creating the Genomea
 ```python3
 def org_seed(nodes):
     genome = list(np.random.randint(1, nodes+2, size=[1,nodes]))
@@ -351,6 +351,34 @@ def input_func(b, d):
     else:
         return np.array(b)
 ```
-=======
-# Conclusion
+
+# Getting stuck in local optima
 * A problem with Task 1 is that when there's enough games there's statistically 50-50 change to get catch and avoid. For the catch there's a high probability that if you don't try to catch you will fail, and for the avoid there's a high probability that if you don't try you'll still succeed. These probabilities are more or less complimentary, so that over time you will get 50% fitness without trying. Most solution-searches tend to stagnate here...
+
+## Possible solutions
+### Death Laser
+* This technique will kill of solutions that are exploits a mechanic to get a relatively high score even though they're wrong.
+
+### More advanced fitness function
+* The current fitness function is only returning an the output of the numer of successful games run through an exponential function.
+* A better approach might be to more evaluate the in-game performance more closely.
+
+## Tuning the GA to explore more hills (avoid local optima) with implementation B1
+### Hypthesis B1:A
+* A medium population size (200-400) with a low mutate rate will require many generations to find a good hill.
+* An increased mutate rate will find the correct hill, but might also loose it.
+* A high mutate rate with low interspecie compatibility might make the solutions stay on their hills.
+* High stagnation treshold will let NEAT explore the hill for a long time.
+* Low elitism rate will make space for new solutions within a species.
+
+### Hypothesis B1:B
+* A large population size (1000) with a low mutate rate could find a good hill in fewer generations.
+* There is a high probability that each individual will find the same initial solution, and that they need to branch out afterwards, this is given that all genomes start out with no hidden nodes and no connections.
+* It seems that it does not matter if number of generations is high or if population size is high.
+* B1A has a medium pop with many generations, so then this, B1B will have a large pop with few generations.
+* The rest will remain the same: low compatibility, high stagnation treshold, high mutate rate, low elitism rate.
+
+### Hypothesis B1:C
+* This should refect B1A while keeping the mutate rate low and increasing compability instead, assuming compability can be seen as crossover rate.
+* Thus:
+    * A low mutate rate with high compability, high stagnation and low elitism.
