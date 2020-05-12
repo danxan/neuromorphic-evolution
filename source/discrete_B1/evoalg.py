@@ -10,17 +10,21 @@ import visualize
 from neat import activations
 from game import Game
 
+import screen
+
 time_const = 0.01
 
 def eval_genomes(genomes, config):
     num_games = 128
-    for genime_id, genome in genomes:
+    for genome_id, genome in genomes:
         genome.fitness = 0
-        net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
         game = Game(8)
         for i in range(num_games):
-            genome.fitness += game.run(net)
-        genome.fitness = 1.02**(genome.fitness)
+            ret = game.run(net)
+            # print('game return: %d' %ret)
+            genome.fitness += ret
+            # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
 # New activation functions
 def OR_gate(x):
@@ -133,13 +137,13 @@ def run(config_file):
     # Show output of the most fit genome against training data.
     print('\nOutput:')
     game = Game(8)
-    winner_net = neat.nn.recurrent.RecurrentNetwork.create(winner, config)
+    winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
     print("WINNER FITNESS %f" %winner.fitness)
     winner.fitness = 0
     i = 0
-    num_games = 50
+    num_games = 128
     while i < num_games:
-        ret = game.run(winner_net)
+        ret = game.run(winner_net, d=True)
         print("Game returned %f" % ret)
         winner.fitness += ret
         i+=1
@@ -149,7 +153,7 @@ def run(config_file):
     #print('input nodes %f' % winner_net.input_nodes)
     #print('output nodes' % winner_net.output_nodes)
     #Using regex to find the names ofv
-    p = re.compile('(AND|OR|XOR)')
+    #p = re.compile('(AND|OR|XOR)')
     node_names = {-1:'IA', -2:'IB', 0:'OA', 1:'OB'}
     '''
     for node, activation, aggregation, bias, response, links in winner_net.node_evals:
@@ -160,12 +164,12 @@ def run(config_file):
             node_names[node] = str(node_names[node]) + '\n' + str(p.search(str(activation)).group(0))
     '''
 
-    visualize.plot_stats(stats, ylog=False, view=True)
-    visualize.plot_species(stats, view=True)
+    visualize.plot_stats(stats, ylog=False, view=True, filename="avg_fitness-recurrent.svg")
+    visualize.plot_species(stats, view=True, filename="species-recurrent.svg")
     visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
 
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-9999')
-    p.run(eval_genomes, 10)
+    #p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-9999')
+    #p.run(eval_genomes, 10)
 if __name__ == '__main__':
     # Detemine path to configuration file. This path manipulation is
 
