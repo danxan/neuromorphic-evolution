@@ -26,6 +26,7 @@ The various tasks of the game:
 * Avoid blocks of size 4
 * Avoid blocks of size 5
 
+
 ## The Environment
 The environment in which the block and paddle are spawned is 2-dimensional, but the lateral edges are wrapped around.
 This means that the block and paddle can move from the right edge to the left edge with one step to the right(, and the other way around).
@@ -314,4 +315,5 @@ def org_seed(nodes):
     return genome
 ```
 
-
+# Conclusion
+* A problem with Task 1 is that when there's enough games there's statistically 50-50 change to get catch and avoid. For the catch there's a high probability that if you don't try to catch you will fail, and for the avoid there's a high probability that if you don't try you'll still succeed. These probabilities are more or less complimentary, so that over time you will get 50% fitness without trying. Most solution-searches tend to stagnate here...
