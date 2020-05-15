@@ -193,6 +193,13 @@ def input_func(b, d):
     else:
         return np.array(b)
 ```
+
+#### A2 Results
+*The current best result for this script when running a population size of 20 over 36000 generations is:*
+Timestamp: 2020-05-14 10:52:38.030201
+Iteration: 32082 of 36000, ANNs: 20, Score, mean: 91.00, max: 112.00 - took 2.37s
+*(Note that the algorithm is very slow, with over 2 minutes per generation!*
+
 ### Implementation B1
 The height and width of the environment is simply constraints limiting the number of possible positions and the duration of the game.
 The position of the block and the paddle are stored as integers in a vector, and updated at every timestep.
@@ -376,6 +383,14 @@ This implementation had good results when it was more simple, without wrap-aroun
     * A low mutate rate with high compability, high stagnation and low elitism.
 ### Death Laser
 * This technique will kill of solutions that are exploits a mechanic to get a relatively high score even though they're wrong.
+* The example shown here is used in the implementations below:
+```python3
+    # at the last time-step
+    if self.block_pos[0] == self.game_height-1:
+        # TESTING "KILLING LASER"
+        if self.moves_cnt == 0:
+            return 0
+```
 
 ### More advanced fitness function
 * The current fitness function is only returning an the output of the numer of successful games run through an exponential function.
@@ -384,6 +399,7 @@ This implementation had good results when it was more simple, without wrap-aroun
 #### B2: Scoring based on tracking, not wins
 * Score is accumulated on each timestep, and the added value is amplified by the inverted distance.
 * Tracking means that the sensor is vertically aligned with the block, at any timestep.
+* In every iteration, the input to the network is [0,0] if the sensors are not aligned with the block, and amplified by the increasing block height if they align.
 ##### B2: Implementation
 Below is the entire function game.run(), broken down into sections.
 
@@ -487,7 +503,6 @@ Finally the positions are checked for alignment, and this score update is the st
                 crash = (i%w) == (j%w)
                 if crash: break
             if crash: break
-
         if crash:
             if self.block_size == 1:
                 score += self.block_pos[0]
@@ -502,8 +517,26 @@ Finally the positions are checked for alignment, and this score update is the st
 ```
 
 ##### B2: Results
+The experiment was divided into B2, B3, B4, B5 and B6.
+The division was made to test a hypothesis regarding the probability of the block sizes.
+More specifically, if there's an equal ratio between the blocks, a 50% will be guaranteed, and the solutions could stagnate at 50%.
+The experiments below show that the fitness indeed does change with the ratio of the blocks.
+B5 and B6 has exclusively blocks of size 1 and of size 3 respectively, and these results indiciate that avoiding blocks of size 3 might be easier than catching blocks of size 1.
 
+![average fitness of B2](images/avg-fitness-recurrent-B2.svg)
+B2: Tracking, with a 50/50 ratio between blocks of size 1 and of size 3. Max score is 17280.
 
-#### Scoring is based on wins, but network input at each timestep is amplified by the inverted distance
+![average fitness of B3](images/avg-fitness-recurrent-B3.svg)
+B3: Tracking, with a 75/25 ratio between blocks of size 1 and of size 3. Max score is 17280.
+
+![average fitness of B4](images/avg-fitness-recurrent-B4.svg)
+B4: Tracking, with a 25/75 ratio between blocks of size 1 and of size 3. Max score is 17280.
+
+![average fitness of B5](images/avg-fitness-recurrent-B5.svg)
+B5: Tracking, with a 100/0 ratio between blocks of size 1 and of size 3. Max score is 17280.
+
+![average fitness of B6](images/avg-fitness-recurrent-B6.svg)
+B6: Tracking, with a 0/100 ratio between blocks of size 1 and of size 3. Max score is 17280.
+
 
 
