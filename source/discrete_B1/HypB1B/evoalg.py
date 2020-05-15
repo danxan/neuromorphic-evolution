@@ -166,10 +166,15 @@ def run(config_file):
             node_names[node] = str(node_names[node]) + '\n' + str(p.search(str(activation)).group(0))
     '''
 
-    visualize.plot_stats(stats, ylog=False, view=True, filename="avg_fitness-recurrent.svg")
-    visualize.plot_species(stats, view=True, filename="species-recurrent.svg")
-    visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
+    local_dir = os.path.dirname(__file__)
 
+    filename = os.path.join(local_dir, "avg_fitness-recurrent.svg")
+    visualize.plot_stats(stats, ylog=False, view=True, filename=filename)
+
+    filename = os.path.join(local_dir, "species-recurrent.svg")
+    visualize.plot_species(stats, view=True, filename=filename)
+
+    visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
     #p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-9999')
     #p.run(eval_genomes, 10)
 if __name__ == '__main__':
@@ -184,7 +189,7 @@ if __name__ == '__main__':
     # redirect print
     original = sys.stdout
     log_path = os.path.join(local_dir, 'recurrentnn.log')
-    sys.stdout = open('recurrentnn.log', 'w')
+    sys.stdout = open(log_path, 'w')
 
     # run program
     run(config_path)
