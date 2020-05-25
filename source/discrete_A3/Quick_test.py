@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     increase=0.9 # if below 1, worse performing num_nets change more. If above, worse performing num_nets change less
     its = 128
-    itses = 36000
+    itses = 10000
     w,h=10,10
     l = h-1 #find length
     score=0
