@@ -118,7 +118,7 @@ def run(config_file):
     p = neat.Population(config)
     # Restore from checkpoint
     #print("restore pop")
-    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-10089")
+    #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-10089")
 
     # Getting the local directory path
     local_dir = os.path.dirname(__file__)
@@ -129,7 +129,7 @@ def run(config_file):
     p.add_reporter(stats)
 
     filename = os.path.join(local_dir, 'neat-checkpoint-')
-    p.add_reporter(neat.Checkpointer(2000, filename_prefix=filename))
+    p.add_reporter(neat.Checkpointer(generation_interval=3000, time_interval_seconds=4800, filename_prefix=filename))
 
     # GENERATIONS
     num_gen = 60000
