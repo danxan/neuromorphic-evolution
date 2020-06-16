@@ -4,6 +4,7 @@ import pickle
 import sys
 import os
 import time
+from datetime import datetime
 #os.environ["PATH"] += os.pathsep +  "/home/daniesis/neuromorphic2/nmenv/lib/python3.5/site-packages/graphviz"
 import numpy as np
 import re
@@ -34,10 +35,11 @@ def eval_genome(genome, config):
         # Getting the local directory path
         local_dir = os.path.dirname(__file__)
 
-        timestamp = time.ctime().replace(" ","-")
+        timestamp = datetime.now()
+        timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
         genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
-        os.path.makedirs(genomedir)
+        os.makedirs(genomedir)
 
         genomepath = os.path.join(local_dir, "good-genome/gg["+timestamp+']/genome')
         # Save the good genome.
@@ -46,8 +48,7 @@ def eval_genome(genome, config):
 
         configpath = os.path.join(local_dir, "good-genome/gg["+timestamp+']/config')
         # Save the good genome.
-        with open(configpath, 'wb') as f:
-            pickle.dump(config, f)
+        config.save(configpath)
 
     return genome.fitness
 
@@ -158,7 +159,7 @@ def run(config_file):
     p.add_reporter(stats)
 
     filename = os.path.join(local_dir, 'neat-checkpoint-')
-    p.add_reporter(neat.Checkpointer(generation_interval=5000, time_interval_seconds=7200, filename_prefix=filename))
+    p.add_reporter(neat.Checkpointer(generation_interval=5000, time_interval_seconds=14400, filename_prefix=filename))
 
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
     winner = p.run(pe.evaluate)
