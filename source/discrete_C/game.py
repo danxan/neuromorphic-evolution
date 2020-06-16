@@ -24,23 +24,37 @@ class Game:
         self.screen = screen.Screen()
 
     #def update_state(self):
+    '''
+    # Updae paddle for motor_out of type integer
     def _update_paddle(self, motor_out):
-        if motor_out[0] == 0 and motor_out[1] == 0:
-            self.paddle_pos = self.paddle_pos
-        elif motor_out[0] == 1 and motor_out[1] == 1:
-            self.paddle_pos = self.paddle_pos
-        elif motor_out[1] == 1:
+        tol = 0.05
+        if motor_out[0] < 0.5 - tol:
             self.moves_cnt += 1
-            if self.paddle_pos == self.game_width-1:
-                self.paddle_pos = 0
-            else:
-                self.paddle_pos += 1
-        elif motor_out[0] == 1:
+            self.paddle_pos -= 1
+            self.paddle_pos = self.paddle_pos%self.game_width
+        elif motor_out[0] > 0.5 + tol:
             self.moves_cnt += 1
-            if self.paddle_pos == 0:
-                self.paddle_pos = self.game_width-1
-            else:
-                self.paddle_pos -= 1
+            self.paddle_pos += 1
+            self.paddle_pos = self.paddle_pos%self.game_width
+    '''
+
+    def _update_paddle(self, motor_out):
+       if motor_out[0] == 0 and motor_out[1] == 0:
+            self.paddle_pos = self.paddle_pos
+       elif motor_out[0] == 1 and motor_out[1] == 1:
+           self.paddle_pos = self.paddle_pos
+       elif motor_out[1] == 1:
+           self.moves_cnt += 1
+           if self.paddle_pos == self.game_width-1:
+               self.paddle_pos = 0
+           else:
+               self.paddle_pos += 1
+       elif motor_out[0] == 1:
+           self.moves_cnt += 1
+           if self.paddle_pos == 0:
+               self.paddle_pos = self.game_width-1
+           else:
+               self.paddle_pos -= 1
 
     def _update_block(self):
         #self.board[self.block_pos[0]][self.block_pos[1]] = 0 # remove block from old pos
