@@ -13,8 +13,8 @@ class Game:
     def __init__(self, game_width):
         self.game_cnt = 0
         self.direction = 0
-        self.game_width = 16
-        self.game_height = 36
+        self.game_width = 8
+        self.game_height = 16
 
         self.moves_cnt = 0
 

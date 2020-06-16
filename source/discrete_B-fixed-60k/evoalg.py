@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
+import multiprocessing
 import sys
 import os
+import pickle
+import time
 #os.environ["PATH"] += os.pathsep +  "/home/daniesis/neuromorphic2/nmenv/lib/python3.5/site-packages/graphviz"
 import numpy as np
 import re
@@ -14,17 +17,44 @@ import screen
 
 time_const = 0.01
 
-def eval_genomes(genomes, config):
+def eval_genome(genome, config):
     num_games = 128
+    genome.fitness = 0
+    net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
+    game = Game(8)
+    for i in range(num_games):
+        ret = game.run(net)
+        # print('game return: %d' %ret)
+        genome.fitness += ret
+        # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
+
+    # the treshold at which the genome will be saved
+    if genome.fitness > (num_games*2*0.9 - 128):
+
+        # Getting the local directory path
+        local_dir = os.path.dirname(__file__)
+
+        timestamp = time.ctime().replace(" ","-")
+
+        genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+        os.path.makedirs(genomedir)
+
+        genomepath = os.path.join(local_dir, "good-genome/gg["+timestamp+']/genome')
+        # Save the good genome.
+        with open(genomepath, 'wb') as f:
+            pickle.dump(genome, f)
+
+        configpath = os.path.join(local_dir, "good-genome/gg["+timestamp+']/config')
+        # Save the good genome.
+        with open(configpath, 'wb') as f:
+            pickle.dump(config, f)
+
+    return genome.fitness
+
+def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
-        genome.fitness = 0
-        net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
-        game = Game(8)
-        for i in range(num_games):
-            ret = game.run(net)
-            # print('game return: %d' %ret)
-            genome.fitness += ret
-            # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
+        genome.fitness = eval_genome(genome, config)
+
 
 # New activation functions
 def OR_gate(x):
@@ -118,7 +148,7 @@ def run(config_file):
     p = neat.Population(config)
     # Restore from checkpoint
     #print("restore pop")
-    #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-10089")
+    #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-33419")
 
     # Getting the local directory path
     local_dir = os.path.dirname(__file__)
@@ -131,43 +161,12 @@ def run(config_file):
     filename = os.path.join(local_dir, 'neat-checkpoint-')
     p.add_reporter(neat.Checkpointer(generation_interval=3000, time_interval_seconds=4800, filename_prefix=filename))
 
-    # GENERATIONS
-    num_gen = 60000
-    winner = p.run(eval_genomes, num_gen)
+    pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
+    winner = p.run(pe.evaluate)
 
 
     # Display the winning genome
     print('\nBest genome:\n%f', winner)
-
-    # Show output of the most fit genome against training data.
-    print('\nOutput:')
-    game = Game(8)
-    winner_net = neat.nn.recurrent.RecurrentNetwork.create(winner, config)
-    print("WINNER FITNESS %f" %winner.fitness)
-    winner.fitness = 0
-    i = 0
-    num_games = 128
-    while i < num_games:
-        ret = game.run(winner_net, d=True)
-        print("Game returned %f" % ret)
-        winner.fitness += ret
-        i+=1
-    print('\nOver %f games, a winner scored  %f.\n' %(num_games,  winner.fitness))
-
-
-    #print('input nodes %f' % winner_net.input_nodes)
-    #print('output nodes' % winner_net.output_nodes)
-    #Using regex to find the names ofv
-    #p = re.compile('(AND|OR|XOR)')
-    node_names = {-1:'IA', -2:'IB', 0:'OA', 1:'OB'}
-    '''
-    for node, activation, aggregation, bias, response, links in winner_net.node_evals:
-        print(f'NODE NUMBER IS {node}')
-        if node not in node_names.keys():
-            node_names[node] = p.search(str(activation)).group(0)
-        else:
-            node_names[node] = str(node_names[node]) + '\n' + str(p.search(str(activation)).group(0))
-    '''
 
     local_dir = os.path.dirname(__file__)
 
@@ -177,10 +176,6 @@ def run(config_file):
     filename = os.path.join(local_dir, "species-recurrent.svg")
     visualize.plot_species(stats, view=True, filename=filename)
 
-    visualize.draw_net(config, winner, True, node_names=node_names, show_disabled=False, prune_unused=True)
-
-    #p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-9999')
-    #p.run(eval_genomes, 10)
 if __name__ == '__main__':
     # Detemine path to configuration file. This path manipulation is
 
