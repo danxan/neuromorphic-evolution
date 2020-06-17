@@ -12,6 +12,7 @@ import re
 from matplotlib import pyplot as plt
 
 import neat
+from neat.math_util import mean
 import visualize
 from neat import activations
 from game import Game
@@ -32,7 +33,7 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    if genome.fitness > (num_games*2*0.97 - 128):
+    if genome.fitness > (num_games*2*0.94 - 128):
 
         # Getting the local directory path
         local_dir = os.path.dirname(__file__)
@@ -131,6 +132,40 @@ def not_aggregation(x):
     else:
         return 0
 
+
+def compute_all2all_connections(genome, config, direct):
+    """
+    Compute connections for a fully-connected feed-forward genome--each
+    input connected to all hidden nodes
+    (and output nodes if ``direct`` is set or there are no hidden nodes),
+    each hidden node connected to all output nodes.
+    Hidden nodes are connected to all hidden nodes.
+    """
+    hidden = [i for i in genome.nodes if i not in config.output_keys]
+    output = [i for i in genome.nodes if i in config.output_keys]
+    connections = []
+    if hidden:
+        for input_id in config.input_keys:
+            for h in hidden:
+                connections.append((input_id, h))
+        for h in hidden:
+            for h_id in hidden:
+                connections.append((h, h_id))
+            for output_id in output:
+                connections.append((h, output_id))
+    if direct or (not hidden):
+        for input_id in config.input_keys:
+            for output_id in output:
+                connections.append((input_id, output_id))
+
+    return connections
+
+def connect_full_direct(genome, config):
+    """ Create a fully-connected genome, including direct input-output connections. """
+    for input_id, output_id in genome.compute_full_connections(config, True):
+        connection = genome.create_connection(config, input_id, output_id)
+        genome.connections[connection.key] = connection
+
 def run(config_file):
     # Load configuration
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
@@ -149,19 +184,19 @@ def run(config_file):
 
     best = []
     max_fit_epochs = []
-    pop_size = 10
+    mean_fit_epochs = []
+    pop_size = 2
     pop_sizes = []
     while pop_size <= 100:
-        print("POP SIZE")
-        print(pop_size)
-
-        pop_sizes.append(pop_size) # for plotting
-
         # change config
         config.pop_size = pop_size
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
+        for genome in p.population:
+            connect_full_direct(genome, config)
+
+        # for plotting
         # Restore from checkpoint
         #print("restore pop")
         #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-33419")
@@ -182,8 +217,12 @@ def run(config_file):
         pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
         winner = p.run(pe.evaluate, n=num_gen)
 
+        pop_sizes.append(len(p.population))
+
         max_fit_gens = stats.get_fitness_stat(max)
         max_fit_epochs.append(max(max_fit_gens))
+
+        mean_fit_epochs.append(mean(stats.get_fitness_stat(mean)))
 
         best.append( stats.best_genome() )
 
@@ -195,7 +234,10 @@ def run(config_file):
     local_dir = os.path.dirname(__file__)
 
     filename = os.path.join(local_dir, "max-fitness-popsize.svg")
-    plt.plot(pop_sizes, max_fit_epochs)
+    plt.plot(pop_sizes, max_fit_epochs, label='Max fitness')
+    plt.plot(pop_sizes, mean_fit_epochs, label='Mean fitness')
+    plt.xlabel('Population size')
+    plt.ylabel('Fitness')
     plt.savefig(filename)
     plt.show()
 
