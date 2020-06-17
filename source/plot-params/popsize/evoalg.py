@@ -193,8 +193,9 @@ def run(config_file):
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
-        for genome in p.population:
-            connect_full_direct(genome, config)
+
+        for genome_id, genome in list(p.population.items()):
+            connect_full_direct(genome, config.genome_config)
 
         # for plotting
         # Restore from checkpoint
