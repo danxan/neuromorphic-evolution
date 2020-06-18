@@ -194,6 +194,7 @@ def run(config_file):
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
 
+        # creating a all2all connection
         for genome_id, genome in list(p.population.items()):
             connect_full_direct(genome, config.genome_config)
 
