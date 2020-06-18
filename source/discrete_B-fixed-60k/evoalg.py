@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+# Discrete B fixed 60k
+
 import multiprocessing
 import sys
 import os
@@ -30,7 +33,7 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    if genome.fitness > (num_games*2*0.97 - 128):
+    if genome.fitness > (num_games*2*0.80 - 128):
 
         # Getting the local directory path
         local_dir = os.path.dirname(__file__)
@@ -41,12 +44,12 @@ def eval_genome(genome, config):
         genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
         os.makedirs(genomedir)
 
-        genomepath = os.path.join(local_dir, "good-genome/gg["+timestamp+']/genome')
+        genomepath = os.path.join(genomedir, 'genome')
         # Save the good genome.
         with open(genomepath, 'wb') as f:
             pickle.dump(genome, f)
 
-        configpath = os.path.join(local_dir, "good-genome/gg["+timestamp+']/config')
+        configpath = os.path.join(genomedir, 'config')
 
         # Save the good genome's config.
         config.save(configpath)
@@ -129,6 +132,39 @@ def not_aggregation(x):
     else:
         return 0
 
+def compute_all2all_connections(genome, config, direct):
+    """
+    Compute connections for a fully-connected feed-forward genome--each
+    input connected to all hidden nodes
+    (and output nodes if ``direct`` is set or there are no hidden nodes),
+    each hidden node connected to all output nodes.
+    Hidden nodes are connected to all hidden nodes.
+    """
+    hidden = [i for i in genome.nodes if i not in config.output_keys]
+    output = [i for i in genome.nodes if i in config.output_keys]
+    connections = []
+    if hidden:
+        for input_id in config.input_keys:
+            for h in hidden:
+                connections.append((input_id, h))
+        for h in hidden:
+            for h_id in hidden:
+                connections.append((h, h_id))
+            for output_id in output:
+                connections.append((h, output_id))
+    if direct or (not hidden):
+        for input_id in config.input_keys:
+            for output_id in output:
+                connections.append((input_id, output_id))
+
+    return connections
+
+def connect_full_direct(genome, config):
+    """ Create a fully-connected genome, including direct input-output connections. """
+    for input_id, output_id in genome.compute_full_connections(config, True):
+        connection = genome.create_connection(config, input_id, output_id)
+        genome.connections[connection.key] = connection
+
 def run(config_file):
     # Load configuration
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
@@ -148,6 +184,9 @@ def run(config_file):
     #print(f'init pop')
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
+    for genome_id, genome in list(p.population.items()):
+        connect_full_direct(genome, config.genome_config)
+
     # Restore from checkpoint
     #print("restore pop")
     #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-33419")
@@ -161,11 +200,10 @@ def run(config_file):
     p.add_reporter(stats)
 
     filename = os.path.join(local_dir, 'neat-checkpoint-')
-    checkpointer = neat.Checkpointer(generation_interval=3000, time_interval_seconds=14400, filename_prefix=filename)
-    p.add_reporter(checkpointer)
+    p.add_reporter(neat.Checkpointer(generation_interval=60000, time_interval_seconds=43200, filename_prefix=filename))
 
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = p.run(pe.evaluate)
+    winner = p.run(pe.evaluate, n=1000 )
 
 
     # Display the winning genome
