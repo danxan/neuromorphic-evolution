@@ -42,8 +42,8 @@ def eval_genome(genome, config):
         timestamp = datetime.now()
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
-        os.makedirs(genomedir)
+        genome_dir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+        os.makedirs(genome_dir)
 
         genomepath = os.path.join(genome_dir,'genome')
         # Save the good genome.
@@ -228,13 +228,7 @@ def run(config_file):
         best.append( stats.best_genome() )
         print("POP_SIZE variabe: {}, config population size {}".format(ps, len(p.population)))
 
-        filename = os.path.join(local_dir, "max-fitness-popsize.svg")
-        plt.plot(pop_size, max_fit_epochs, label='Max fitness')
-        plt.plot(pop_size, mean_fit_epochs, label='Mean fitness')
-        plt.xlabel('Population size')
-        plt.ylabel('Fitness')
-        plt.savefig(filename)
-    # Display the winning genome
+     # Display the winning genome
     #print('\nBest genomes:\n%f', best)
 
     local_dir = os.path.dirname(__file__)

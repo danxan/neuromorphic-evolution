@@ -41,8 +41,8 @@ def eval_genome(genome, config):
         timestamp = datetime.now()
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
-        os.makedirs(genomedir)
+        genome_dir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+        os.makedirs(genome_dir)
 
         genomepath = os.path.join(genome_dir,'genome')
         # Save the good genome.
@@ -192,7 +192,7 @@ def run(config_file):
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
 
-        p.reproduction.reproduction_config = st
+        p.reproduction.reproduction_config.survival_treshold = st
 
         # creating a all2all connection
         for genome_id, genome in list(p.population.items()):
@@ -225,13 +225,6 @@ def run(config_file):
         mean_fit_epochs.append(mean(stats.get_fitness_stat(mean)))
 
         best.append( stats.best_genome() )
-
-        filename = os.path.join(local_dir, "max-fitness-survival.svg")
-        plt.plot(survival_treshold, max_fit_epochs, label='Max fitness')
-        plt.plot(survival_treshold, mean_fit_epochs, label='Mean fitness')
-        plt.xlabel('Population size')
-        plt.ylabel('Fitness')
-        plt.savefig(filename)
 
     # Display the winning genome
     #print('\nBest genomes:\n%f', best)

@@ -43,8 +43,8 @@ def eval_genome(genome, config):
         timestamp = datetime.now()
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
-        os.makedirs(genomedir)
+        genome_dir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+        os.makedirs(genome_dir)
 
         genomepath = os.path.join(genome_dir,'genome')
         # Save the good genome.
@@ -231,14 +231,6 @@ def run(config_file):
         mean_fit_epochs.append(mean(stats.get_fitness_stat(mean)))
 
         best.append( stats.best_genome() )
-
-        filename = os.path.join(local_dir, "max-fitness-elitism.svg")
-        plt.plot(elitism, max_fit_epochs, label='Max fitness')
-        plt.plot(elitism, mean_fit_epochs, label='Mean fitness')
-        plt.xlabel('Population size')
-        plt.ylabel('Fitness')
-        plt.savefig(filename)
-
 
     # Display the winning genome
     #print('\nBest genomes:\n%f', best)

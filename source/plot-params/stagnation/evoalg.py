@@ -41,8 +41,8 @@ def eval_genome(genome, config):
         timestamp = datetime.now()
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
-        os.makedirs(genomedir)
+        genome_dir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+        os.makedirs(genome_dir)
 
         genomepath = os.path.join(genome_dir,'genome')
         # Save the good genome.
@@ -196,7 +196,7 @@ def run(config_file):
         stagnation = sr*p.config.pop_size
         print("STAGNATION: {}".format(stagnation))
         stagnation_list.append(stagnation)
-        p.reproduction.stagnation = stagnation
+        p.config.stagnation_config.max_stagnation = stagnation
 
         # creating a all2all connection
         for genome_id, genome in list(p.population.items()):
@@ -229,13 +229,6 @@ def run(config_file):
         mean_fit_epochs.append(mean(stats.get_fitness_stat(mean)))
 
         best.append( stats.best_genome() )
-
-        filename = os.path.join(local_dir, "max-fitness-stagnation.svg")
-        plt.plot(stagnation_list, max_fit_epochs, label='Max fitness')
-        plt.plot(stagnation_list, mean_fit_epochs, label='Mean fitness')
-        plt.xlabel('Population size')
-        plt.ylabel('Fitness')
-        plt.savefig(filename)
 
     # Display the winning genome
     #print('\nBest genomes:\n%f', best)
