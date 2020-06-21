@@ -1,3 +1,4 @@
+# plot params popsize
 #!/usr/bin/env python3
 import multiprocessing
 import sys
@@ -33,7 +34,7 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    if genome.fitness > (num_games*2*0.94 - 128):
+    if genome.fitness > (num_games*2*0.90 - 128):
 
         # Getting the local directory path
         local_dir = os.path.dirname(__file__)
@@ -185,14 +186,15 @@ def run(config_file):
     best = []
     max_fit_epochs = []
     mean_fit_epochs = []
-    pop_size = 2
-    pop_sizes = []
-    while pop_size <= 300:
-        # change config
-        config.pop_size = pop_size
+
+    pop_size = [i+i*i for i in range(1,15)]
+    for ps in pop_size:
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
+
+        # change elitism
+        p.config.pop_size = ps
 
         for genome_id, genome in list(p.population.items()):
             connect_full_direct(genome, config.genome_config)
@@ -214,11 +216,9 @@ def run(config_file):
         checkpointer = neat.Checkpointer(generation_interval=60000, time_interval_seconds=100000, filename_prefix=filename)
         p.add_reporter(checkpointer)
 
-        num_gen = 1000
+        num_gen = 10000
         pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
         winner = p.run(pe.evaluate, n=num_gen)
-
-        pop_sizes.append(len(p.population))
 
         max_fit_gens = stats.get_fitness_stat(max)
         max_fit_epochs.append(max(max_fit_gens))
@@ -226,17 +226,22 @@ def run(config_file):
         mean_fit_epochs.append(mean(stats.get_fitness_stat(mean)))
 
         best.append( stats.best_genome() )
+        print("POP_SIZE variabe: {}, config population size {}".format(ps, len(p.population)))
 
-        pop_size *= 2
-
+        filename = os.path.join(local_dir, "max-fitness-popsize.svg")
+        plt.plot(pop_size, max_fit_epochs, label='Max fitness')
+        plt.plot(pop_size, mean_fit_epochs, label='Mean fitness')
+        plt.xlabel('Population size')
+        plt.ylabel('Fitness')
+        plt.savefig(filename)
     # Display the winning genome
     #print('\nBest genomes:\n%f', best)
 
     local_dir = os.path.dirname(__file__)
 
     filename = os.path.join(local_dir, "max-fitness-popsize.svg")
-    plt.plot(pop_sizes, max_fit_epochs, label='Max fitness')
-    plt.plot(pop_sizes, mean_fit_epochs, label='Mean fitness')
+    plt.plot(pop_size, max_fit_epochs, label='Max fitness')
+    plt.plot(pop_size, mean_fit_epochs, label='Mean fitness')
     plt.xlabel('Population size')
     plt.ylabel('Fitness')
     plt.savefig(filename)

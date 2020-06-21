@@ -1,3 +1,5 @@
+# plot params elitism
+
 #!/usr/bin/env python3
 import multiprocessing
 import sys
@@ -185,14 +187,18 @@ def run(config_file):
     best = []
     max_fit_epochs = []
     mean_fit_epochs = []
-    pop_size = 2
-    pop_sizes = []
-    while pop_size <= 300:
+
+    # d is the step, and determines the resolution of the experiment
+    d = 0.1
+    elitism_rate = np.arange(0, 1, d)
+
+    for er in elitism_rate:
         # change config
-        config.pop_size = pop_size
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
+
+        p.reproduction.reproduction_config.elitism = int(p.config.pop_size*er)
 
         # creating a all2all connection
         for genome_id, genome in list(p.population.items()):
@@ -215,11 +221,9 @@ def run(config_file):
         checkpointer = neat.Checkpointer(generation_interval=60000, time_interval_seconds=100000, filename_prefix=filename)
         p.add_reporter(checkpointer)
 
-        num_gen = 1000
+        num_gen = 10000
         pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
         winner = p.run(pe.evaluate, n=num_gen)
-
-        pop_sizes.append(len(p.population))
 
         max_fit_gens = stats.get_fitness_stat(max)
         max_fit_epochs.append(max(max_fit_gens))
@@ -228,16 +232,22 @@ def run(config_file):
 
         best.append( stats.best_genome() )
 
-        pop_size *= 2
+        filename = os.path.join(local_dir, "max-fitness-elitism.svg")
+        plt.plot(elitism, max_fit_epochs, label='Max fitness')
+        plt.plot(elitism, mean_fit_epochs, label='Mean fitness')
+        plt.xlabel('Population size')
+        plt.ylabel('Fitness')
+        plt.savefig(filename)
+
 
     # Display the winning genome
     #print('\nBest genomes:\n%f', best)
 
     local_dir = os.path.dirname(__file__)
 
-    filename = os.path.join(local_dir, "max-fitness-popsize.svg")
-    plt.plot(pop_sizes, max_fit_epochs, label='Max fitness')
-    plt.plot(pop_sizes, mean_fit_epochs, label='Mean fitness')
+    filename = os.path.join(local_dir, "max-fitness-elitism.svg")
+    plt.plot(elitism_rate, max_fit_epochs, label='Max fitness')
+    plt.plot(elitism_rate, mean_fit_epochs, label='Mean fitness')
     plt.xlabel('Population size')
     plt.ylabel('Fitness')
     plt.savefig(filename)

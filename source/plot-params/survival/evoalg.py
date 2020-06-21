@@ -33,7 +33,7 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    if genome.fitness > (num_games*2*0.94 - 128):
+    if genome.fitness > (num_games*2*0.90 - 128):
 
         # Getting the local directory path
         local_dir = os.path.dirname(__file__)
@@ -186,17 +186,13 @@ def run(config_file):
     max_fit_epochs = []
     mean_fit_epochs = []
 
-    stagnation_rate = [0.01*i+0.01*i*i for i in range(1,10)]
-    stagnation_list = []
-    for sr in stagnation_rate:
+    survival_treshold = [0.01*i+0.01*i*i for i in range(0,10)]
+    for st in survival_treshold:
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
 
-        stagnation = sr*p.config.pop_size
-        print("STAGNATION: {}".format(stagnation))
-        stagnation_list.append(stagnation)
-        p.reproduction.stagnation = stagnation
+        p.reproduction.reproduction_config = st
 
         # creating a all2all connection
         for genome_id, genome in list(p.population.items()):
@@ -230,9 +226,9 @@ def run(config_file):
 
         best.append( stats.best_genome() )
 
-        filename = os.path.join(local_dir, "max-fitness-stagnation.svg")
-        plt.plot(stagnation_list, max_fit_epochs, label='Max fitness')
-        plt.plot(stagnation_list, mean_fit_epochs, label='Mean fitness')
+        filename = os.path.join(local_dir, "max-fitness-survival.svg")
+        plt.plot(survival_treshold, max_fit_epochs, label='Max fitness')
+        plt.plot(survival_treshold, mean_fit_epochs, label='Mean fitness')
         plt.xlabel('Population size')
         plt.ylabel('Fitness')
         plt.savefig(filename)
@@ -242,9 +238,9 @@ def run(config_file):
 
     local_dir = os.path.dirname(__file__)
 
-    filename = os.path.join(local_dir, "max-fitness-stagnation.svg")
-    plt.plot(stagnation_list, max_fit_epochs, label='Max fitness')
-    plt.plot(stagnation_list, mean_fit_epochs, label='Mean fitness')
+    filename = os.path.join(local_dir, "max-fitness-survival.svg")
+    plt.plot(survival_treshold, max_fit_epochs, label='Max fitness')
+    plt.plot(survival_treshold, mean_fit_epochs, label='Mean fitness')
     plt.xlabel('Population size')
     plt.ylabel('Fitness')
     plt.savefig(filename)
