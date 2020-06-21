@@ -237,7 +237,7 @@ def run(config_file):
     plt.plot(pop_size, max_fit_epochs, label='Max fitness')
     plt.plot(pop_size, mean_fit_epochs, label='Mean fitness')
     plt.xlabel('Population size')
-    plt.ylabel('Fitness')
+    plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
     plt.savefig(filename)
     #plt.show()
 

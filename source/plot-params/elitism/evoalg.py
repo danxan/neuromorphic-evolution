@@ -191,14 +191,15 @@ def run(config_file):
     # d is the step, and determines the resolution of the experiment
     d = 0.1
     elitism_rate = np.arange(0, 1, d)
+    elitism = []
 
     for er in elitism_rate:
         # change config
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
-
-        p.reproduction.reproduction_config.elitism = int(p.config.pop_size*er)
+        elitism.append(int(p.config.pop_size*er))
+        p.reproduction.reproduction_config.elitism = elitism[-1]
 
         # creating a all2all connection
         for genome_id, genome in list(p.population.items()):
@@ -238,10 +239,10 @@ def run(config_file):
     local_dir = os.path.dirname(__file__)
 
     filename = os.path.join(local_dir, "max-fitness-elitism.svg")
-    plt.plot(elitism_rate, max_fit_epochs, label='Max fitness')
-    plt.plot(elitism_rate, mean_fit_epochs, label='Mean fitness')
-    plt.xlabel('Population size')
-    plt.ylabel('Fitness')
+    plt.plot(elitism, max_fit_epochs, label='Max fitness')
+    plt.plot(elitism, mean_fit_epochs, label='Mean fitness')
+    plt.xlabel('# Elites per species per generation.')
+    plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
     plt.savefig(filename)
     #plt.show()
 

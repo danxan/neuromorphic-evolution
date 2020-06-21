@@ -187,16 +187,15 @@ def run(config_file):
     mean_fit_epochs = []
 
     stagnation_rate = [0.01*i+0.01*i*i for i in range(1,10)]
-    stagnation_list = []
+    stagnation = []
     for sr in stagnation_rate:
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
 
-        stagnation = sr*p.config.pop_size
-        print("STAGNATION: {}".format(stagnation))
-        stagnation_list.append(stagnation)
-        p.config.stagnation_config.max_stagnation = stagnation
+        stagnation.append(sr*p.config.pop_size)
+        print("STAGNATION: {}".format(stagnation[-1]))
+        p.config.stagnation_config.max_stagnation = stagnation[-1]
 
         # creating a all2all connection
         for genome_id, genome in list(p.population.items()):
@@ -236,10 +235,10 @@ def run(config_file):
     local_dir = os.path.dirname(__file__)
 
     filename = os.path.join(local_dir, "max-fitness-stagnation.svg")
-    plt.plot(stagnation_list, max_fit_epochs, label='Max fitness')
-    plt.plot(stagnation_list, mean_fit_epochs, label='Mean fitness')
-    plt.xlabel('Population size')
-    plt.ylabel('Fitness')
+    plt.plot(stagnation, max_fit_epochs, label='Max fitness')
+    plt.plot(stagnation, mean_fit_epochs, label='Mean fitness')
+    plt.xlabel('Number of generations that a genome can survive without improving.')
+    plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
     plt.savefig(filename)
     #plt.show()
 

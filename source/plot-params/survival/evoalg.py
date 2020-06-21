@@ -234,8 +234,8 @@ def run(config_file):
     filename = os.path.join(local_dir, "max-fitness-survival.svg")
     plt.plot(survival_treshold, max_fit_epochs, label='Max fitness')
     plt.plot(survival_treshold, mean_fit_epochs, label='Mean fitness')
-    plt.xlabel('Population size')
-    plt.ylabel('Fitness')
+    plt.xlabel('Survival Treshold (% of population) ')
+    plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
     plt.savefig(filename)
     #plt.show()
 
