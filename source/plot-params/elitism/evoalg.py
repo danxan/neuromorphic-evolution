@@ -35,7 +35,8 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    if genome.fitness > (num_games*2*0.94 - 128):
+    save_tresh = 0.9
+    if genome.fitness > (num_games*2*save_tresh - 128):
 
         # Getting the local directory path
         local_dir = os.path.dirname(__file__)
@@ -241,8 +242,9 @@ def run(config_file):
     filename = os.path.join(local_dir, "max-fitness-elitism.svg")
     plt.plot(elitism, max_fit_epochs, label='Max fitness')
     plt.plot(elitism, mean_fit_epochs, label='Mean fitness')
-    plt.xlabel('# Elites per species per generation.')
+    plt.xlabel('# Elites per species per generation. Total population: 150')
     plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
+    plt.legend()
     plt.savefig(filename)
     #plt.show()
 

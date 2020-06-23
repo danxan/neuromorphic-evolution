@@ -33,7 +33,8 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    if genome.fitness > (num_games*2*0.90 - 128):
+    save_tresh = 0.9
+    if genome.fitness > (num_games*2*save_tresh - 128):
 
         # Getting the local directory path
         local_dir = os.path.dirname(__file__)
@@ -215,7 +216,7 @@ def run(config_file):
         checkpointer = neat.Checkpointer(generation_interval=60000, time_interval_seconds=100000, filename_prefix=filename)
         p.add_reporter(checkpointer)
 
-        num_gen = 1000
+        num_gen = 10000
         pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
         winner = p.run(pe.evaluate, n=num_gen)
 
@@ -236,6 +237,7 @@ def run(config_file):
     plt.plot(survival_treshold, mean_fit_epochs, label='Mean fitness')
     plt.xlabel('Survival Treshold (% of population) ')
     plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
+    plt.legend()
     plt.savefig(filename)
     #plt.show()
 
