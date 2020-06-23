@@ -44,7 +44,7 @@ def eval_genome(genome, config):
         timestamp = datetime.now()
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genome_dir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+        genome_dir = os.path.join(local_dir, 'good-genome/time['+timestamp+']-fitness['+genome.fitness+'/')
         os.makedirs(genome_dir)
 
         genomepath = os.path.join(genome_dir,'genome')
@@ -218,7 +218,7 @@ def run(config_file):
         checkpointer = neat.Checkpointer(generation_interval=60000, time_interval_seconds=100000, filename_prefix=filename)
         p.add_reporter(checkpointer)
 
-        num_gen = 10000
+        num_gen = 1000
         pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
         winner = p.run(pe.evaluate, n=num_gen)
 

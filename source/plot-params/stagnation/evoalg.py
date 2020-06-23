@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+
+# plot params stagnation
 import multiprocessing
 import sys
 import os
@@ -42,7 +44,7 @@ def eval_genome(genome, config):
         timestamp = datetime.now()
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genome_dir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+        genome_dir = os.path.join(local_dir, 'good-genome/time['+timestamp+']-fitness['+genome.fitness+'/')
         os.makedirs(genome_dir)
 
         genomepath = os.path.join(genome_dir,'genome')
@@ -187,6 +189,7 @@ def run(config_file):
     max_fit_epochs = []
     mean_fit_epochs = []
 
+    num_gen = 1000
     stagnation_rate = [0.01*i+0.01*i*i for i in range(1,10)]
     stagnation = []
     for sr in stagnation_rate:
@@ -194,7 +197,7 @@ def run(config_file):
         # Create the population, which is the top-level object for a NEAT run.
         p = neat.Population(config)
 
-        stagnation.append(sr*p.config.pop_size)
+        stagnation.append(sr*num_gen)
         print("STAGNATION: {}".format(stagnation[-1]))
         p.config.stagnation_config.max_stagnation = stagnation[-1]
 
@@ -219,7 +222,6 @@ def run(config_file):
         checkpointer = neat.Checkpointer(generation_interval=60000, time_interval_seconds=100000, filename_prefix=filename)
         p.add_reporter(checkpointer)
 
-        num_gen = 10000
         pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
         winner = p.run(pe.evaluate, n=num_gen)
 
@@ -238,8 +240,8 @@ def run(config_file):
     filename = os.path.join(local_dir, "max-fitness-stagnation.svg")
     plt.plot(stagnation, max_fit_epochs, label='Max fitness')
     plt.plot(stagnation, mean_fit_epochs, label='Mean fitness')
-    plt.xlabel('Number of generations that a genome can survive without improving.')
-    plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
+    plt.xlabel('No. of generations without improvement that a genome is kept alive.')
+    plt.ylabel('Fitness: No. of successfull trials out of a total of 128 games')
     plt.legend()
     plt.savefig(filename)
     #plt.show()
