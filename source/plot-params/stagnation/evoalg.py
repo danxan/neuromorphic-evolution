@@ -44,7 +44,7 @@ def eval_genome(genome, config):
         timestamp = datetime.now()
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genome_dir = os.path.join(local_dir, 'good-genome/time['+timestamp+']-fitness['+genome.fitness+'/')
+        genome_dir = os.path.join(local_dir, 'good-genome/time['+timestamp+']-fitness['+str(genome.fitness)+'/')
         os.makedirs(genome_dir)
 
         genomepath = os.path.join(genome_dir,'genome')
@@ -189,7 +189,7 @@ def run(config_file):
     max_fit_epochs = []
     mean_fit_epochs = []
 
-    num_gen = 1000
+    num_gen = 60000
     stagnation_rate = [0.01*i+0.01*i*i for i in range(1,10)]
     stagnation = []
     for sr in stagnation_rate:
