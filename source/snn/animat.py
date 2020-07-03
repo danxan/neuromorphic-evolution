@@ -5,33 +5,28 @@ import pyNN.nest as pynn
 from neurons import *
 
 class Animat(object):
-    def __init__(self, input_n=1, hidden_n=3, output_n=1):
+    def __init__(self, input_n=2, hidden_n=4, output_n=2):
         inp = Input_neurons(num_pop=input_n)
         hid = Fully_connected_neurons(num_pop=hidden_n)
         out = Output_neurons(num_pop=output_n)
 
-        connector = pynn.AllToAllConnector()
-
-        input_connections = { 'exc' : [],
-                              'inh' : [] } 
-
-        output_connections = { 'exc' : [],
-                               'inh' : [] } 
+        self.input_connections = []
+        self.output_connections = []
 
         for i in inp.populations:
             for h in hid.populations:
-                input_connections['exc'].append(pynn.Projection(i, h, connector, receptor_type='excitatory'))
-                input_connections['inh'].append(pynn.Projection(i, h, connector, receptor_type='inhibitory'))
+                c = nest.Connect(i, h, "all_to_all")
+                self.input_connections.append(c)
 
         for h in hid.populations:
             for o in out.populations:
-                output_connections['exc'].append(pynn.Projection(h, o, connector, receptor_type='excitatory'))
-                output_connections['inh'].append(pynn.Projection(h, o, connector, receptor_type='inhibitory'))
+                c = nest.Connect(h, o, "all_to_all")
+                self.output_connections.append(c)
 
 
 if __name__ == '__main__':
-    pynn.setup()
-    animat = Animat()
+    for i in range(1000):
+        animat = Animat()
 
     # hid = Fully_connected_neurons(num_pop=1)
     # animat2 = Animat()
