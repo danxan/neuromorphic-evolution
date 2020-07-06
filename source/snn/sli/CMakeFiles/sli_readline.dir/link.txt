@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC  -std=c++11 -O2 -Wall -fopenmp -fdiagnostics-color=auto  -shared -Wl,-soname,libsli_readline.so -o libsli_readline.so CMakeFiles/sli_readline.dir/gnureadline.cc.o  -Wl,-rpath,/home/dansan/neuromorphic/source/snn/sli:/home/dansan/neuromorphic/source/snn/libnestutil: libsli.so ../libnestutil/libnestutil.so -lreadline -lncurses -lgsl -lgslcblas 

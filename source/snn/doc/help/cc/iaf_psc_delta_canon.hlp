@@ -1,7 +1,0 @@
-Name: iaf_psc_delta_canon - Former leaky integrate-and-fire neuron model.
-
-See: iaf_psc_delta_p
-
-Source:
-
-/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/precise/iaf_psc_delta_ps.h

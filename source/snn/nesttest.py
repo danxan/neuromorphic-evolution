@@ -16,7 +16,7 @@ for i in range(2):
 
 voltmeter = nest.Create('voltmeter')
 
-for i in range(2):
+for i in range:%:(2):
     nest.Connect(sg[i], inp[i], 'all_to_all', syn_spec={'weight':1e3})
 
 h = []
