@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: clopath_synapse</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: clopath_synapse</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">clopath_synapse - Synapse type for voltage-based STDP after Clopath.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">clopath_synapse is a connector to create Clopath synapses as defined  <br/> in [1]. In contrast to usual STDP, the change of the synaptic weight does  <br/> not only depend on the pre- and postsynaptic spike timing but also on the  <br/> postsynaptic membrane potential.  <br/>   <br/> Clopath synapses require archiving of continuous quantities. Therefore Clopath  <br/> synapses can only be connected to neuron models that are capable of doing this  <br/> archiving. So far, compatible models are aeif_psc_delta_clopath and  <br/> hh_psc_alpha_clopath. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> =======  ======  ==========================================================  <br/> tau_x    ms      Time constant of the trace of the presynaptic spike train  <br/> Wmax     real    Maximum allowed weight  <br/> Wmin     real    Minimum allowed weight  <br/> =======  ======  ==========================================================  <br/> \endverbatim  <br/>   <br/> Other parameters like the amplitudes for long-term potentiation (LTP) and  <br/> depression (LTD) are stored in in the neuron models that are compatible with the  <br/> Clopath synapse. </div>
+<div class="doc_header">Transmits: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> .. [1] Clopath et al. (2010). Connectivity reflects coding:  <br/> a model of voltage-based STDP with homeostasis.  <br/> Nature Neuroscience 13:3, 344--352. DOI: https://doi.org/10.1038/nn.2479  <br/> .. [2] Clopath and Gerstner (2010). Voltage and spike timing interact  <br/> in STDP – a unified model. Frontiers in Synaptic Neuroscience 2:25.  <br/> DOI: https://doi.org/10.3389/fnsyn.2010.00025  <br/> .. [3] Voltage-based STDP synapse (Clopath et al. 2010) on ModelDB  <br/> https://senselab.med.yale.edu/ModelDB/showmodel.cshtml?model=144566  <br/> \endverbatim </div>
+<div class="doc_header">Authors: </div>
+<div class="doc_paragraph">Jonas Stapmanns, David Dahmen, Jan Hahne </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/stdp_synapse.html">stdp_synapse</a></li>
+    <li><a href="../cc/aeif_psc_delta_clopath.html">aeif_psc_delta_clopath</a></li>
+    <li><a href="../cc/hh_psc_alpha_clopath.html">hh_psc_alpha_clopath</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/clopath_connection.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

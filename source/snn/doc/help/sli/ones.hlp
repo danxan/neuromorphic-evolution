@@ -1,0 +1,21 @@
+Name: ones - Return a DoubleVector filled with ones.
+Synapsis: n ones -&gt; [. 1. 1. ... .]
+
+Author:
+
+Marc-Oliver Gewaltig
+
+
+FirstVersion:
+
+Dec. 4 2012
+
+
+SeeAlso:
+
+zeros
+arange
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

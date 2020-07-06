@@ -1,0 +1,10 @@
+Name: trieinfo - print the function variants of a type-trie.
+
+Synopsis:
+
+ostream trieinfo -&gt; -
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/typeinit.sli

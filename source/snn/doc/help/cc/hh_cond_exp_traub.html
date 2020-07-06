@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: hh_cond_exp_traub</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: hh_cond_exp_traub</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">hh_cond_exp_traub - Hodgkin-Huxley model for Brette et al (2007) review</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">hh_cond_exp_traub is an implementation of a modified Hodgkin-Huxley model  <br/>   <br/> This model was specifically developed for a major review of simulators [1],  <br/> based on a model of hippocampal pyramidal cells by Traub and Miles[2].  <br/> The key differences between the current model and the model in [2] are:  <br/>   <br/> &bull; This model is a point neuron, not a compartmental model.  <br/> &bull; This model includes only I_Na and I_K, with simpler I_K dynamics than  <br/> in [2], so it has only three instead of eight gating variables;  <br/> in particular, all Ca dynamics have been removed.  <br/> &bull; Incoming spikes induce an instantaneous conductance change followed by  <br/> exponential decay instead of activation over time.  <br/>   <br/> This model is primarily provided as reference implementation for hh_coba  <br/> example of the Brette et al (2007) review. Default parameter values are chosen  <br/> to match those used with NEST 1.9.10 when preparing data for [1]. Code for all  <br/> simulators covered is available from ModelDB [3].  <br/>   <br/> Note:  <br/> In this model, a spike is emitted if  <br/>   <br/> @f[ V_m &gt;= V_T + 30 mV and V_m has fallen during the current time step @f]  <br/>   <br/> To avoid that this leads to multiple spikes during the falling flank of a  <br/> spike, it is essential to chose a sufficiently long refractory period.  <br/> Traub and Miles used \f$ t_ref = 3 ms \f$ [2, p 118], while we used  <br/> \f$ t_ref = 2 ms \f$ in [2]. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">The following parameters can be set in the status dictionary.  <br/>   <br/> \verbatim embed:rst  <br/> =========== ======  =========================================================  <br/> V_m          mV     Membrane potential  <br/> V_T          mV     Voltage offset that controls dynamics. For default  <br/> parameters, V_T = -63mV results in a threshold around  <br/> -50mV.  <br/> E_L          mV     Leak reversal potential  <br/> C_m          pF     Capacity of the membrane  <br/> g_L          nS     Leak conductance  <br/> tau_syn_ex   ms     Time constant of the excitatory synaptic exponential  <br/> function  <br/> tau_syn_in   ms     Time constant of the inhibitory synaptic exponential  <br/> function  <br/> t_ref        ms     Duration of refractory period (see Note).  <br/> E_ex         mV     Excitatory synaptic reversal potential  <br/> E_in         mV     Inhibitory synaptic reversal potential  <br/> E_Na         mV     Sodium reversal potential  <br/> g_Na         nS     Sodium peak conductance  <br/> E_K          mV     Potassium reversal potential  <br/> g_K          nS     Potassium peak conductance  <br/> I_e          pA     External input current  <br/> =========== ======  =========================================================  <br/> \endverbatim </div>
+<div class="doc_header">Receives: </div>
+<div class="doc_paragraph">SpikeEvent, CurrentEvent, DataLoggingRequest </div>
+<div class="doc_header">Sends: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> .. [1] Brette R et al. (2007). Simulation of networks of spiking neurons: A  <br/> review of tools and strategies. Journal of Computational Neuroscience  <br/> 23:349-98. DOI: https://doi.org/10.1007/s10827-007-0038-6  <br/> .. [2] Traub RD and Miles R (1991). Neuronal networks of the hippocampus.  <br/> Cambridge University Press, Cambridge UK.  <br/> .. [3] http://modeldb.yale.edu/83319  <br/> \envverbatim </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Schrader </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/hh_psc_alpha.html">hh_psc_alpha</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/hh_cond_exp_traub.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

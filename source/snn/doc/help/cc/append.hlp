@@ -1,0 +1,28 @@
+Name: append - Append an object to a string or array.
+
+Synopsis:
+
+(string) int append -&gt; string 
+[array] obj append  -&gt; array
+
+
+Examples:
+
+(hello) 44 append -&gt; (hello,)  (44 is ASCII value for ,) 
+[1 2 3] (hello) append -&gt; [1 2 3 (hello)] 
+[1 2 3] 44 append -&gt; [1 2 3 44]
+
+
+Author:
+
+docu by Sirko Straube, Marc-Oliver Gewaltig
+
+
+SeeAlso:
+
+prepend
+insert
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidata.cc

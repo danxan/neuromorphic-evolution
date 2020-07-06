@@ -1,0 +1,44 @@
+Name: DataConnect_i_D_s - Connect many neurons from data.
+
+Synopsis:
+
+gid dict model  DataConnect_i_D_s -&gt; - 
+gid    - GID of the source neuron 
+dict   - dictionary with connection parameters 
+model  - the synapse model as string or literal
+
+
+Description:
+
+Connects the source neuron to targets according to the data in dict, using 
+the synapse 'model'. 
+Dict is a parameter dictionary that must contain the connection parameters as 
+DoubleVectors. 
+The parameter dictionary must contain at least the fields: 
+/target &lt;. gid_1 ... gid_n .&gt; 
+/weight &lt;. w1_1 ... w_n .&gt; 
+/delay  &lt;. d_1 ... d_n .&gt; 
+All of these must be DoubleVectors of the same length. 
+Depending on the synapse model, the dictionary may contain other keys, again 
+as DoubleVectors of the same length as /target. 
+DataConnect will iterate all vectors and create the connections according to 
+the parameters given.
+
+
+Author:
+
+Marc-Oliver Gewaltig
+
+
+FirstVersion:
+
+August 2011
+
+
+SeeAlso:
+
+Connect
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/nestmodule.cpp

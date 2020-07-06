@@ -1,0 +1,38 @@
+Name: rdevdict - dictionary with random deviate generator type
+
+Description:
+
+rdevdict contains the random deviate generators available. 
+Deviate generators can be used to draw random numbers with, 
+e.g., normal or binomial distributions. 
+&lt;ul&gt; 
+&lt;li&gt; To see which RDVs are available in rdevdict use: 
+rdevdict info 
+&lt;li&gt; To extract one specific rdv from the dictionary use: 
+rdevdict /rdvname get 
+&lt;li&gt; To make all deviates permanetly available type 
+&lt;pre&gt; 
+rdevdict begin 
+&lt;/pre&gt; 
+&lt;/ul&gt;
+
+
+Remarks:
+
+See librandom/random_numbers.cpp for implementation.
+
+
+References:
+
+GNU Scientific Library, http://www.gnu.org/software/gsl
+
+
+SeeAlso:
+
+CreateRDV
+Random
+RandomArray
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/librandom.sli

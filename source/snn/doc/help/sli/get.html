@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: get</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: get</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">get - retrieve element indexed Object of a container</div>
+<div class="doc_header">Synopsis: </div>
+<div class="doc_paragraph">array/proc/litproc/string int --&gt; obj  <br/> dict literal                  --&gt; obj  <br/> dict array                    --&gt; obj </div>
+<div class="doc_header">Examples: </div>
+<div class="doc_paragraph">(Hello World!)      0                  get --&gt; 184  <br/> [(Hello) 1 /a 12]   1                  get --&gt; 1  <br/> {(Hello World!) ==} 1                  get --&gt; ==  <br/> systemdict          /get               get --&gt; +get+  <br/> [/a /b /c /d] [0 2]                    get -&gt; [/a /c]  <br/> &lt;&lt; /a 3 /c 2 &gt;&gt;  /c                    get --&gt; 2  <br/> &lt;&lt; /a 3 /c 2 &gt;&gt;  [/c]                  get --&gt; 2  <br/> &lt;&lt; /a 3 /c 2 &gt;&gt;  [[/c]]                get --&gt; [2]  <br/> &lt;&lt; /a 3 /c 2 &gt;&gt;  [[/c /a /a]]          get --&gt; [2 3 3]  <br/> &lt;&lt; /a &lt;&lt; /b 3 /c 2 &gt;&gt; &gt;&gt;  [/a /c]      get --&gt; 2  <br/> &lt;&lt; /a &lt;&lt; /b 3 /c 2 &gt;&gt; &gt;&gt;  [/a [/b /c]] get --&gt; [3 2] </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">get will call the various typedependend get operators, returning  <br/> the specified object. There are many possibilities for the  <br/> combination of types, see examples.  <br/>   <br/> Alternatives: Functions get_a for arrays, get_p for procedures,  <br/> get_lp for literal procedures, get_s for strings, get_d and get_d_a  <br/> for dictionaries (all undocumented)  <br/> -&gt; behavior and synopsis are the same. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">array/proc/litproc/string/dict is the container,  <br/> int/literal is the index for the lookup.  <br/> The object returned depends on the container contents.  <br/>   <br/> For arrays it is also possible to use an array of indices.  <br/> In this case, individual indices may appear more than once.  <br/>   <br/> For dictionaries the interpretation of the array argument is identical to  <br/> the one of the index array of operator Part. This is useful to extract  <br/> data from nested dictionaries and arranging them for further numerical  <br/> processing. The array elements are sequentially applied from left to right  <br/> to the object resulting from the get operation of the previous element.  <br/> If an array element is itself an array, its elements are simultaneously  <br/> applied to the argument and the result is an array of the same size.  <br/>   <br/> Applications of SLI like the NEST kernel may impliment variants  <br/> of get to provide a homogeneous interface to further containers. </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Gewaltig, Diesmann </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">?? </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/get_d.html">get_d</a></li>
+    <li><a href="../sli/put.html">put</a></li>
+    <li><a href="../sli/Part.html">Part</a></li>
+    <li><a href="../cc/getinterval.html">getinterval</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/sli-init.sli</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

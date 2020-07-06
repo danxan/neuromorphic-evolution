@@ -1,0 +1,10 @@
+Name: SaveModels - Retrieve the state of all models.
+
+Description:
+
+
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/nest-init.sli

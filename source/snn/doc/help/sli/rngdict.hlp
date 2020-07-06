@@ -1,0 +1,35 @@
+Name: rngdict - dictionary with random generator type
+
+Description:
+
+rngdict contains the random generator types available. 
+They can be used as arguments to CreateRNG. 
+&lt;ul&gt; 
+&lt;li&gt; To see which RNGs are available in rngdict use: 
+rngdict info 
+&lt;li&gt; To extract one specific rng from the dictionary use: 
+rngdict /rngname get 
+&lt;li&gt; To make all models permanetly available type 
+&lt;pre&gt; 
+rngdict begin 
+&lt;/pre&gt; 
+&lt;/ul&gt;
+
+
+Remarks:
+
+See librandom/random_numbers.cpp for implementation.
+
+
+References:
+
+GNU Scientific Library, http://www.gnu.org/software/gsl
+
+
+SeeAlso:
+
+CreateRNG
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/librandom.sli

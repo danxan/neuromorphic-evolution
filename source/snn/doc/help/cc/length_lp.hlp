@@ -1,0 +1,31 @@
+Name: length_lp - counts elements of a literal procedure
+
+Synopsis:
+
+literal procedure length_lp -&gt; int
+
+
+Examples:
+
+{ {1 2 3} } 0 get length_lp -&gt; 3
+
+
+Remarks:
+
+0 get is needed to make sure that procedure is still 
+literal procedure, when it is evaluated. Use length if you are 
+not sure of the data type.
+
+
+Author:
+
+docu by Sirko Straube
+
+
+SeeAlso:
+
+length
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidata.cc

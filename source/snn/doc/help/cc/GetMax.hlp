@@ -1,0 +1,24 @@
+Name: GetMax - get maximal element
+
+Synopsis:
+
+array GetMax -&gt; int
+
+
+Description:
+
+returns the maximum value in an array of ints.
+
+
+Remarks:
+
+works only for integer arrays.
+
+
+SeeAlso:
+
+GetMin
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/sliarray.cc

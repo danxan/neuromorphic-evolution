@@ -1,0 +1,39 @@
+Name: GetGlobalNodesInfo - Return GIDs, VPs and Parent GIDs of all nodes of
+a subnet that fulfill the conditions given in the dictionary, or of
+all nodes if no dictionary given.
+
+Synopsis:
+
+gid [&lt;&lt;dict&gt;&gt;]  GetGlobalNodesInfo -&gt; [&lt;&lt;...&gt;&gt; &lt;&lt;...&gt;&gt; ...]
+
+
+Description:
+
+This function recursively traverses a subnet and returns the gid, vp 
+and parent gid of all child nodes in increasing order of gid. If a dictionary 
+is provided, only those nodes which fulfill the given criteria are 
+returned. 
+The returned Nodes include the intermediate subnets.
+
+
+Parameters:
+
+gid      - id of a subnet 
+&lt;&lt;dict&gt;&gt; - Dictionary of selection properties 
+Returns: 
+[&lt;&lt;...&gt;&gt;...]  - Array with dicts containing /global_id, /vp, /parent
+
+
+Author:
+
+Marc-Oliver Gewaltig, Abigail Morrison
+
+
+SeeAlso:
+
+GetGlobalNodes
+GetLocalNodes
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/nest-init.sli

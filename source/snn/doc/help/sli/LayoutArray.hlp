@@ -1,0 +1,46 @@
+Name: LayoutArray - build a multidimensional array
+
+Synopsis:
+
+[d1 d2 ...] val LayoutArray -&gt; [...]
+
+
+Examples:
+
+[5] 1 LayoutArray -&gt; [1 1 1 1 1] 
+[2 3] 1.0 LayoutArray -&gt; [ [1.0 1.0 1.0] [1.0 1.0 1.0]]
+
+
+Description:
+
+LayoutArray generates a multi-dimensional array which is 
+initialised to val.
+
+
+Parameters:
+
+[d1 d2 ...] - Array with dimensions. 
+val         - initialisation value for array entries
+
+
+Author:
+
+Marc-oliver Gewaltig
+
+
+FirstVersion:
+
+20.6.02
+
+
+SeeAlso:
+
+ArrayShape
+Range
+Table
+Dimensions
+array
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

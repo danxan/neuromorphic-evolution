@@ -1,0 +1,27 @@
+Name: MatrixQ - Test whether a nested array i a matrix
+
+Synopsis:
+
+[array] MatrixQ -&gt; true | false
+
+
+Examples:
+
+[1 2 3] MatrixQ -&gt; true 
+[[1 2] [3 4]] MatrixQ -&gt; true 
+[[1] [2 3]] MatrixQ -&gt;False
+
+
+Bugs:
+
+This version fails on the third example
+
+
+Author:
+
+Marc-Oliver Gewaltig
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

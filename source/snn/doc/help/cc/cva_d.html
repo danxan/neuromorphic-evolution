@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: cva_d</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: cva_d</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">cva_d - Convert dictionary to array</div>
+<div class="doc_header">Synopsis: </div>
+<div class="doc_paragraph">dict cva_d -&gt; array </div>
+<div class="doc_header">Examples: </div>
+<div class="doc_paragraph">&lt;&lt; /a 1 /b 2&gt;&gt; cva_d -&gt; [/a 1 /b 2] </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">cda converts a given dictionary to an array.  <br/> The contents of the dictionay is mapped to the array in a  <br/> form which is similar to the construction of an array, namely  <br/> &lt;&lt; key1 val1 ... keyn valn&gt;&gt; cva_d -&gt; [key1 val1 ... keyn valn] </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">dict is a dictionary which may be empty </div>
+<div class="doc_header">Diagnostics: </div>
+<div class="doc_paragraph">no errors are issued. </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">The name follows the convention of PostScript and stands for  <br/> ConVert to Array.  <br/>   <br/> Implementation:  <br/>   <br/> Class TokenMap provides an iterator which allows to step through the  <br/> elements stored in the TokenMap. Member function begin() returns an  <br/> iterator which points to the "first" element in the TokenMap and end()  <br/> to the "last" element. operator ++ moves the iterator from one element  <br/> to the next. Note, the iteration process itself does not define any  <br/> order of the elements, e.g. in terms of the comparison operators. The  <br/> only guaranteed function is that during the iteration from begin() to  <br/> end() all elements in the TokenMap are accessed.  <br/> Operator * applied to the iterator returns a pair. Member first of the  <br/> pair is the key and member second is the value of the element the iterator  <br/> points to.  <br/> See  <br/> @Book{Musser96,  <br/> author =       "Musser, David R. and Saini, Atul",  <br/> title =        "STL Tutorial and Reference Guide: {C++} Programming  <br/> with the Standard Template Library",  <br/> publisher =    "Addison Wesley",  <br/> year =         1996,  <br/> isbn =         "0-201-63398-1",  <br/> pages =        432,  <br/> address =      {Reading Massachusetts},  <br/> note =         "(hardcover)"  <br/> }  <br/> for a discussion of the definition and use of iterators in combination  <br/> with containers. </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Marc-oliver Gewaltig </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/keys.html">keys</a></li>
+    <li><a href="../cc/values.html">values</a></li>
+    <li><a href="../cc/&lt;&lt;&gt;&gt;.html">&lt;&lt;&gt;&gt;</a></li>
+    <li><a href="../sli/cva.html">cva</a></li>
+    <li><a href="../sli/cvdict.html">cvdict</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidict.cc</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

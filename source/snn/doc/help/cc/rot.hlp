@@ -1,0 +1,16 @@
+Name: rot - Rotate entire stack content
+
+Synopsis:
+
+obj_n ... obj1 obj0 rot -&gt; obj0 obj_n ... obj1
+
+
+SeeAlso:
+
+roll
+rollu
+rolld
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slistack.cc

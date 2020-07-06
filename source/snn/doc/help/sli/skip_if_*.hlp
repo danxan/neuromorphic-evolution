@@ -1,0 +1,21 @@
+Name: skip_if_* - End script and report it as skipped
+
+Synopsis:
+
+skip_if_* -&gt; -
+
+
+Description:
+
+These functions will terminate NEST/SLI with a return code signaling that the 
+script was skipped. It should be used to leave test/example scripts that have 
+special prerequisites.
+
+
+SeeAlso:
+
+exit_test_gracefully
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/sli-init.sli

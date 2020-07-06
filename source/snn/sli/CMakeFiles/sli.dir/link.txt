@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -O2 -Wall -fopenmp -fdiagnostics-color=auto  -rdynamic CMakeFiles/sli.dir/puresli.cc.o  -o sli  -Wl,-rpath,/home/dansan/neuromorphic/source/snn/sli:/home/dansan/neuromorphic/source/snn/libnestutil: libsli_readline.so -lgsl -lgslcblas libsli.so ../libnestutil/libnestutil.so -lgsl -lgslcblas -lreadline -lncurses 

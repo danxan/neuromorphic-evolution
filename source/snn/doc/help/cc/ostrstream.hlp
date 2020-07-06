@@ -1,0 +1,21 @@
+Name: ostrstream - Create a string-stream object.
+
+Synopsis:
+
+ostrstream -&gt; ostreamhandle true 
+-&gt; false
+
+
+Description:
+
+Obsolete, use osstream instead.
+
+
+SeeAlso:
+
+str
+osstream
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/sli_io.cc

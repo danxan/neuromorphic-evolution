@@ -1,0 +1,29 @@
+Name: testsuite::test_set_start_stop_origin - li script to test if start, stop and origin are set properly
+
+Synopsis:
+
+(test_set_start_stop_origin) run
+
+
+Description:
+
+For all models having start, stop, and origin parameters, this test checks that 
+&bull; default values can be set successfully 
+&bull; nodes are created with correct default values 
+&bull; nodes can be created with correct default values from the command line 
+&bull; parameters can be set via SetStatus
+
+
+Author:
+
+Hans E Plesser
+
+
+FirstVersion:
+
+December 2011
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/unittests/test_set_start_stop_origin.sli

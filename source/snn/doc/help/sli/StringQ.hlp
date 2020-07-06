@@ -1,0 +1,13 @@
+Name: StringQ - returns true if top object is a string
+Synposis: string StringQ -&gt; true
+any    StringQ -&gt; false
+
+SeeAlso:
+
+NumberQ
+LiteralQ
+ArrayQ
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

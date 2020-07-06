@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: tsodyks_synapse</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: tsodyks_synapse</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">tsodyks_synapse - Synapse type with short term plasticity.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">This synapse model implements synaptic short-term depression and short-term  <br/> facilitation according to [1]. In particular it solves Eqs (3) and (4) from  <br/> this paper in an exact manner.  <br/>   <br/> Synaptic depression is motivated by depletion of vesicles in the readily  <br/> releasable pool of synaptic vesicles (variable x in equation (3)). Synaptic  <br/> facilitation comes about by a presynaptic increase of release probability,  <br/> which is modeled by variable U in Eq (4).  <br/> The original interpretation of variable y is the amount of glutamate  <br/> concentration in the synaptic cleft. In [1] this variable is taken to be  <br/> directly proportional to the synaptic current caused in the postsynaptic  <br/> neuron (with the synaptic weight w as a proportionality constant). In order  <br/> to reproduce the results of [1] and to use this model of synaptic plasticity  <br/> in its original sense, the user therefore has to ensure the following  <br/> conditions:  <br/>   <br/> 1.) The postsynaptic neuron must be of type iaf_psc_exp or iaf_tum_2000,  <br/> because these neuron models have a postsynaptic current which decays  <br/> exponentially.  <br/>   <br/> 2.) The time constant of each tsodyks_synapse targeting a particular neuron  <br/> must be chosen equal to that neuron's synaptic time constant. In particular  <br/> that means that all synapses targeting a particular neuron have the same  <br/> parameter tau_psc.  <br/>   <br/> However, there are no technical restrictions using this model of synaptic  <br/> plasticity also in conjunction with neuron models that have a different  <br/> dynamics for their synaptic current or conductance. The effective synaptic  <br/> weight, which will be transmitted to the postsynaptic neuron upon occurrence  <br/> of a spike at time t is u(t)*x(t)*w, where u(t) and x(t) are defined in  <br/> Eq (3) and (4), w is the synaptic weight specified upon connection.  <br/> The interpretation is as follows: The quantity u(t)*x(t) is the release  <br/> probability times the amount of releasable synaptic vesicles at time t of the  <br/> presynaptic neuron's spike, so this equals the amount of transmitter expelled  <br/> into the synaptic cleft.  <br/> The amount of transmitter than relaxes back to 0 with time constant tau_psc  <br/> of the synapse's variable y. Since the dynamics of y(t) is linear, the  <br/> postsynaptic neuron can reconstruct from the amplitude of the synaptic  <br/> impulse u(t)*x(t)*w the full shape of y(t). The postsynaptic neuron, however,  <br/> might choose to have a synaptic current that is not necessarily identical to  <br/> the concentration of transmitter y(t) in the synaptic cleft. It may realize  <br/> an arbitrary postsynaptic effect depending on y(t). </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">The following parameters can be set in the status dictionary:  <br/>   <br/> \verbatim embed:rst  <br/> ========  ======  ======================================================  <br/> U        real    Maximum probability of release [0,1]  <br/> tau_psc  ms      Time constant of synaptic current  <br/> tau_fac  ms      Time constant for facilitation  <br/> tau_rec  ms      Time constant for depression  <br/> x        real    Initial fraction of synaptic vesicles in the readily  <br/> releasable pool [0,1]  <br/> y        real    Initial fraction of synaptic vesicles in the synaptic  <br/> cleft [0,1]  <br/> ========  ======  ======================================================  <br/> \endverbatim </div>
+<div class="doc_header">Transmits: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> .. [1] Tsodyks M, Uziel A, Markram H (2000). Synchrony generation in recurrent  <br/> networks with frequency-dependent synapses. Journal of Neuroscience,  <br/> 20 RC50. URL: http://infoscience.epfl.ch/record/183402  <br/> \endverbatim </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Moritz Helias </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">March 2006 </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/synapsedict.html">synapsedict</a></li>
+    <li><a href="../cc/stdp_synapse.html">stdp_synapse</a></li>
+    <li><a href="../cc/static_synapse.html">static_synapse</a></li>
+    <li><a href="../cc/iaf_psc_exp.html">iaf_psc_exp</a></li>
+    <li><a href="../cc/iaf_tum_2000.html">iaf_tum_2000</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/tsodyks_connection.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

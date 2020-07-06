@@ -1,0 +1,16 @@
+Name: cleardict - Clears the contents of a dictionary
+
+Synopsis:
+
+dict cleardict
+
+
+SeeAlso:
+
+&lt;&lt;&gt;&gt;
+clonedict
+dictstack
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidict.cc

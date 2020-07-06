@@ -1,0 +1,39 @@
+Name: ResetOptions - Reset all options of a command to their default values.
+
+Synopsis:
+
+/f ResetOptions -&gt; -
+
+
+Description:
+
+Usually, a C++-like notation is used to indicate the 
+availability of the function, if the function is defined in some 
+"namespace" dictionary. 
+For example: "arr::Mean".
+
+
+Author:
+
+Ruediger Kupper
+
+
+FirstVersion:
+
+28.3.2003, by copy-paste-and-modify from RestoreOptions
+
+
+SeeAlso:
+
+GetOption
+GetOptions
+ShowOptions
+SetOptions
+Options
+SaveOptions
+RestoreOptions
+OptionsDictionary
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

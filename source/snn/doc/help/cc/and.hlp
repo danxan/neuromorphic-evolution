@@ -1,0 +1,30 @@
+Name: and - logical and operator.
+
+Synopsis:
+
+bool1 bool2 and -&gt; bool 
+int1  int2  and -&gt; int
+
+
+Examples:
+
+true true and -&gt; true 
+10   24   and -&gt; 8
+
+
+Description:
+
+For booleans, and returns true if both arguments are true 
+For integer arguments, and performs a bit-wise and between 
+the two integers.
+
+
+SeeAlso:
+
+or
+xor
+not
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slimath.cc

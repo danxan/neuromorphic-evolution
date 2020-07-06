@@ -1,0 +1,59 @@
+Name: SetDirectory - Change working directory
+
+Synopsis:
+
+string SetDirectory -&gt; boolean
+
+
+Examples:
+
+(/home/MyName) SetDirectory -&gt; Commands like ofstream, 
+FileNames etc. take 
+/home/MyName as a default. 
+(..) SetDirectory           -&gt; Flip to parent directory.
+
+
+Description:
+
+Changes the working directory to the given argument, 
+e.g. the value of '.' in the UNIX world.
+
+
+Parameters:
+
+string : The new working directory. 
+boolean: A flag if operation succeded.
+
+
+Bugs:
+
+-
+
+
+Remarks:
+
+
+
+
+Author:
+
+Hehl
+
+
+FirstVersion:
+
+Oct 12th 1999
+
+
+SeeAlso:
+
+FileNames
+Directory
+MakeDirectory
+RemoveDirectory
+cd
+ls
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/filesystem.sli

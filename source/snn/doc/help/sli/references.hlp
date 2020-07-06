@@ -1,0 +1,23 @@
+Name: references - Returns the number of references to a reference counted object.
+
+Synopsis:
+
+array references -&gt; array  integer 
+dict  references -&gt; dict   integer
+
+
+Examples:
+
+&lt;&lt; /x 0 &gt;&gt; dup references -&gt; dict dict 2 
+[ 0 ] dup references -&gt; array array 2
+
+
+Description:
+
+references returns the number of references to 
+a reference counted object including potential self references.
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/typeinit.sli

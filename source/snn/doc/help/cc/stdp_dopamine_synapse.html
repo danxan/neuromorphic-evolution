@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: stdp_dopamine_synapse</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: stdp_dopamine_synapse</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">stdp_dopamine_synapse - Synapse type for dopamine-modulated <br/> spike-timing dependent plasticity.</div>
+<div class="doc_header">Examples: </div>
+<div class="doc_paragraph">/volume_transmitter Create /vol Set  <br/> /iaf_psc_alpha Create /pre_neuron Set  <br/> /iaf_psc_alpha Create /post_neuron Set  <br/> /iaf_psc_alpha Create /neuromod_neuron Set  <br/> /stdp_dopamine_synapse  &lt;&lt; /vt vol &gt;&gt;  SetDefaults  <br/> neuromod_neuron vol Connect  <br/> pre_neuron post_neuron /stdp_dopamine_synapse Connect </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">stdp_dopamine_synapse is a connection to create synapses with  <br/> dopamine-modulated spike-timing dependent plasticity (used as a  <br/> benchmark model in [1], based on [2]). The dopaminergic signal is a  <br/> low-pass filtered version of the spike rate of a user-specific pool  <br/> of neurons. The spikes emitted by the pool of dopamine neurons are  <br/> delivered to the synapse via the assigned volume transmitter. The  <br/> dopaminergic dynamics is calculated in the synapse itself. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> =========  ======= ======================================================  <br/> **Common properties**  <br/> -------------------------------------------------------------------------  <br/> vt        integer ID of volume_transmitter collecting the spikes  <br/> from the pool of dopamine releasing neurons and  <br/> transmitting the spikes to the synapse. A value of  <br/> -1 indicates that no volume transmitter has been  <br/> assigned.  <br/> A_plus    real    Amplitude of weight change for facilitation  <br/> A_minus   real    Amplitude of weight change for depression  <br/> tau_plus  ms      STDP time constant for facilitation  <br/> tau_c     ms      Time constant of eligibility trace  <br/> tau_n     ms      Time constant of dopaminergic trace  <br/> b         real    Dopaminergic baseline concentration  <br/> Wmin      real    Minimal synaptic weight  <br/> Wmax      real    Maximal synaptic weight  <br/> =========  ======= ======================================================  <br/>   <br/> === ======  =====================================  <br/> **Individual properties**  <br/> -------------------------------------------------  <br/> c  real    Eligibility trace  <br/> n  real    Neuromodulator concentration  <br/> === ======  =====================================  <br/> \endverbatim </div>
+<div class="doc_header">Transmits: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">&bull; based on an earlier version by Wiebke Potjans  <br/> &bull; major changes to code after code revision in Apr 2013 </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> .. [1] Potjans W, Morrison A, Diesmann M (2010). Enabling functional neural  <br/> circuit simulations with distributed computing of neuromodulated  <br/> plasticity. Frontiers in Computational Neuroscience, 4:141.  <br/> DOI: https://doi.org/10.3389/fncom.2010.00141  <br/> .. [2] Izhikevich EM (2007). Solving the distal reward problem through linkage  <br/> of STDP and dopamine signaling. Cerebral Cortex, 17(10):2443-2452.  <br/> DOI: https://doi.org/10.1093/cercor/bhl152  <br/> \endverbatim </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Susanne Kunkel </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/volume_transmitter.html">volume_transmitter</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/stdp_dopa_connection.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

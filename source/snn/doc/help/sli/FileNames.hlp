@@ -1,0 +1,60 @@
+Name: FileNames - return contents of current working directory
+
+Synopsis:
+
+string FileNames -&gt; array 
+regex  FileNames -&gt; array
+
+
+Examples:
+
+(.*) FileNames -&gt; all files of current directory 
+Remember that POSIX regex and those used by ls are not 
+necessarily the same !
+
+
+Description:
+
+FileNames reads contents of current working directory 
+via POSIX commands. Only files matching the regular expression 
+mask set in string/regex are used.
+
+
+Parameters:
+
+string : a mask converted to the regex 
+regex  : the regular expression used to filter files 
+array  : an array of strings containing matched files
+
+
+Bugs:
+
+see remarks
+
+
+Remarks:
+
+Sorting of files done by :sort, a dummy UNIX sorter which 
+is far from protable!
+
+
+Author:
+
+Hehl
+
+
+FirstVersion:
+
+Oct 12th 1999
+
+
+SeeAlso:
+
+SetDirectory
+Directory
+ls
+cd
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/filesystem.sli

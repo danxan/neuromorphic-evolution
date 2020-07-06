@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: stdp_triplet_synapse</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: stdp_triplet_synapse</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">stdp_triplet_synapse - Synapse type with spike-timing dependent <br/> plasticity (triplets).</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">stdp_triplet_synapse is a connection with spike time dependent  <br/> plasticity accounting for spike triplet effects (as defined in [1]).  <br/>   <br/> STDP examples:  <br/> pair-based   Aplus_triplet = Aminus_triplet = 0.0  <br/> triplet      Aplus_triplet = Aminus_triplet = 1.0 </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> =================  ======  ===========================================  <br/> tau_plus          real    Time constant of short presynaptic trace  <br/> (tau_plus of [1])  <br/> tau_plus_triplet  real    Time constant of long presynaptic trace  <br/> (tau_x of [1])  <br/> Aplus             real    Weight of pair potentiation rule  <br/> (A_plus_2 of [1])  <br/> Aplus_triplet     real    Weight of triplet potentiation rule  <br/> (A_plus_3 of [1])  <br/> Aminus            real    Weight of pair depression rule  <br/> (A_minus_2 of [1])  <br/> Aminus_triplet    real    Weight of triplet depression rule  <br/> (A_minus_3 of [1])  <br/> Wmax              real    Maximum allowed weight  <br/> =================  ======  ===========================================  <br/>   <br/> =============== ======  ===========================================  <br/> **States**  <br/> -------------------------------------------------------------------  <br/> Kplus          real    Pre-synaptic trace (r_1 of [1])  <br/> Kplus_triplet  real    Triplet pre-synaptic trace (r_2 of [1])  <br/> =============== ======  ===========================================  <br/> \endverbatim </div>
+<div class="doc_header">Transmits: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> .. [1] Pfister JP, Gerstner W (2006). Triplets of spikes in a model  <br/> of spike timing-dependent plasticity.  The Journal of Neuroscience  <br/> 26(38):9673-9682. DOI: https://doi.org/10.1523/JNEUROSCI.1425-06.2006  <br/> \endverbatim  <br/>   <br/> Notes:  <br/> &bull; Presynaptic traces r_1 and r_2 of [1] are stored in the connection as  <br/> Kplus and Kplus_triplet and decay with time-constants tau_plus and  <br/> tau_plus_triplet, respectively.  <br/> &bull; Postsynaptic traces o_1 and o_2 of [1] are acquired from the post-synaptic  <br/> neuron states Kminus_ and triplet_Kminus_ which decay on time-constants  <br/> tau_minus and tau_minus_triplet, respectively. These two time-constants  <br/> can be set as properties of the postsynaptic neuron.  <br/> &bull; This version implements the 'all-to-all' spike interaction of [1]. The  <br/> 'nearest-spike' interaction of [1] can currently not be implemented  <br/> without changing the postsynaptic archiving-node (clip the traces to a  <br/> maximum of 1). </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Abigail Morrison, Eilif Muller, Alexander Seeholzer, Teo Stocco  <br/> Adapted by: Philipp Weidel </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">Nov 2007 </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/stdp_triplet_synapse_hpc.html">stdp_triplet_synapse_hpc</a></li>
+    <li><a href="../cc/synapsedict.html">synapsedict</a></li>
+    <li><a href="../cc/stdp_synapse.html">stdp_synapse</a></li>
+    <li><a href="../cc/static_synapse.html">static_synapse</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/stdp_triplet_connection.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

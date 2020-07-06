@@ -1,0 +1,28 @@
+Name: pcvs - Convert object to string (long version)
+
+Examples:
+
+23 pcvs -&gt; (23) 
+{3 2 mul dup} pcvs -&gt; ({3 2 mul dup}) 
+(hello) pcvs -&gt; ((hello))
+
+
+Description:
+
+pcvs converts every object into a string (long version)
+
+
+Author:
+
+R Kupper by copy-and-modify from cvs
+
+
+SeeAlso:
+
+cvs
+print
+pprint
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/sli-init.sli

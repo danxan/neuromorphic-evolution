@@ -1,0 +1,24 @@
+Synopsis:
+
+(issue-1366) run -&gt; NEST exits if test fails
+
+
+Description:
+
+This tests checks that we are able to connect with fixed_total_number equal to 1 
+when we have more than 1 virtual process and more than 1 node per process.
+
+
+Author:
+
+Stine Brekke Vennemo
+
+
+FirstVersion:
+
+December 2019
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/regressiontests/issue-1366.sli

@@ -1,0 +1,37 @@
+Name: sleep - Pauses current process.
+
+Synopsis:
+
+t sleep -&gt; -
+
+
+Examples:
+
+5 sleep %wait for 5 seconds 
+tic 2.75 sleep toc = %should print 2.75
+
+
+Description:
+
+Pauses the process for t seconds. t can be integer or double. 
+Resolution is given by pclockspersec.
+
+
+Author:
+
+Schrader
+
+
+SeeAlso:
+
+realtime
+tic
+toc
+ptimes
+pclockspersec
+clic
+cloc
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/sli-init.sli

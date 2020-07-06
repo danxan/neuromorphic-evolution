@@ -1,0 +1,51 @@
+Name: SetStatus_dict - Modify a dictionary used as an object in oo-programming
+
+Synopsis:
+
+dict dict SetStatus -&gt; -
+
+
+Examples:
+
+&lt;&lt; &gt;&gt; cvo dup &lt;&lt; /c 1 &gt;&gt; SetStatus /c get --&gt; 1 
+&lt;&lt; &gt;&gt;     dup &lt;&lt; /c 1 &gt;&gt; join      /c get --&gt; 1 
+{ &lt;&lt; &gt;&gt;         &lt;&lt; /c 1 &gt;&gt; SetStatus } stopped 
+{3 npop true} {false} ifelse  --&gt; true
+
+
+Description:
+
+The operator overloads SetStatus and inserts the key value pairs 
+of the second dictionary into the first dictionary. This is the same functionality 
+as the one of operator join. However, SetStatus raises an error if the first 
+dictionary has not been labeled by operator cvo as an object of oo-programming 
+before. The idea is that use of SetStatus should be reserved for objects of 
+oo-programming not regular dictionaries to enhance the readability of SLI code. 
+See the documentation of operator cvo for more details.
+
+
+Parameters:
+
+The operator modfies the first argument
+
+
+Author:
+
+Helias, Diesmann
+
+
+FirstVersion:
+
+2006-06-26
+
+
+SeeAlso:
+
+GetStatus_dict
+cvo
+cvd
+call
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/oosupport.sli

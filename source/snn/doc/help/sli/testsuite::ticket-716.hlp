@@ -1,0 +1,20 @@
+Name: testsuite::ticket-716 - tdp dopamine synapse changes weight in the absence of presynaptic spike
+
+Synopsis:
+
+(ticket-716) run -&gt; NEST exits if test fails
+
+
+Description:
+
+Ensure that the weight of an stdp dopamine synapse is constant in the absense of presynaptic spiking.
+
+
+Author:
+
+Susanne Kunkel, 2013-04-11
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/regressiontests/ticket-716.sli

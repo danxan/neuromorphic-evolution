@@ -1,0 +1,20 @@
+Name: DoubleQ - returns true if top object is a double
+
+Synopsis:
+
+double DoubleQ -&gt; true 
+any    DoubleQ -&gt; false
+
+
+SeeAlso:
+
+IntegerQ
+DoubleQ
+FiniteQ
+LiteralQ
+ArrayQ
+StringQ
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

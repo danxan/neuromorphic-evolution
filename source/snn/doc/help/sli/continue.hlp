@@ -1,0 +1,9 @@
+Name: continue - continue an interrupted  procedure
+
+SeeAlso:
+
+break
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/debug.sli

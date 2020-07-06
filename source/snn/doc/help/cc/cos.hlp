@@ -1,0 +1,35 @@
+Name: cos - Calculate the cosine of double number.
+
+Synopsis:
+
+double cos -&gt; double
+
+
+Examples:
+
+1.0 cos -&gt; 0.540302
+
+
+Description:
+
+Alternatives: Function cos_d (undocumented) 
+-&gt; behaviour and synopsis are the same.
+
+
+Author:
+
+Hehl
+
+
+FirstVersion:
+
+8.6.1999
+
+
+SeeAlso:
+
+sin
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slimath.cc

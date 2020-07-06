@@ -1,0 +1,10 @@
+Name: RestoreModels - Restore saved models from an array of status dictionaries.
+
+Description:
+
+
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/nest-init.sli

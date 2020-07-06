@@ -1,0 +1,30 @@
+Name: in_avail - Return the number of available in an input stream's
+buffer.
+
+Synopsis:
+
+istreamhandle in_avail -&gt; istreamhandle available_characters
+
+
+Description:
+
+This function provides a direct interface to 
+the C++ istream::rdbuf()-&gt;in_avail() member function.
+
+
+Author:
+
+R Kupper
+
+
+FirstVersion:
+
+May 05 1999
+
+
+SeeAlso:
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/sli_io.cc

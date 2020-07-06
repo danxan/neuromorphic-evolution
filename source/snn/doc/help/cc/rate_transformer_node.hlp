@@ -1,0 +1,57 @@
+Name: rate_transformer_node - Rate neuron that sums up incoming rates
+and applies a nonlinearity specified via the template.
+
+Description:
+
+The rate transformer node simply applies the nonlinearity specified in the 
+input-function of the template class to all incoming inputs. The boolean 
+parameter linear_summation determines whether the input function is applied to 
+the summed up incoming connections (True, default value) or to each input 
+individually (False). 
+An important application is to provide the possibility to 
+apply different nonlinearities to different incoming connections of the 
+same rate neuron by connecting the sending rate neurons to the 
+rate transformer node and connecting the rate transformer node to the 
+receiving rate neuron instead of using a direct connection. 
+Please note that for instantaneous rate connections the rate arrives 
+one time step later at the receiving rate neurons as with a direct connection.
+
+
+Parameters:
+
+Only the parameter 
+&bull; linear_summation 
+and the parameters from the class Nonlinearities can be set in the 
+status dictionary.
+
+
+Receives:
+
+InstantaneousRateConnectionEvent, DelayedRateConnectionEvent
+
+
+Sends:
+
+InstantaneousRateConnectionEvent, DelayedRateConnectionEvent
+
+
+Remarks:
+
+&bull; Weights on connections from and to the rate_transformer_node 
+are handled as usual. 
+&bull; Delays are honored on incoming and outgoing connections.
+
+
+Author:
+
+Mario Senden, Jan Hahne, Jannis Schuecker
+
+
+FirstVersion:
+
+November 2017
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/rate_transformer_node.h

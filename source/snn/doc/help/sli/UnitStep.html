@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: UnitStep</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: UnitStep</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">UnitStep - The unit step function (aka Heavyside function)</div>
+<div class="doc_header">Synopsis: </div>
+<div class="doc_paragraph">x  UnitStep -&gt; 0   ;if  x &lt;  0  <br/> -&gt; 1   ;if  x &gt;= 0  <br/> [x1 x2 ...] UnitStep -&gt; 0   ;if xi &lt;  0 for any xi in [x]  <br/> -&gt; 1   ;if xi &gt;= 0 for all xi in [x] </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">"x UnitStep" represents the unit step function,  <br/> equal to 0 for x&lt;0 and 1 for x&gt;=0.  <br/>   <br/> "[x1 x2 ...] UnitStep" represents the multidimensional unit step  <br/> function which is 1 only if none of the xi are negative.  <br/>   <br/> Alternatives: Function UnitStep_i for integers, UnitStep_d for  <br/> doubles, UnitStep_ia for integer arrays, UnitStep_da for double  <br/> arrays (all undocumented) -&gt; behavior and synopsis are the same,  <br/> except that no warnings or error messages are thrown. </div>
+<div class="doc_header">Diagnostics: </div>
+<div class="doc_paragraph">When called on an empty array, /ArgumentType is raised.  <br/>   <br/> When first element of the array is not of type integer or double,  <br/> /ArgumentType is raised.  <br/>   <br/> Will break if called on an array containing non-numerical values. </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">This is the SLI version of the Mathematica function "UnitStep".  <br/> Documentation taken from the Mathematica Book.  <br/>   <br/> Implementation of the type variants can be found in file  <br/> synod2/sli/slimath.cc. </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">The Mathematica Book </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Ruediger Kupper </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">13.3.2003 </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../sli/Sign.html">Sign</a></li>
+    <li><a href="../sli/abs.html">abs</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

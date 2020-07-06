@@ -1,0 +1,15 @@
+Name: MergeDictionary - Merge all definitions of a dictionary with the current dicitonary.
+
+Synopsis:
+
+dict MergeDictionary -&gt; -
+
+
+SeeAlso:
+
+SaveDictionary
+RestoreDictionary
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/FormattedIO.sli

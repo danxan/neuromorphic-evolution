@@ -1,0 +1,22 @@
+Name: testsuite::ticket-336-serial - Check that vp-specific RNGs only provided for nodes with proxie
+
+Synopsis:
+
+(ticket-336-serial) run -&gt; NEST exits if test fails
+
+
+Description:
+
+This test ensures that GetVpRNG returns an error if called on a subnet or 
+device without proxies. See mpitests/ticket-336.sli for a test checking 
+correct vp-rng function.
+
+
+Author:
+
+Hans Ekkehard Plesser, 2010-09-29, 2012-02-16
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/regressiontests/ticket-336-serial.sli

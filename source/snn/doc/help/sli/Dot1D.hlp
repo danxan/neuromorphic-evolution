@@ -1,0 +1,34 @@
+Name: Dot1D - Compute the inner product of two vectors.
+
+Synopsis:
+
+array array Dot1D -&gt; num
+
+
+Description:
+
+Dot1D expects two one dimensional arrays or vectors and computes the 
+inner product of the two arguments. 
+Dot1D works equally well for arrays, doublevectors and intvectors. 
+Example: 
+&lt;. 1 2 3 .&gt; &lt;. 1 2 3 .&gt; Dot1D -&gt; 14
+
+
+Author:
+
+Marc-Oliver Gewaltig
+
+
+FirstVersion:
+
+Dec 18 2012
+
+
+SeeAlso:
+
+Dot
+OuterProduct
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

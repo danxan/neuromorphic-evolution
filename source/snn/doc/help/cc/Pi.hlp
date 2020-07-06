@@ -1,0 +1,36 @@
+Name: Pi - Value of the constant Pi= 3.1415...
+
+Synopsis:
+
+Pi -&gt; double
+
+
+Description:
+
+Pi yields an approximation with a precision of 12 digits.
+
+
+References:
+
+
+
+
+Author:
+
+Diesmann, Hehl
+
+
+FirstVersion:
+
+10.6.99
+
+
+SeeAlso:
+
+E
+sin
+cos
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/interpret.cc

@@ -1,0 +1,16 @@
+Name: ReadDouble - Read a double number from an input stream.
+
+Synopsis:
+
+istream ReadDouble -&gt; istream double true 
+-&gt; istream false
+
+
+SeeAlso:
+
+ReadInt
+ReadWord
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/sli_io.cc

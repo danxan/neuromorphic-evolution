@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: Part</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: Part</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">Part - returns a sub-array of an array</div>
+<div class="doc_header">Synopsis: </div>
+<div class="doc_paragraph">array1 array2 Part -&gt; array3 </div>
+<div class="doc_header">Examples: </div>
+<div class="doc_paragraph">[ [3 5 6 9] [11 4 7 2] [-9 1 8 10] ]  [ [1 3] [2 3] ] Part  --&gt; [[5 6] [1 8]]  <br/> [ [3 [-12 -19] 6 9] [11 4 7 2] [-9 1 8 10] ]  [ 1 2 2] Part --&gt; -19  <br/> [3 4 5 6 7] [-2] Part                                   --&gt; 6  <br/> [3 [-9 -12] 5 6 7] [2] Part                             --&gt; [-9 -12]  <br/> [3 [-9 -12] 5 6 7] [2 2] Part                           --&gt; -12  <br/> [3 [-9 -12] 5 6 7] [[2 3]] Part                         --&gt; [[-9 -12] 5]  <br/> [3 [-9 -12] 5 6 7] [[2 3 2]] Part                       --&gt; [[-9 -12] 5 [-9 -12]]  <br/> [ [3 5 6 9] [11 4 7 2] [-9 1 8 10] ]  [ 1 []  ] Part    --&gt; []  <br/> [ [3 5 6 9] [11 4 7 2] [-9 1 8 10] ]  [ [] 1 ] Part     --&gt; []  <br/> [3 [5 -12] 6 9]  [ [ 2 ] ] Part                         --&gt; [[5 -12]]  <br/> [3 [5 -12] 6 9]  [ [ 2 ] 2] Part                        --&gt; [-12]  <br/> [ [3 5 6 9] [11 4 7 2] [-9 1 8 10] ]  [ /All [3 2]  ] Part --&gt; [[6 5] [7 4] [8 1]] </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">Part returns a sub-array of array1 specified by  <br/> array2. This function is an implementation of  <br/> Mathematica's Part function. It can also be used  <br/> to rearrange or copy parts of array1. Note,  <br/> Mathematica-style functions in SLI use Mathematica  <br/> index notation. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">array1 is an arbitrarily shaped array. In particular  <br/> it does not need to be rectangular.  <br/>   <br/> array2 is an array [i,j, ...] where the i,j specify the  <br/> selected elements on each level. Any i,j can itself be  <br/> an array [i1,i2,....] specifying a list of elements on  <br/> that level. When i is the literal /All, all elements on  <br/> the corresponding level are returned. The first element  <br/> on each level has index 1. Indices can also be specified  <br/> counting from the end of the array, in this case the last  <br/> element has index -1. Positive and neative indices can  <br/> arbitrarily be intermixed.  <br/>   <br/> Alternatives: Function Part_a (undocumented) -&gt; behaviour and  <br/> synopsis are the same. </div>
+<div class="doc_header">Bugs: </div>
+<div class="doc_paragraph"></div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">Literal /All plays the role of the index specifier ':'  <br/> in Matlab when used without arguments. Note, that  <br/> Matlab in addition provides specifier 'end'.  <br/> This is not necessary in the formalism of Mathematica  <br/> because indices counting from the end of the array can be  <br/> expressed by negative values. </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">[1] The Mathematica Book V4.0 "Part" </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Diesmann </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">29.9.1999 </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../sli/MathematicaToSliIndex.html">MathematicaToSliIndex</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

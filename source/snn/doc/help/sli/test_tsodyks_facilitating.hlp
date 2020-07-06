@@ -1,0 +1,30 @@
+Name: test_tsodyks_facilitating - li script for overall test of tsodyks synapse model
+
+Synopsis:
+
+(test_tsodyks_facilitating) run -&gt; compare cout with comments in file
+
+
+Description:
+
+Script to test Tsodyks short term plasticity facilitating synapses according to 
+'Neural Networks with Dynamic Synapses' 
+Misha Tsodyks, Klaus Pawelzik, Henry Markram 
+Neural computation 10, 821--853 (1998) 
+Reproduces figure 1 B, (C) 
+Revised by Hans Ekkehard Plesser 2016 using explicit input spike train.
+
+
+Author:
+
+Markus Diesmann, Moritz Helias
+
+
+FirstVersion:
+
+March 2006
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/unittests/test_tsodyks_facilitating.sli

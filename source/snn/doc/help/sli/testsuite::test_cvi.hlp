@@ -1,0 +1,30 @@
+Name: testsuite::test_cvi - check if cvi function work
+
+Synopsis:
+
+(test_cvi) run -&gt;
+
+
+Description:
+
+Tests basic properties of cvi. Note that the tests 
+are directly compiled from the the Examples section of 
+the documentation which is evaluated by the command 
+/validate . 
+Future versions of NEST should generate this test 
+directly from the Examples section.
+
+
+Author:
+
+130610, Diesmann
+
+
+SeeAlso:
+
+floor
+round
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/unittests/test_cvi.sli

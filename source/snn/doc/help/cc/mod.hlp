@@ -1,0 +1,23 @@
+Name: mod - compute the modulo of two integer numbers.
+
+Synopsis:
+
+int int mod -&gt; int
+
+
+Examples:
+
+7 4 mod -&gt; 3
+
+
+SeeAlso:
+
+E
+sin
+cos
+exp
+log
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slimath.cc

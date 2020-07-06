@@ -1,0 +1,40 @@
+Name: ToMathematicaExpression - converts SLI data to Mathematica input
+
+Synopsis:
+
+any ToMathematicaExpression -&gt; string
+
+
+Examples:
+
+[3.4 (hello) [2 3] ] ToMathematicaExpression --&gt; 
+({ImportString["3.4","List"][[1]], "hello", {2, 3}}) 
+&lt;&lt; /i 6 /s (hello) &gt;&gt; ToMathematicaExpression --&gt; 
+({i -&gt; 6, s -&gt; "hello"})
+
+
+Description:
+
+An error is raised for unsupported SLI data types. In particular, 
+the function also converts heterogeneous arrays and dictionaries.
+
+
+Remarks:
+
+The conversion of doubles does not yet guarantee the existence 
+of the decimal point and an appropriate number of digits.
+
+
+References:
+
+[1] The Mathematica Book
+
+
+Author:
+
+Diesmann
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

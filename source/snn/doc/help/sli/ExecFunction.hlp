@@ -1,0 +1,37 @@
+Name: ExecFunction - immediately execute a pure function with named argument
+
+Synopsis:
+
+{proc} literal_1 ... literal_n ExecFunction -&gt; val 
+string literal_1 ... literal_n ExecFunction -&gt; val
+
+
+Examples:
+
+2   {x 1 x add mul} /x    ExecFunction --&gt; 6 
+2 3 {x 1 x add mul} /x /y ExecFunction --&gt; 6 
+2 3 {x y x add mul} /x /y ExecFunction --&gt; 10 
+2 3   ( x*(y+x) )   /x /y ExecFunction --&gt; 10 
+Version: 090304
+
+
+Description:
+
+ExecFunction is equivalent to the sequence 
+Function exec
+
+
+Author:
+
+Diesmann
+
+
+SeeAlso:
+
+Function
+CompileMath
+Inline
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

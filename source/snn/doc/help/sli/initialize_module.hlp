@@ -1,0 +1,15 @@
+Name: initialize_module - Initialize module by executing commandstring
+
+Synopsis:
+
+commandstring initialize_module -&gt; -
+
+
+Description:
+
+Executes the command string provided by a module to initialize it.
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/library.sli

@@ -1,0 +1,10 @@
+Name: count - Count the number of objects on the stack.
+
+Synopsis:
+
+obj_n-1 ... obj0 count -&gt; obj_n-1 ... obj0 n
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slistack.cc

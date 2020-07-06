@@ -1,0 +1,67 @@
+Name: music_message_in_proxy - A device which receives message strings from
+MUSIC.
+
+Examples:
+
+/music_message_in_proxy Create /mmip Set 
+10 Simulate 
+mmip GetStatus /data get /messages get 0 get /command Set 
+(Executing command ') command join ('.) join = 
+command cvx exec
+
+
+Description:
+
+A music_message_in_proxy can be used to receive message strings from 
+remote MUSIC applications in NEST. 
+It uses the MUSIC library to receive message strings from other 
+applications. The music_message_in_proxy represents an input port to 
+which MUSIC can connect a message source. The music_message_in_proxy 
+can queried using GetStatus to retrieve the messages.
+
+
+Parameters:
+
+The following properties are available in the status dictionary: 
+\verbatim embed:rst 
+============ ======= ========================================================= 
+port_name   string  The name of the MUSIC input port to listen to (default: 
+message_in) 
+port_width  integer The width of the MUSIC input port 
+data        array   A sub-dictionary that contains the string messages 
+in the form of two arrays: 
+messages      - The strings 
+message_times - The times the messages were sent (ms) 
+n_messages  integer The number of messages 
+published   boolean A bool indicating if the port has been already published 
+with MUSIC 
+============ ======= ========================================================= 
+\endverbatim 
+The parameter port_name can be set using SetStatus. The field n_messages 
+can be set to 0 to clear the data arrays.
+
+
+Availability:
+
+Only when compiled with MUSIC
+
+
+Author:
+
+Jochen Martin Eppler
+
+
+FirstVersion:
+
+July 2010
+
+
+SeeAlso:
+
+music_event_out_proxy
+music_event_in_proxy
+music_cont_in_proxy
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/music_message_in_proxy.h

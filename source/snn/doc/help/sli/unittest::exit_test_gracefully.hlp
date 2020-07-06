@@ -1,0 +1,25 @@
+Name: unittest::exit_test_gracefully - End test script and report it as skipped
+
+Synopsis:
+
+literal exit_test_gracefully -&gt; -
+
+
+Description:
+
+This function will terminate NEST/SLI with a return code signaling that a 
+test was skipped. It should be used to leave test scripts that have special 
+prerequisites.
+
+
+Parameters:
+
+literal - Reason for exit 
+Example: 
+/unittest using 
+is_threaded not { /skipped_no_openmp exit_test_gracefully } if
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/unittest.sli

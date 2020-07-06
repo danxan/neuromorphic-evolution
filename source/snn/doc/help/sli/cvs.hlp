@@ -1,0 +1,37 @@
+Name: cvs - Convert object to string
+
+Examples:
+
+23 cvs -&gt; (23) 
+{3 2 mul dup} cvs -&gt; (&lt;proceduretype&gt;) 
+(hello) cvs -&gt; (hello)
+
+
+Description:
+
+cvs converts every object into a string
+
+
+Author:
+
+docu by Sirko Straube
+
+
+SeeAlso:
+
+pcvs
+print
+pprint
+cst
+cva
+cv1d
+cv2d
+cvd
+cvi
+cvlit
+cvn
+cvt_a
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/sli-init.sli

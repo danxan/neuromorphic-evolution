@@ -1,0 +1,35 @@
+Name: HasDifferentMemberQ - checks if array contains different element(s)
+
+Synopsis:
+
+array any HasDifferentMemberQ -&gt; true 
+-&gt; false
+
+
+Examples:
+
+[3 8 2 9 -1] 2 HasDifferentMemberQ --&gt; true 
+[2 2 2]      2 HasDifferentMemberQ --&gt; false
+
+
+Author:
+
+Plesser, based on MemberQ
+
+
+FirstVersion:
+
+20 Sept 2010
+
+
+SeeAlso:
+
+LiteralQ
+NumberQ
+ArrayQ
+MatrixQ
+MemberQ
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

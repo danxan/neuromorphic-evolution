@@ -1,0 +1,35 @@
+Name: removeguard - removes the limit on the number of interpreter cycle
+
+Synopsis:
+
+removeguard -&gt; --
+
+
+Description:
+
+This command removes the restriction on the number 
+of possible interpreter cycles, imposed by setguard.
+
+
+Parameters:
+
+none
+
+
+Remarks:
+
+not part of PostScript
+
+
+Author:
+
+Gewaltig
+
+
+SeeAlso:
+
+setguard
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slicontrol.cc

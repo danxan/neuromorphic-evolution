@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="8" hostname="dansan-cortex" name="core.phase_5" tests="70" time="132.506" timestamp="2020-07-06T21:39:07+00:00">
+  <properties>
+    <property name="os.arch" value="x86_64" />
+    <property name="os.name" value="Linux" />
+    <property name="os.version" value="5.6.16-1-MANJARO" />
+    <property name="user.home" value="/home/dansan" />
+    <property name="user.name" value="dansan" />
+  </properties>
+  <testcase classname="core.mpi_selftests.pass" name="test_distributed_assert_or_die.sli" time="1.39335" />
+  <testcase classname="core.mpi_selftests.pass" name="test_distributed_collect_assert_or_die.sli" time="1.30833" />
+  <testcase classname="core.mpi_selftests.pass" name="test_distributed_invariant_assert_or_die.sli" time="1.73021" />
+  <testcase classname="core.mpi_selftests.pass" name="test_distributed_pass_or_die.sli" time="1.37853" />
+  <testcase classname="core.mpi_selftests.pass" name="test_distributed_process_invariant_collect_assert_or_die.sli" time="1.34739" />
+  <testcase classname="core.mpi_selftests.pass" name="test_distributed_process_invariant_events_assert_or_die.sli" time="1.33659" />
+  <testcase classname="core.mpi_selftests.pass" name="test_distributed_rank_invariant_collect_assert_or_die.sli" time="1.34573" />
+  <testcase classname="core.mpi_selftests.pass" name="test_parse_message_line.sli" time="0.158057" />
+  <testcase classname="core.mpi_selftests.fail" name="crash_distributed_assert_or_die.sli" time="1.2586" />
+  <testcase classname="core.mpi_selftests.fail" name="crash_distributed_collect_assert_or_die.sli" time="6.25844" />
+  <testcase classname="core.mpi_selftests.fail" name="crash_distributed_invariant_assert_or_die.sli" time="1.39809" />
+  <testcase classname="core.mpi_selftests.fail" name="crash_distributed_pass_or_die.sli" time="1.61333" />
+  <testcase classname="core.mpi_selftests.fail" name="crash_distributed_process_invariant_collect_assert_or_die.sli" time="1.31437" />
+  <testcase classname="core.mpi_selftests.fail" name="crash_distributed_process_invariant_events_assert_or_die.sli" time="1.33365" />
+  <testcase classname="core.mpi_selftests.fail" name="crash_distributed_rank_invariant_collect_assert_or_die.sli" time="1.34223" />
+  <testcase classname="core.mpi_selftests.fail" name="fail_distributed_assert_or_die.sli" time="1.2791" />
+  <testcase classname="core.mpi_selftests.fail" name="fail_distributed_collect_assert_or_die.sli" time="1.36725" />
+  <testcase classname="core.mpi_selftests.fail" name="fail_distributed_invariant_assert_or_die.sli" time="1.59157" />
+  <testcase classname="core.mpi_selftests.fail" name="fail_distributed_pass_or_die.sli" time="1.33647" />
+  <testcase classname="core.mpi_selftests.fail" name="fail_distributed_process_invariant_collect_assert_or_die.sli" time="1.32613" />
+  <testcase classname="core.mpi_selftests.fail" name="fail_distributed_process_invariant_events_assert_or_die.sli" time="6.37015" />
+  <testcase classname="core.mpi_selftests.fail" name="fail_distributed_rank_invariant_collect_assert_or_die.sli" time="1.93386" />
+  <testcase classname="core.mpitests" name="issue-281.sli" time="3.25201">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/mpitests/issue-281.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 1
+nest: /home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/target_data.h:264: void nest::TargetData::set_source_lid(nest::index): Assertion `source_lid < MAX_LID' failed.
+[dansan-cortex:66582] *** Process received signal ***
+[dansan-cortex:66582] Signal: Aborted (6)
+[dansan-cortex:66582] Signal code:  (-6)
+[dansan-cortex:66582] [ 0] /usr/lib/libpthread.so.0(+0x14960)[0x7efefcec1960]
+[dansan-cortex:66582] [ 1] /usr/lib/libc.so.6(gsignal+0x145)[0x7efefcd22355]
+[dansan-cortex:66582] [ 2] /usr/lib/libc.so.6(abort+0x127)[0x7efefcd0b853]
+[dansan-cortex:66582] [ 3] /usr/lib/libc.so.6(+0x25727)[0x7efefcd0b727]
+[dansan-cortex:66582] [ 4] /usr/lib/libc.so.6(+0x34936)[0x7efefcd1a936]
+[dansan-cortex:66582] [ 5] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest11SourceTable20get_next_target_dataEiiiRiRNS_10TargetDataE+0x619)[0x7efefd971669]
+[dansan-cortex:66582] [ 6] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager30collocate_target_data_buffers_EiRKNS_13AssignedRanksERNS_18SendBufferPositionE+0x13d)[0x7efefd95f39d]
+[dansan-cortex:66582] [ 7] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager18gather_target_dataEi+0x2c2)[0x7efefd9607e2]
+[dansan-cortex:66582] [ 8] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager32update_connection_infrastructureEi+0xd7)[0x7efefd940147]
+[dansan-cortex:66582] [ 9] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(+0xe7230)[0x7efefd940230]
+[dansan-cortex:66582] [10] /usr/lib/libgomp.so.1(GOMP_parallel+0x46)[0x7efefcefd6b6]
+[dansan-cortex:66582] [11] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager7prepareEv+0x4ea)[0x7efefd945bea]
+[dansan-cortex:66582] [12] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager8simulateERKNS_4TimeE+0x12)[0x7efefd948032]
+[dansan-cortex:66582] [13] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest8simulateERKd+0xbc)[0x7efefd92e9ac]
+[dansan-cortex:66582] [14] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest10NestModule16SimulateFunction7executeEP14SLIInterpreter+0x45)[0x7efefd906e95]
+[dansan-cortex:66582] [15] /home/dansan/nest2.20/bin/../lib/libsli.so(_ZN14SLIInterpreter8execute_Em+0x262)[0x7efefd601b02]
+[dansan-cortex:66582] [16] /home/dansan/nest2.20/bin/nest(main+0x4c)[0x564d2887183c]
+[dansan-cortex:66582] [17] /usr/lib/libc.so.6(__libc_start_main+0xf2)[0x7efefcd0d002]
+[dansan-cortex:66582] [18] /home/dansan/nest2.20/bin/nest(_start+0x2e)[0x564d28871ece]
+[dansan-cortex:66582] *** End of error message ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 0 on node dansan-cortex exited on signal 6 (Aborted).
+--------------------------------------------------------------------------
+
+Jul 06 23:39:52 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_pass_or_die: collected results.
+
+Jul 06 23:39:52 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <testcase classname="core.mpitests" name="issue-600.sli" time="1.66701" />
+  <testcase classname="core.mpitests" name="test_all_to_all.sli" time="1.05946" />
+  <testcase classname="core.mpitests" name="test_connect_array_all_to_all_mpi.sli" time="2.24792">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/mpitests/test_connect_array_all_to_all_mpi.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 2
+nest: /home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/target_data.h:264: void nest::TargetData::set_source_lid(nest::index): Assertion `source_lid < MAX_LID' failed.
+nest: /home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/target_data.h:264: void nest::TargetData::set_source_lid(nest::index): Assertion `source_lid < MAX_LID' failed.
+[dansan-cortex:66753] *** Process received signal ***
+[dansan-cortex:66754] *** Process received signal ***
+[dansan-cortex:66754] Signal: Aborted (6)
+[dansan-cortex:66754] Signal code:  (-6)
+[dansan-cortex:66753] Signal: Aborted (6)
+[dansan-cortex:66753] Signal code:  (-6)
+[dansan-cortex:66754] [ 0] [dansan-cortex:66753] [ 0] /usr/lib/libpthread.so.0(+0x14960)[0x7fae7412a960]
+[dansan-cortex:66753] /usr/lib/libpthread.so.0(+0x14960)[0x7fae58ee8960]
+[dansan-cortex:66754] [ 1] [ 1] /usr/lib/libc.so.6(gsignal+0x145)[0x7fae58d49355]
+[dansan-cortex:66754] [ 2] /usr/lib/libc.so.6(gsignal+0x145)[0x7fae73f8b355]
+[dansan-cortex:66753] [ 2] /usr/lib/libc.so.6(abort+0x127)[0x7fae58d32853]
+[dansan-cortex:66754] [ 3] /usr/lib/libc.so.6(abort+0x127)[0x7fae73f74853]
+[dansan-cortex:66753] [ 3] /usr/lib/libc.so.6(+0x25727)[0x7fae58d32727]
+[dansan-cortex:66754] [ 4] /usr/lib/libc.so.6(+0x25727)[0x7fae73f74727]
+[dansan-cortex:66753] [ 4] /usr/lib/libc.so.6(+0x34936)[0x7fae58d41936]
+[dansan-cortex:66754] [ 5] /usr/lib/libc.so.6(+0x34936)[0x7fae73f83936]
+[dansan-cortex:66753] [ 5] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest11SourceTable20get_next_target_dataEiiiRiRNS_10TargetDataE+0x619)[0x7fae59998669]
+[dansan-cortex:66754] [ 6] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest11SourceTable20get_next_target_dataEiiiRiRNS_10TargetDataE+0x619)[0x7fae74bda669]
+[dansan-cortex:66753] [ 6] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager30collocate_target_data_buffers_EiRKNS_13AssignedRanksERNS_18SendBufferPositionE+0x13d)[0x7fae5998639d]
+[dansan-cortex:66754] [ 7] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager30collocate_target_data_buffers_EiRKNS_13AssignedRanksERNS_18SendBufferPositionE+0x13d)[0x7fae74bc839d]
+[dansan-cortex:66753] [ 7] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager18gather_target_dataEi+0x2c2)[0x7fae74bc97e2]
+[dansan-cortex:66753] [ 8] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager18gather_target_dataEi+0x2c2)[0x7fae599877e2]
+[dansan-cortex:66754] [ 8] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager32update_connection_infrastructureEi+0xd7)[0x7fae74ba9147]
+[dansan-cortex:66753] [ 9] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager32update_connection_infrastructureEi+0xd7)[0x7fae59967147]
+[dansan-cortex:66754] [ 9] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(+0xef6c9)[0x7fae74bb16c9]
+[dansan-cortex:66753] [10] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(+0xef6c9)[0x7fae5996f6c9]
+[dansan-cortex:66754] [10] /usr/lib/libgomp.so.1(GOMP_parallel+0x46)[0x7fae741666b6]
+[dansan-cortex:66753] [11] /usr/lib/libgomp.so.1(GOMP_parallel+0x46)[0x7fae58f246b6]
+[dansan-cortex:66754] [11] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest17ConnectionManager15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x68a)[0x7fae74bb5f2a]
+[dansan-cortex:66753] [12] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest17ConnectionManager15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x68a)[0x7fae59973f2a]
+[dansan-cortex:66754] [12] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x63)[0x7fae74b976e3]
+[dansan-cortex:66753] [13] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x63)[0x7fae599556e3]
+[dansan-cortex:66754] [13] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest10NestModule24GetConnections_DFunction7executeEP14SLIInterpreter+0x4f)[0x7fae74b7261f]
+[dansan-cortex:66753] [14] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest10NestModule24GetConnections_DFunction7executeEP14SLIInterpreter+0x4f)[0x7fae5993061f]
+[dansan-cortex:66754] [14] /home/dansan/nest2.20/bin/../lib/libsli.so(_ZN14SLIInterpreter8execute_Em+0x262)[0x7fae7486ab02]
+[dansan-cortex:66753] [15] /home/dansan/nest2.20/bin/../lib/libsli.so(_ZN14SLIInterpreter8execute_Em+0x262)[0x7fae59628b02]
+[dansan-cortex:66754] [15] /home/dansan/nest2.20/bin/nest(main+0x4c)[0x563dbcd3a83c]
+/home/dansan/nest2.20/bin/nest(main+0x4c)[0x55684d71083c]
+[dansan-cortex:66753] [16] [dansan-cortex:66754] [16] /usr/lib/libc.so.6(__libc_start_main+0xf2)[0x7fae58d34002]
+[dansan-cortex:66754] [17] /home/dansan/nest2.20/bin/nest(_start+0x2e)[0x563dbcd3aece]
+[dansan-cortex:66754] *** End of error message ***
+/usr/lib/libc.so.6(__libc_start_main+0xf2)[0x7fae73f76002]
+[dansan-cortex:66753] [17] /home/dansan/nest2.20/bin/nest(_start+0x2e)[0x55684d710ece]
+[dansan-cortex:66753] *** End of error message ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 1 with PID 0 on node dansan-cortex exited on signal 6 (Aborted).
+--------------------------------------------------------------------------
+
+Jul 06 23:39:57 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_collect_assert_or_die: collected 
+    results.
+
+Jul 06 23:39:57 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <testcase classname="core.mpitests" name="test_connect_array_fixed_indegree_mpi.sli" time="2.03982">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/mpitests/test_connect_array_fixed_indegree_mpi.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 2
+nest: /home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/target_data.h:264: void nest::TargetData::set_source_lid(nest::index): Assertion `source_lid < MAX_LID' failed.
+[dansan-cortex:66812] *** Process received signal ***
+[dansan-cortex:66812] Signal: Aborted (6)
+[dansan-cortex:66812] Signal code:  (-6)
+nest: /home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/target_data.h:264: void nest::TargetData::set_source_lid(nest::index): Assertion `source_lid < MAX_LID' failed.
+[dansan-cortex:66811] *** Process received signal ***
+[dansan-cortex:66811] Signal: Aborted (6)
+[dansan-cortex:66811] Signal code:  (-6)
+[dansan-cortex:66812] [ 0] /usr/lib/libpthread.so.0(+0x14960)[0x7feef47be960]
+[dansan-cortex:66811] [ 0] /usr/lib/libpthread.so.0(+0x14960)[0x7f7b66116960]
+[dansan-cortex:66811] [ 1] [dansan-cortex:66812] [ 1] /usr/lib/libc.so.6(gsignal+0x145)[0x7f7b65f77355]
+[dansan-cortex:66811] [ 2] /usr/lib/libc.so.6(abort+0x127)[0x7f7b65f60853]
+[dansan-cortex:66811] [ 3] /usr/lib/libc.so.6(gsignal+0x145)[0x7feef461f355]
+[dansan-cortex:66812] [ 2] /usr/lib/libc.so.6(abort+0x127)[0x7feef4608853]
+[dansan-cortex:66812] [ 3] /usr/lib/libc.so.6(+0x25727)[0x7f7b65f60727]
+[dansan-cortex:66811] [ 4] /usr/lib/libc.so.6(+0x25727)[0x7feef4608727]
+[dansan-cortex:66812] [ 4] /usr/lib/libc.so.6(+0x34936)[0x7f7b65f6f936]
+[dansan-cortex:66811] [ 5] /usr/lib/libc.so.6(+0x34936)[0x7feef4617936]
+[dansan-cortex:66812] [ 5] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest11SourceTable20get_next_target_dataEiiiRiRNS_10TargetDataE+0x619)[0x7f7b66bc6669]
+[dansan-cortex:66811] [ 6] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest11SourceTable20get_next_target_dataEiiiRiRNS_10TargetDataE+0x619)[0x7feef526e669]
+[dansan-cortex:66812] [ 6] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager30collocate_target_data_buffers_EiRKNS_13AssignedRanksERNS_18SendBufferPositionE+0x13d)[0x7f7b66bb439d]
+[dansan-cortex:66811] [ 7] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager30collocate_target_data_buffers_EiRKNS_13AssignedRanksERNS_18SendBufferPositionE+0x13d)[0x7feef525c39d]
+[dansan-cortex:66812] [ 7] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager18gather_target_dataEi+0x2c2)[0x7f7b66bb57e2]
+[dansan-cortex:66811] [ 8] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager18gather_target_dataEi+0x2c2)[0x7feef525d7e2]
+[dansan-cortex:66812] [ 8] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager32update_connection_infrastructureEi+0xd7)[0x7f7b66b95147]
+[dansan-cortex:66811] [ 9] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager32update_connection_infrastructureEi+0xd7)[0x7feef523d147]
+[dansan-cortex:66812] [ 9] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(+0xef6c9)[0x7f7b66b9d6c9]
+[dansan-cortex:66811] [10] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(+0xef6c9)[0x7feef52456c9]
+[dansan-cortex:66812] [10] /usr/lib/libgomp.so.1(GOMP_parallel+0x46)[0x7feef47fa6b6]
+[dansan-cortex:66812] [11] /usr/lib/libgomp.so.1(GOMP_parallel+0x46)[0x7f7b661526b6]
+[dansan-cortex:66811] [11] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest17ConnectionManager15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x68a)[0x7feef5249f2a]
+[dansan-cortex:66812] [12] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest17ConnectionManager15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x68a)[0x7f7b66ba1f2a]
+[dansan-cortex:66811] [12] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x63)[0x7feef522b6e3]
+[dansan-cortex:66812] [13] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x63)[0x7f7b66b836e3]
+[dansan-cortex:66811] [13] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest10NestModule24GetConnections_DFunction7executeEP14SLIInterpreter+0x4f)[0x7feef520661f]
+[dansan-cortex:66812] [14] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest10NestModule24GetConnections_DFunction7executeEP14SLIInterpreter+0x4f)[0x7f7b66b5e61f]
+[dansan-cortex:66811] [14] /home/dansan/nest2.20/bin/../lib/libsli.so(_ZN14SLIInterpreter8execute_Em+0x262)[0x7feef4efeb02]
+[dansan-cortex:66812] [15] /home/dansan/nest2.20/bin/../lib/libsli.so(_ZN14SLIInterpreter8execute_Em+0x262)[0x7f7b66856b02]
+[dansan-cortex:66811] [15] /home/dansan/nest2.20/bin/nest(main+0x4c)[0x55d60707f83c]
+[dansan-cortex:66811] /home/dansan/nest2.20/bin/nest(main+0x4c)[0x55fb9ea2e83c]
+[dansan-cortex:66812] [16] [16] /usr/lib/libc.so.6(__libc_start_main+0xf2)[0x7feef460a002]
+[dansan-cortex:66812] [17] /usr/lib/libc.so.6(__libc_start_main+0xf2)[0x7f7b65f62002]
+[dansan-cortex:66811] [17] /home/dansan/nest2.20/bin/nest(_start+0x2e)[0x55d60707fece]
+/home/dansan/nest2.20/bin/nest(_start+0x2e)[0x55fb9ea2eece]
+[dansan-cortex:66812] *** End of error message ***
+[dansan-cortex:66811] *** End of error message ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 0 on node dansan-cortex exited on signal 6 (Aborted).
+--------------------------------------------------------------------------
+
+Jul 06 23:40:00 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_collect_assert_or_die: collected 
+    results.
+
+Jul 06 23:40:00 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <testcase classname="core.mpitests" name="test_connect_array_fixed_outdegree_mpi.sli" time="3.07327">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/mpitests/test_connect_array_fixed_outdegree_mpi.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 1
+nest: /home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/target_data.h:264: void nest::TargetData::set_source_lid(nest::index): Assertion `source_lid < MAX_LID' failed.
+[dansan-cortex:66868] *** Process received signal ***
+[dansan-cortex:66868] Signal: Aborted (6)
+[dansan-cortex:66868] Signal code:  (-6)
+[dansan-cortex:66868] [ 0] /usr/lib/libpthread.so.0(+0x14960)[0x7f5b64b0e960]
+[dansan-cortex:66868] [ 1] /usr/lib/libc.so.6(gsignal+0x145)[0x7f5b6496f355]
+[dansan-cortex:66868] [ 2] /usr/lib/libc.so.6(abort+0x127)[0x7f5b64958853]
+[dansan-cortex:66868] [ 3] /usr/lib/libc.so.6(+0x25727)[0x7f5b64958727]
+[dansan-cortex:66868] [ 4] /usr/lib/libc.so.6(+0x34936)[0x7f5b64967936]
+[dansan-cortex:66868] [ 5] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest11SourceTable20get_next_target_dataEiiiRiRNS_10TargetDataE+0x619)[0x7f5b655be669]
+[dansan-cortex:66868] [ 6] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager30collocate_target_data_buffers_EiRKNS_13AssignedRanksERNS_18SendBufferPositionE+0x13d)[0x7f5b655ac39d]
+[dansan-cortex:66868] [ 7] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest20EventDeliveryManager18gather_target_dataEi+0x2c2)[0x7f5b655ad7e2]
+[dansan-cortex:66868] [ 8] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager32update_connection_infrastructureEi+0xd7)[0x7f5b6558d147]
+[dansan-cortex:66868] [ 9] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(+0xef6c9)[0x7f5b655956c9]
+[dansan-cortex:66868] [10] /usr/lib/libgomp.so.1(GOMP_parallel+0x46)[0x7f5b64b4a6b6]
+[dansan-cortex:66868] [11] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest17ConnectionManager15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x68a)[0x7f5b65599f2a]
+[dansan-cortex:66868] [12] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest15get_connectionsERK12lockPTRDatumI10DictionaryXadL_ZN14SLIInterpreter14DictionarytypeEEEE+0x63)[0x7f5b6557b6e3]
+[dansan-cortex:66868] [13] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZNK4nest10NestModule24GetConnections_DFunction7executeEP14SLIInterpreter+0x4f)[0x7f5b6555661f]
+[dansan-cortex:66868] [14] /home/dansan/nest2.20/bin/../lib/libsli.so(_ZN14SLIInterpreter8execute_Em+0x262)[0x7f5b6524eb02]
+[dansan-cortex:66868] [15] /home/dansan/nest2.20/bin/nest(main+0x4c)[0x56220f4b583c]
+[dansan-cortex:66868] [16] /usr/lib/libc.so.6(__libc_start_main+0xf2)[0x7f5b6495a002]
+[dansan-cortex:66868] [17] /home/dansan/nest2.20/bin/nest(_start+0x2e)[0x56220f4b5ece]
+[dansan-cortex:66868] *** End of error message ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 0 on node dansan-cortex exited on signal 6 (Aborted).
+--------------------------------------------------------------------------
+
+Jul 06 23:40:03 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_collect_assert_or_die: collected 
+    results.
+
+Jul 06 23:40:03 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <testcase classname="core.mpitests" name="test_delay_exchange.sli" time="0.723614" />
+  <testcase classname="core.mpitests" name="test_fixed_indegree.sli" time="5.84789" />
+  <testcase classname="core.mpitests" name="test_gamma_sup_generator.sli" time="1.44601" />
+  <testcase classname="core.mpitests" name="test_gap_junctions_mpi.sli" time="1.55358" />
+  <testcase classname="core.mpitests" name="test_get_node_fncs.sli" time="1.45666" />
+  <testcase classname="core.mpitests" name="test_getrng_neuron.sli" time="1.49287" />
+  <testcase classname="core.mpitests" name="test_getrng_Vmset.sli" time="1.55675" />
+  <testcase classname="core.mpitests" name="test_ginzburg_neuron.sli" time="1.52753" />
+  <testcase classname="core.mpitests" name="test_global_rng.sli" time="1.49758" />
+  <testcase classname="core.mpitests" name="test_iaf_ring.sli" time="1.45472" />
+  <testcase classname="core.mpitests" name="test_mini_brunel_ps.sli" time="3.04986">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/mpitests/test_mini_brunel_ps.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 1
+[dansan-cortex:67560] *** Process received signal ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 0 on node dansan-cortex exited on signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+
+Jul 06 23:40:26 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_collect_assert_or_die: collected 
+    results.
+
+Jul 06 23:40:26 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <testcase classname="core.mpitests" name="test_mip_generator.sli" time="6.59426" />
+  <testcase classname="core.mpitests" name="test_multiplicity.sli" time="0.975519" />
+  <testcase classname="core.mpitests" name="test_neuron_vp.sli" time="1.22563" />
+  <testcase classname="core.mpitests" name="test_noise_generator.sli" time="1.46817" />
+  <testcase classname="core.mpitests" name="test_one_to_one.sli" time="1.08246" />
+  <testcase classname="core.mpitests" name="test_pairwise_bernoulli.sli" time="1.08698" />
+  <testcase classname="core.mpitests" name="test_parallel_conn_and_rand.sli" time="1.80335" />
+  <testcase classname="core.mpitests" name="test_poisson_generator_ps.sli" time="1.48956" />
+  <testcase classname="core.mpitests" name="test_poisson_generator.sli" time="1.5164" />
+  <testcase classname="core.mpitests" name="test_ppd_sup_generator.sli" time="1.46998" />
+  <testcase classname="core.mpitests" name="test_pp_psc_delta.sli" time="6.57571" />
+  <testcase classname="core.mpitests" name="test_pulsepacket_generator.sli" time="1.48711" />
+  <testcase classname="core.mpitests" name="test_rate_neurons_mpi.sli" time="1.2233" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_gamma_generator_1.sli" time="1.52153" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_gamma_generator_2.sli" time="1.41571" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_gamma_generator_3.sli" time="1.36928" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_gamma_generator_4.sli" time="1.4477" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_poisson_generator_1.sli" time="1.51067" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_poisson_generator_2.sli" time="1.46448" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_poisson_generator_3.sli" time="1.47612" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_poisson_generator_4.sli" time="1.26432" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_poisson_generator_5.sli" time="4.93052" />
+  <testcase classname="core.mpitests" name="test_sinusoidal_poisson_generator_6.sli" time="0.343228" />
+  <testcase classname="core.mpitests" name="test_symmetric_connections_mpi.sli" time="1.36603" />
+  <testcase classname="core.mpitests" name="ticket-336-mpi.sli" time="1.51305" />
+  <testcase classname="core.mpitests" name="ticket-400.sli" time="1.47439" />
+  <testcase classname="core.mpitests" name="ticket-460.sli" time="0.88105" />
+  <testcase classname="core.mpitests" name="ticket-955.sli" time="1.30606" />
+  <testcase classname="core.topology.mpitests" name="ticket-516.sli" time="0.275587">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/topology/mpitests/ticket-516.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 6
+--------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 6
+slots that were requested by the application:
+
+  /home/dansan/nest2.20/bin/nest
+
+Either request fewer slots for your application, or make more slots
+available for use.
+
+A "slot" is the Open MPI term for an allocatable unit where we can
+launch a process.  The number of slots available are defined by the
+environment in which Open MPI processes are run:
+
+  1. Hostfile, via "slots=N" clauses (N defaults to number of
+     processor cores if not provided)
+  2. The --host command line parameter, via a ":N" suffix on the
+     hostname (N defaults to 1 if not provided)
+  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  4. If none of a hostfile, the --host command line parameter, or an
+     RM is present, Open MPI defaults to the number of processor cores
+
+In all the above cases, if you want Open MPI to default to the number
+of hardware threads instead of the number of processor cores, use the
+--use-hwthread-cpus option.
+
+Alternatively, you can use the --oversubscribe option to ignore the
+number of available slots when deciding the number of processes to
+launch.
+--------------------------------------------------------------------------
+
+Jul 06 23:41:20 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_pass_or_die: collected results.
+
+Jul 06 23:41:20 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <testcase classname="core.topology.mpitests" name="topo_mpi_test_convergent.sli" time="3.00499">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/topology/mpitests/topo_mpi_test_convergent.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 1
+[dansan-cortex:69486] *** Process received signal ***
+[dansan-cortex:69486] Signal: Segmentation fault (11)
+[dansan-cortex:69486] Signal code: Address not mapped (1)
+[dansan-cortex:69486] Failing at address: 0x2015
+[dansan-cortex:69486] [ 0] /usr/lib/libpthread.so.0(+0x14960)[0x7fd15f3ce960]
+[dansan-cortex:69486] [ 1] /home/dansan/nest2.20/bin/../lib/libmodels.so(+0x57722f)[0x7fd16065c22f]
+[dansan-cortex:69486] [ 2] /home/dansan/nest2.20/bin/../lib/libmodels.so(+0x5762d7)[0x7fd16065b2d7]
+[dansan-cortex:69486] [ 3] /home/dansan/nest2.20/bin/../lib/libmodels.so(+0x5762d7)[0x7fd16065b2d7]
+[dansan-cortex:69486] [ 4] /home/dansan/nest2.20/bin/../lib/libmodels.so(+0x5762d7)[0x7fd16065b2d7]
+[dansan-cortex:69486] [ 5] /home/dansan/nest2.20/bin/../lib/libmodels.so(+0x5762d7)[0x7fd16065b2d7]
+[dansan-cortex:69486] [ 6] /home/dansan/nest2.20/bin/../lib/libmodels.so(_ZN5boost4sort7pdqsortI12IteratorPairI11bv_iteratorIN4nest6SourceERS5_PS5_ES3_INS4_16StaticConnectionINS4_24TargetIdentifierPtrRportEEERSB_PSB_EEEEvT_SG_+0x194)[0x7fd16065cba4]
+[dansan-cortex:69486] [ 7] /home/dansan/nest2.20/bin/../lib/libmodels.so(_ZN4nest4sortINS_6SourceENS_16StaticConnectionINS_24TargetIdentifierPtrRportEEEEEvR11BlockVectorIT_ERS5_IT0_E+0x105)[0x7fd16065dbf5]
+[dansan-cortex:69486] [ 8] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17ConnectionManager16sort_connectionsEi+0x9b)[0x7fd15fe581bb]
+[dansan-cortex:69486] [ 9] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(_ZN4nest17SimulationManager32update_connection_infrastructureEi+0x41)[0x7fd15fe4d0b1]
+[dansan-cortex:69486] [10] /home/dansan/nest2.20/bin/../lib/libnestkernel.so(+0xef6c9)[0x7fd15fe556c9]
+[dansan-cortex:69486] [11] /usr/lib/libgomp.so.1(+0x1a3ee)[0x7fd15f4123ee]
+[dansan-cortex:69486] [12] /usr/lib/libpthread.so.0(+0x9422)[0x7fd15f3c3422]
+[dansan-cortex:69486] [13] /usr/lib/libc.so.6(clone+0x43)[0x7fd15f2f2bf3]
+[dansan-cortex:69486] *** End of error message ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 0 on node dansan-cortex exited on signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+
+Jul 06 23:41:23 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_collect_assert_or_die: collected 
+    results.
+
+Jul 06 23:41:23 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <testcase classname="core.topology.mpitests" name="topo_mpi_test_divergent.sli" time="3.27496">
+    <failure message="1 (Failed: missed SLI assertion)" type=""><![CDATA[
+Running  /home/dansan/nest2.20/bin/sli /home/dansan/nest2.20/share/doc/nest/topology/mpitests/topo_mpi_test_divergent.sli
+SLI nest-2.20.0 (C) 2004 The NEST Initiative
+N_MPI: 1
+[dansan-cortex:69538] *** Process received signal ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 0 on node dansan-cortex exited on signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+
+Jul 06 23:41:27 unittest::assert_or_die [Fatal]: 
+    Assertion failed: unittest::distributed_collect_assert_or_die: collected 
+    results.
+
+Jul 06 23:41:27 unittest::assert_or_die [Fatal]: 
+    Exiting with code 1.
+]]></failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

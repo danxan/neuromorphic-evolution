@@ -1,0 +1,31 @@
+Name: putinterval - replace sections of an array/string
+
+Synopsis:
+
+string int string putinterval -&gt; string 
+array int array putinterval -&gt; array
+
+
+Examples:
+
+(hello) 2 (xx) putinterval -&gt; (hexxo) 
+[1 2 3 4 5] 2 [(xx) 99] putinterval -&gt; [1 2 (xx) 99 5]
+
+
+References:
+
+Postscript language
+
+
+Author:
+
+docu by Sirko Straube
+
+
+SeeAlso:
+
+getinterval
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/ps-lib.sli

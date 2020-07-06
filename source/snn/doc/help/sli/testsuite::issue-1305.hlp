@@ -1,0 +1,20 @@
+Name: testsuite::issue-1305 - Ensure that small simulation timesteps can be set without errors.
+
+Synopsis:
+
+(issue-1305) run -&gt; NEST exits if test fails
+
+
+Description:
+
+This ticket ensures that NEST can set small resolutions and deals with rounding errors correctly.
+
+
+Author:
+
+Philipp Weidel, 2019-12-06 based on material by Hans E Plesser, Jafet Diaz
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/regressiontests/issue-1305.sli

@@ -1,0 +1,10 @@
+Name: clear - Clear the entire stack.
+
+SeeAlso:
+
+pop
+npop
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slistack.cc

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: cvt_a</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: cvt_a</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">cvt_a - Converts an array to the equivalent type trie.</div>
+<div class="doc_header">Synopsis: </div>
+<div class="doc_paragraph">/name array cvt_a -&gt; trie </div>
+<div class="doc_header">Examples: </div>
+<div class="doc_paragraph">/pop [/anytype [-pop-]]  cvt_a -&gt; trie </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">cvt_a tries to construct a type-trie object from a given array.  <br/> The supplied literal is used as name for the trie-object.  <br/>   <br/> WARNING:  <br/> Be very careful when using this function. If the supplied  <br/> array is not well formed, the interpreter will abort  <br/> ungracefully!  <br/>   <br/> Tries should not be constructed fron scratch using cvt_a.  <br/> Use the operators trie and addtotrie for this purpose.  <br/> Rather, cvt_a is provided to correct minor errors in tries  <br/> with the help of cva_t. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">The supplied array is the root trie node.  <br/> The layout of each trie node must conform to the following  <br/> pattern:  <br/> [/type [next] [alt]] for non-leaf nodes and  <br/> [object]            for leaf nodes.  <br/>   <br/> /type is  a literal, representing the expected type.  <br/> object is any type of token. It is returned when this leaf of  <br/> the trie is reached.  <br/> [next] is an array, representig the next parameter levels.  <br/> [alt] is an array, representig parameter alternatives  <br/> at the current level.  <br/>   <br/> This pattern recursively defines a type-trie. Note, however,  <br/> that violations of this definition are handled ungracefully. </div>
+<div class="doc_header">Bugs: </div>
+<div class="doc_paragraph">Errors should be handled gracefully. </div>
+<div class="doc_header">Diagnostics: </div>
+<div class="doc_paragraph">This operation is low level and does not raise  <br/> errors. If the array is ill-formed, the interpreter will  <br/> abort! </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">cvt_a is the inverse function to cva_t.  <br/> If cvt_a is applied to the result of cva_t, it yields  <br/> the original argument:  <br/> /name [array] cvt_a cva_t -&gt; /name [array] </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Marc-Oliver Gewaltig </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">May 20 1999 </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/cva_t.html">cva_t</a></li>
+    <li><a href="../cc/trie.html">trie</a></li>
+    <li><a href="../cc/addtotrie.html">addtotrie</a></li>
+    <li><a href="../cc/type.html">type</a></li>
+    <li><a href="../sli/cst.html">cst</a></li>
+    <li><a href="../sli/cva.html">cva</a></li>
+    <li><a href="../cc/cv1d.html">cv1d</a></li>
+    <li><a href="../cc/cv2d.html">cv2d</a></li>
+    <li><a href="../sli/cvd.html">cvd</a></li>
+    <li><a href="../sli/cvi.html">cvi</a></li>
+    <li><a href="../sli/cvlit.html">cvlit</a></li>
+    <li><a href="../sli/cvn.html">cvn</a></li>
+    <li><a href="../sli/cvs.html">cvs</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slitypecheck.cc</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

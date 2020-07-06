@@ -1,0 +1,39 @@
+Name: Nest - apply a function n time
+
+Synopsis:
+
+x f n Nest -&gt; f( ...n times... f(f(x)) ...)
+
+
+Examples:
+
+0.2 {dup 1 exch sub mul 3.3 mul} 10 Nest
+
+
+Remarks:
+
+Nest is a restricted variant of repeat. 
+It is implemented to demonstrate the use of repeat as a 
+functional operator and for compatibility with Mathematica.
+
+
+Author:
+
+Diesmann
+
+
+FirstVersion:
+
+9.2.01
+
+
+SeeAlso:
+
+repeat
+forall
+NestList
+Fold
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/mathematica.sli

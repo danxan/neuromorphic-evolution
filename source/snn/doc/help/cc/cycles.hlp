@@ -1,0 +1,10 @@
+Name: cycles - return the number of elapsed interpreter cycle
+
+Synopsis:
+
+cycles -&gt; n
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slicontrol.cc

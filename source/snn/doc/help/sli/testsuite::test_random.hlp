@@ -1,0 +1,27 @@
+Name: testsuite::test_random - test use of random number distribution
+
+Synopsis:
+
+(test_random.sli) run -&gt; dies if assertion fails
+
+
+Description:
+
+The script shows the sequence of creating and seeding a random number generator, 
+creating specific random number distributions, and finally the drawing random numbers. 
+This is primarily a test of the syntax.
+
+
+Author:
+
+Diesmann
+
+
+FirstVersion:
+
+100918
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/unittests/test_random.sli

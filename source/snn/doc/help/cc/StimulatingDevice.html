@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: StimulatingDevice</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: StimulatingDevice</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">StimulatingDevice - General properties of stimulating devices.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">Stimulating devices inject signals into a network, either as analog signals  <br/> such a currents or as spike trains. Most stimulating devices are implemented  <br/> so that they are replicated on each virtual process. Many, but not all  <br/> devices generating noise or stochastic spike trains provide different signals  <br/> to each of their recipients; see the documentation of the individual device.  <br/>   <br/> Stimulating devices share the start, stop, and origin parameters global to  <br/> devices. Start and stop have the following meaning for stimulating devices  <br/> (origin is just a global offset):  <br/> &bull; For spike-emitting devices, only spikes with times t that fulfill  <br/> start &lt; t &lt;= stop  <br/> are emitted. Note that spikes that have time t==start are NOT emitted.  <br/> &bull; For current-emitting devices, the current is activated and deactivated such  <br/> that the current first affects the target dynamics during the update step  <br/> (start, start+h], i.e., an effect can be recorded at the earliest at time  <br/> start+h. The last interval during which the current affects the target's  <br/> dynamics is (stop-h, stop]. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">/start  - Actication time, relative to origin.  <br/> /stop   - Inactivation time, relative to origin.  <br/> /origin - Reference time for start and stop. </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/Device.html">Device</a></li>
+    <li><a href="../cc/RecordingDevice.html">RecordingDevice</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/stimulating_device.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

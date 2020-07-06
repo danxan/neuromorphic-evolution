@@ -1,0 +1,26 @@
+Name: ReadWord - read white space terminated string from stream
+
+Synopsis:
+
+istream ReadWord -&gt; istream string true 
+-&gt; istream false
+
+
+Description:
+
+ReadWord reads a single word from the istream. 
+The stream argument is not removed from the stack 
+to support successive application of gets.
+
+
+SeeAlso:
+
+getline
+gets
+getc
+ReadInt
+ReadDouble
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/sli_io.cc

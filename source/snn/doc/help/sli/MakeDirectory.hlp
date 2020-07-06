@@ -1,0 +1,53 @@
+Name: MakeDirectory - Create a new directory
+
+Synopsis:
+
+string MakeDirectory -&gt; boolean
+
+
+Examples:
+
+(NewSubDir) MakeDirectory -&gt; ./NewSubDir created
+
+
+Description:
+
+MakeDirectory creates the named subdirectory of your 
+current working directory.
+
+
+Parameters:
+
+string : Name of new subdirectory 
+boolean : A flag if operation succeded.
+
+
+Bugs:
+
+-
+
+
+Remarks:
+
+-
+
+
+Author:
+
+Hehl
+
+
+FirstVersion:
+
+Oct 12th 1999
+
+
+SeeAlso:
+
+FileNames
+MoveDirectory
+RemoveDirectory
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/filesystem.sli

@@ -1,0 +1,49 @@
+Name: =only - Print object to screen without linefeed
+
+Synopsis:
+
+any =only --&gt; -
+
+
+Examples:
+
+SLI ] 12 =only 
+12SLI ] {1211} =only 
+&lt;proceduretype&gt;SLI ]
+
+
+Description:
+
+like =, but without a linefeed.
+
+
+Parameters:
+
+any
+
+
+Remarks:
+
+Commented Hehl April 20, 1999 
+compare RedBook 2nd ed. page 362
+
+
+Author:
+
+Gewaltig, Diesmann
+
+
+FirstVersion:
+
+???
+
+
+SeeAlso:
+
+=
+==
+==only
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/sli-init.sli

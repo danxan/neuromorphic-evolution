@@ -1,0 +1,31 @@
+Name: info_ds - print contents of all dictionaries on the dicitonary stack to
+stream
+
+Synopsis:
+
+ostream info_ds -&gt; -
+
+
+Description:
+
+info_ds prints the contents of all dictionaries on the dictionary 
+stack to the supplied ostream. Dictionaries are printed from 
+bottom to top.
+
+
+Parameters:
+
+ostream - a valid output stream
+
+
+SeeAlso:
+
+dictstack
+info
+topinfo_d
+who
+whos
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidict.cc

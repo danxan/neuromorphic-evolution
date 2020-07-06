@@ -1,0 +1,22 @@
+Name: search - Search for a sequence in an array or string.
+
+Synopsis:
+
+(string) (seek) search -&gt; (post) (match) (pre) true 
+-&gt; (string) false 
+[array] [seek]  search -&gt; [post] [match] [pre] true 
+-&gt; [array] false
+
+
+Examples:
+
+(hamburger) (burg) search -&gt; true (ham) (burg) (er)
+
+
+SeeAlso:
+
+searchif
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidata.cc

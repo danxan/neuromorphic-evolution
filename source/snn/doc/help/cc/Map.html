@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: Map</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: Map</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">Map - Apply a procedure to each element of a list or string</div>
+<div class="doc_header">Synopsis: </div>
+<div class="doc_paragraph">[v1 ... vn] {f} Map -&gt; [ f(v1) ... f(vn) ]  <br/> [ [... n levels [a1 ... an] ... [b1 ... bn] ...] ] {f} [n] Map  <br/> -&gt; [ [... [f(a1) ... f(an)] ... [f(b1) ... f(bn)] ...] ]  <br/>   <br/> (c1 ... cn) {f} Map -&gt; (f(c1)...f(vn)) </div>
+<div class="doc_header">Examples: </div>
+<div class="doc_paragraph">[1 2 3 4 5]  {2 mul} Map          --&gt; [2 4 6 8 10]  <br/> [ [3. 4.] [7. 8.] ] {cvi} [2] Map --&gt; [[3 4] [7 8]]  <br/> [3. 4. 7. 8.] {cvi} [1] Map       --&gt; [3 4 7 8]  <br/>   <br/>   <br/> (abc) {1 add} Map                 --&gt; (bcd) </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">Map works like the corresponding Mathematica function.  <br/> For each element of the input array, Map calls f and replaces  <br/> the element with the result of f.  <br/> Note that f must return exactly one value! The result of Map  <br/> is a list with the same number of values as the argument list.  <br/> If f does not return a value, Map fails.  <br/> If f returns more than one value, the result of Map is undefined.  <br/>   <br/> The specification of the nesting level in Mathematica is more general.  <br/> Currently NEST only supports [n] </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">[v1 ... vn] - list of n arbitrary objects  <br/> (c1 ... cn) - string with n characters  <br/>   <br/> {f}         - function which can operate on the elements of [array].  <br/> This function must return exaclty one value.  <br/> [n]         - nesting level at which {f} is applied </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">Map is not part of PostScript </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">The Mathematica Book </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Marc-Oliver Gewaltig </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../sli/MapAt.html">MapAt</a></li>
+    <li><a href="../sli/MapIndexed.html">MapIndexed</a></li>
+    <li><a href="../sli/Table.html">Table</a></li>
+    <li><a href="../cc/forall.html">forall</a></li>
+    <li><a href="../cc/forallindexed.html">forallindexed</a></li>
+    <li><a href="../sli/NestList.html">NestList</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/sliarray.cc</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

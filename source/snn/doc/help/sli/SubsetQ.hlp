@@ -1,0 +1,27 @@
+Name: SubsetQ - Test if one dictionary is a subset of another
+
+Synopsis:
+
+dict1 dict2 SubsetQ -&gt; bool
+
+
+Examples:
+
+&lt;&lt; /a 1 /b 2 /c 2 &gt;&gt; &lt;&lt; /c 2 &gt;&gt; SubsetQ -&gt; true
+
+
+Description:
+
+The functions returns true, if all entries of dict2 are present in dict1 
+with the same values.
+
+
+Parameters:
+
+dict1 - dictionary 
+dict2 - dictionary
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/nest-init.sli

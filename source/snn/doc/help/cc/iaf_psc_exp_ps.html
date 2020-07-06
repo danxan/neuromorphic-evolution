@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: iaf_psc_exp_ps</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: iaf_psc_exp_ps</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">iaf_psc_exp_ps - Leaky integrate-and-fire neuron <br/> with exponential postsynaptic currents; canoncial implementation; <br/> bisectioning method for approximation of threshold crossing.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">iaf_psc_exp_ps is the "canonical" implementation of the leaky  <br/> integrate-and-fire model neuron with exponential postsynaptic currents  <br/> that uses the bisectioning method to approximate the timing of a threshold  <br/> crossing [1,2]. This is the most exact implementation available.  <br/>   <br/> The canonical implementation handles neuronal dynamics in a locally  <br/> event-based manner with in coarse time grid defined by the minimum  <br/> delay in the network, see [1,2]. Incoming spikes are applied at the  <br/> precise moment of their arrival, while the precise time of outgoing  <br/> spikes is determined by bisectioning once a threshold crossing has  <br/> been detected. Return from refractoriness occurs precisely at spike  <br/> time plus refractory period.  <br/>   <br/> This implementation is more complex than the plain iaf_psc_exp  <br/> neuron, but achieves much higher precision. In particular, it does not  <br/> suffer any binning of spike times to grid points. Depending on your  <br/> application, the canonical application with bisectioning may provide  <br/> superior overall performance given an accuracy goal; see [1,2] for  <br/> details. Subthreshold dynamics are integrated using exact integration  <br/> between events [3]. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">The following parameters can be set in the status dictionary.  <br/> E_L           double - Resting membrane potential in mV.  <br/> C_m           double - Capacitance of the membrane in pF.  <br/> tau_m         double - Membrane time constant in ms.  <br/> tau_syn_ex    double - Excitatory synaptic time constant in ms.  <br/> tau_syn_in    double - Inhibitory synaptic time constant in ms.  <br/> t_ref         double - Duration of refractory period in ms.  <br/> V_th          double - Spike threshold in mV.  <br/> I_e           double - Constant input current in pA.  <br/> V_min         double - Absolute lower value for the membrane potential in mV.  <br/> V_reset       double - Reset value for the membrane potential in mV. </div>
+<div class="doc_header">Receives: </div>
+<div class="doc_paragraph">SpikeEvent, CurrentEvent, DataLoggingRequest </div>
+<div class="doc_header">Sends: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">This model transmits precise spike times to target nodes (on-grid spike  <br/> time and offset). If this node is connected to a spike_detector, the  <br/> property "precise_times" of the spike_detector has to be set to true in  <br/> order to record the offsets in addition to the on-grid spike times.  <br/>   <br/> The iaf_psc_delta_ps neuron accepts connections transmitting  <br/> CurrentEvents. These events transmit stepwise-constant currents which  <br/> can only change at on-grid times.  <br/>   <br/> If tau_m is very close to tau_syn_ex or tau_syn_in, the model  <br/> will numerically behave as if tau_m is equal to tau_syn_ex or  <br/> tau_syn_in, respectively, to avoid numerical instabilities.  <br/> For details, please see doc/model_details/IAF_neurons_singularity.ipynb. </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">[1] Morrison A, Straube S, Plesser HE &amp; Diesmann M (2007) Exact subthreshold  <br/> integration with continuous spike times in discrete time neural network  <br/> simulations. Neural Comput 19, 47-79  <br/> [2] Hanuschkin A, Kunkel S, Helias M, Morrison A and Diesmann M (2010) A  <br/> general and efficient method for incorporating precise spike times in  <br/> globally timedriven simulations. Front Neuroinform 4:113  <br/> [3] Rotter S &amp; Diesmann M (1999) Exact simulation of time-invariant linear  <br/> systems with applications to neuronal modeling. Biol Cybern 81:381-402 </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Kunkel </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/iaf_psc_exp.html">iaf_psc_exp</a></li>
+    <li><a href="../cc/iaf_psc_alpha_ps.html">iaf_psc_alpha_ps</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/precise/iaf_psc_exp_ps.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

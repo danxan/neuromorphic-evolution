@@ -1,0 +1,33 @@
+Name: testsuite::test_connect_after_simulate - Create another connection after a call to Simulate and check whether it is created correctly
+
+Synopsis:
+
+(test_connect_after_simulate) run
+
+
+Description:
+
+Tests that it is possible to create connections between two 
+Simulate calls. 
+Checks that the number of connections that GetConnection 
+returns and the number of detected spikes increases accordingly 
+when another connection is created.
+
+
+Author:
+
+Susanne Kunkel, Jakob Jordan
+
+
+FirstVersion:
+
+02/06/2016
+
+
+SeeAlso:
+
+Connect
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/unittests/test_connect_after_simulate.sli

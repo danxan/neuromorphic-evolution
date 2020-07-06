@@ -1,0 +1,16 @@
+Name: modeldict - dictionary containing all devices and models of NEST
+
+Description:
+
+'modeldict info' shows the contents of the dictionary
+
+
+SeeAlso:
+
+info
+Device
+RecordingDevice
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/model_manager.h

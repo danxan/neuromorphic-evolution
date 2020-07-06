@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="dansan-cortex" name="core.phase_1" tests="6" time="8.49062" timestamp="2020-07-06T21:33:21+00:00">
+  <properties>
+    <property name="os.arch" value="x86_64" />
+    <property name="os.name" value="Linux" />
+    <property name="os.version" value="5.6.16-1-MANJARO" />
+    <property name="user.home" value="/home/dansan" />
+    <property name="user.name" value="dansan" />
+  </properties>
+  <testcase classname="core.selftests" name="test_pass.sli" time="3.16469" />
+  <testcase classname="core.selftests" name="test_goodhandler.sli" time="0.469921" />
+  <testcase classname="core.selftests" name="test_lazyhandler.sli" time="0.434149" />
+  <testcase classname="core.selftests" name="test_fail.sli" time="1.43147" />
+  <testcase classname="core.selftests" name="test_stop.sli" time="1.50437" />
+  <testcase classname="core.selftests" name="test_badhandler.sli" time="1.48602" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

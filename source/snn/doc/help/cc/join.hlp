@@ -1,0 +1,31 @@
+Name: join - Join two strings or arrays.
+
+Synopsis:
+
+(string1) (string2) join -&gt; (string1string2) 
+[array1] [array2] -&gt; [array1 array2] 
+&lt;&lt; dict1 &gt;&gt; &lt;&lt; dict2 &gt;&gt; -&gt; &lt;&lt; contents of dict2 assigned to dict1 &gt;&gt;
+
+
+Examples:
+
+(spike) (train) join -&gt; (spiketrain) 
+[1 2] [3 4] join -&gt; [1 2 3 4] 
+/j &lt;&lt; /C_m 250.0 /Tau_m 10.0 &gt;&gt; def  j  &lt;&lt; /Tau_m 25.0 /I_e 130.0 &gt;&gt; join j 
+-&gt; &lt;&lt; /C_m 250.0 /Tau_m 25.0 /I_e 130.0 &gt;&gt;
+
+
+Author:
+
+docu edited by Sirko Straube
+
+
+SeeAlso:
+
+append
+getinterval
+get
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidata.cc

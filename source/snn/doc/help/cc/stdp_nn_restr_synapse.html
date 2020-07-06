@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: stdp_nn_restr_synapse</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: stdp_nn_restr_synapse</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">stdp_nn_restr_synapse - Synapse type for spike-timing dependent <br/> plasticity with restricted symmetric nearest-neighbour spike pairing <br/> scheme.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">stdp_nn_restr_synapse is a connector to create synapses with spike time  <br/> dependent plasticity with the restricted symmetric nearest-neighbour spike  <br/> pairing scheme (fig. 7C in [1]).  <br/>   <br/> When a presynaptic spike occurs, it is taken into account in the depression  <br/> part of the STDP weight change rule with the nearest preceding postsynaptic  <br/> one, but only if the latter occured not earlier than the previous presynaptic  <br/> one. When a postsynaptic spike occurs, it is accounted in the facilitation  <br/> rule with the nearest preceding presynaptic one, but only if the latter  <br/> occured not earlier than the previous postsynaptic one. So, a spike can  <br/> participate neither in two depression pairs nor in two potentiation pairs.  <br/>   <br/> The pairs exactly coinciding (so that presynaptic_spike == postsynaptic_spike  <br/> + dendritic_delay), leading to zero delta_t, are discarded. In this case the  <br/> concerned pre/postsynaptic spike is paired with the second latest preceding  <br/> post/presynaptic one (for example, pre=={10 ms; 20 ms} and post=={20 ms} will  <br/> result in a potentiation pair 20-to-10).  <br/>   <br/> The implementation relies on an additional variable - the postsynaptic  <br/> eligibility trace [1] (implemented on the postsynaptic neuron side). It  <br/> decays exponentially with the time constant tau_minus and increases to 1 on  <br/> a post-spike occurrence (instead of increasing by 1 as in stdp_synapse). </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> ========= =======  ======================================================  <br/> tau_plus  ms      Time constant of STDP window, potentiation  <br/> (tau_minus defined in post-synaptic neuron)  <br/> lambda    real    Step size  <br/> alpha     real    Asymmetry parameter (scales depressing increments as  <br/> alpha*lambda)  <br/> mu_plus   real    Weight dependence exponent, potentiation  <br/> mu_minus  real    Weight dependence exponent, depression  <br/> Wmax      real    Maximum allowed weight  <br/> ========= =======  ======================================================  <br/> \endverbatim </div>
+<div class="doc_header">Transmits: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> .. [1] Morrison A., Diesmann M., and Gerstner W. (2008) Phenomenological  <br/> models of synaptic plasticity based on spike timing,  <br/> Biol. Cybern. 98, 459--478  <br/> \endverbatim </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Moritz Helias, Abigail Morrison  <br/>   <br/> Adapted by: Philipp Weidel, Alex Serenko </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">March 2006 </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/stdp_synapse.html">stdp_synapse</a></li>
+    <li><a href="../cc/stdp_nn_symm_synapse.html">stdp_nn_symm_synapse</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/stdp_nn_restr_connection.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

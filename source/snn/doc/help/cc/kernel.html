@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: kernel</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: kernel</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">kernel - Global properties of the simulation kernel.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">Global properties of the simulation kernel. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">The following parameters are available in the kernel status dictionary.  <br/>   <br/> Time and resolution  <br/> resolution                    doubletype  - The resolution of the simulation (in ms)  <br/> time                          doubletype  - The current simulation time  <br/> to_do                         integertype - The number of steps yet to be simulated (read only)  <br/> max_delay                     doubletype  - The maximum delay in the network  <br/> min_delay                     doubletype  - The minimum delay in the network  <br/> ms_per_tic                    doubletype  - The number of milliseconds per tic  <br/> tics_per_ms                   doubletype  - The number of tics per millisecond  <br/> tics_per_step                 integertype - The number of tics per simulation time step  <br/> T_max                         doubletype  - The largest representable time value (read only)  <br/> T_min                         doubletype  - The smallest representable time value (read only)  <br/>   <br/> Parallel processing  <br/> total_num_virtual_procs       integertype - The total number of virtual processes  <br/> local_num_threads             integertype - The local number of threads  <br/> num_processes                 integertype - The number of MPI processes (read only)  <br/> off_grid_spiking              booltype    - Whether to transmit precise spike times in MPI  <br/> communication (read only)  <br/>   <br/> Connector configuration  <br/> initial_connector_capacity    integertype - When a connector is first created, it starts with this  <br/> capacity (if &gt;= connector_cutoff)  <br/> large_connector_limit         integertype - Capacity doubling is used up to this limit  <br/> large_connector_growth_factor doubletype  - Capacity growth factor to use beyond the limit  <br/>   <br/> Random number generators  <br/> grng_seed                     integertype - Seed for global random number generator used  <br/> synchronously by all virtual processes to  <br/> create, e.g., fixed fan-out connections  <br/> (write only).  <br/> rng_seeds                     arraytype   - Seeds for the per-virtual-process random  <br/> number generators used for most purposes.  <br/> Array with one integer per virtual process,  <br/> all must be unique and differ from  <br/> grng_seed (write only).  <br/>   <br/> Output  <br/> data_path                     stringtype  - A path, where all data is written to  <br/> (default is the current directory)  <br/> data_prefix                   stringtype  - A common prefix for all data files  <br/> overwrite_files               booltype    - Whether to overwrite existing data files  <br/> print_time                    booltype    - Whether to print progress information during the simulation  <br/>   <br/> Network information  <br/> network_size                  integertype - The number of nodes in the network (read only)  <br/> num_connections               integertype - The number of connections in the network  <br/> (read only, local only)  <br/>   <br/> Waveform relaxation method (wfr)  <br/> use_wfr                       booltype    - Whether to use waveform relaxation method  <br/> wfr_comm_interval             doubletype  - Desired waveform relaxation communication interval  <br/> wfr_tol                       doubletype  - Convergence tolerance of waveform relaxation method  <br/> wfr_max_iterations            integertype - Maximal number of iterations used for waveform relaxation  <br/> wfr_interpolation_order       integertype - Interpolation order of polynomial used in wfr iterations  <br/>   <br/> Miscellaneous  <br/> dict_miss_is_error            booltype    - Whether missed dictionary entries are treated as errors </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/Simulate.html">Simulate</a></li>
+    <li><a href="../cc/Node.html">Node</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/kernel_manager.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

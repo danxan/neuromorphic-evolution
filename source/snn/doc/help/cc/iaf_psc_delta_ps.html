@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: iaf_psc_delta_ps</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: iaf_psc_delta_ps</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">iaf_psc_delta_ps - Leaky integrate-and-fire neuron model.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">iaf_psc_delta_ps is an implementation of a leaky integrate-and-fire model  <br/> where the potential jumps on each spike arrival.  <br/>   <br/> The threshold crossing is followed by an absolute refractory period  <br/> during which the membrane potential is clamped to the resting  <br/> potential.  <br/>   <br/> Spikes arriving while the neuron is refractory, are discarded by  <br/> default. If the property "refractory_input" is set to true, such  <br/> spikes are added to the membrane potential at the end of the  <br/> refractory period, dampened according to the interval between  <br/> arrival and end of refractoriness.  <br/>   <br/> The linear subthresold dynamics is integrated by the Exact  <br/> Integration scheme [1]. The neuron dynamics are solved exactly in  <br/> time. Incoming and outgoing spike times are handled precisely [3].  <br/>   <br/> An additional state variable and the corresponding differential  <br/> equation represents a piecewise constant external current.  <br/>   <br/> Spikes can occur either on receipt of an excitatory input spike, or  <br/> be caused by a depolarizing input current.  Spikes evoked by  <br/> incoming spikes, will occur precisely at the time of spike arrival,  <br/> since incoming spikes are modeled as instantaneous potential  <br/> jumps. Times of spikes caused by current input are determined  <br/> exactly by solving the membrane potential equation. Note that, in  <br/> contrast to the neuron models discussed in [3,4], this model has so  <br/> simple dynamics that no interpolation or iterative spike location  <br/> technique is required at all.  <br/>   <br/> The general framework for the consistent formulation of systems with  <br/> neuron like dynamics interacting by point events is described in  <br/> [1].  A flow chart can be found in [2].  <br/>   <br/> Critical tests for the formulation of the neuron model are the  <br/> comparisons of simulation results for different computation step  <br/> sizes. sli/testsuite/nest contains a number of such tests.  <br/>   <br/> The iaf_psc_delta_ps is the standard model used to check the consistency  <br/> of the nest simulation kernel because it is at the same time complex  <br/> enough to exhibit non-trivial dynamics and simple enough compute  <br/> relevant measures analytically. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">The following parameters can be set in the status dictionary.  <br/>   <br/> V_m        double - Membrane potential in mV  <br/> E_L        double - Resting membrane potential in mV.  <br/> C_m        double - Capacitance of the membrane in pF  <br/> tau_m      double - Membrane time constant in ms.  <br/> t_ref      double - Duration of refractory period in ms.  <br/> V_th       double - Spike threshold in mV.  <br/> V_reset    double - Reset potential of the membrane in mV.  <br/> I_e        double - Constant input current in pA.  <br/> V_min      double - Absolute lower value for the membrane potential in mV.  <br/>   <br/> refractory_input bool - If true, do not discard input during  <br/> refractory period. Default: false. </div>
+<div class="doc_header">Receives: </div>
+<div class="doc_paragraph">SpikeEvent, CurrentEvent, DataLoggingRequest </div>
+<div class="doc_header">Sends: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">This model transmits precise spike times to target nodes (on-grid spike  <br/> time and offset). If this node is connected to a spike_detector, the  <br/> property "precise_times" of the spike_detector has to be set to true in  <br/> order to record the offsets in addition to the on-grid spike times.  <br/>   <br/> The iaf_psc_delta_ps neuron accepts connections transmitting  <br/> CurrentEvents. These events transmit stepwise-constant currents which  <br/> can only change at on-grid times. </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">[1] Rotter S &amp; Diesmann M (1999) Exact simulation of time-invariant linear  <br/> systems with applications to neuronal modeling. Biologial Cybernetics  <br/> 81:381-402.  <br/> [2] Diesmann M, Gewaltig M-O, Rotter S, &amp; Aertsen A (2001) State space  <br/> analysis of synchronous spiking in cortical neural networks.  <br/> Neurocomputing 38-40:565-571.  <br/> [3] Morrison A, Straube S, Plesser H E, &amp; Diesmann M (2006) Exact  <br/> Subthreshold Integration with Continuous Spike Times in Discrete Time Neural  <br/> Network Simulations. To appear in Neural Computation.  <br/> [4] Hanuschkin A, Kunkel S, Helias M, Morrison A &amp; Diesmann M (2010)  <br/> A general and efficient method for incorporating exact spike times in  <br/> globally time-driven simulations Front Neuroinformatics, 4:113 </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">May 2006, Plesser; based on work by Diesmann, Gewaltig, Morrison,  <br/> Straube, Eppler </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/iaf_psc_delta.html">iaf_psc_delta</a></li>
+    <li><a href="../cc/iaf_psc_exp_ps.html">iaf_psc_exp_ps</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/precise/iaf_psc_delta_ps.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

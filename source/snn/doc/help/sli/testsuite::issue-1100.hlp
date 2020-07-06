@@ -1,0 +1,25 @@
+Synopsis:
+
+(issue-1100) run -&gt; NEST exits if test fails
+
+
+Description:
+
+Creates a parrot neuron, which receives one spike with multiplicity two from a 
+spike generator. The parrot neuron should then emit a spike with multiplicity 
+two, which should be counted as two spikes by the local spike counter.
+
+
+Author:
+
+Stine Brekke Vennemo
+
+
+FirstVersion:
+
+January 2019
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/regressiontests/issue-1100.sli

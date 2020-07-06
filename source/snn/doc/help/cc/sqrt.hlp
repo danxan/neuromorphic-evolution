@@ -1,0 +1,25 @@
+Name: sqrt - compute the square root of a non-negative number
+
+Synopsis:
+
+number sqrt -&gt; double
+
+
+Examples:
+
+4 sqrt -&gt; 2.0
+
+
+Description:
+
+sqrt computes the the square root of a number. 
+If the value is negative, a RangeCheck error is raised.
+
+
+SeeAlso:
+
+sqr
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slimath.cc

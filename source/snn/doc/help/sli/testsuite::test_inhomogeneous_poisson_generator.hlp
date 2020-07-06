@@ -1,0 +1,28 @@
+Name: testsuite::test_inhomogeneous_poisson_generator - li script to test
+inhomogeneous_poisson_generator device
+
+Synopsis:
+
+(test_inhomogeneous_poisson_generator) run
+
+
+Description:
+
+test_inhomogeneous_poisson_generator checks the 
+inhomogeneous_poisson_generator device and its 
+consistency with the nest simulation kernel.
+
+
+Author:
+
+Barna Zajzon
+
+
+FirstVersion:
+
+December 2017
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/unittests/test_inhomogeneous_poisson_generator.sli

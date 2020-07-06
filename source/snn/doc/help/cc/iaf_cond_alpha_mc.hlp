@@ -1,0 +1,111 @@
+Name: iaf_cond_alpha_mc - PROTOTYPE Multi-compartment conductance-based leaky
+integrate-and-fire neuron model.
+
+Description:
+
+THIS MODEL IS A PROTOTYPE FOR ILLUSTRATION PURPOSES. IT IS NOT YET 
+FULLY TESTED. USE AT YOUR OWN PERIL! 
+iaf_cond_alpha_mc is an implementation of a multi-compartment spiking 
+neuron using IAF dynamics with conductance-based synapses. It serves 
+mainly to illustrate the implementation of multicompartment models in 
+NEST. 
+The model has three compartments: soma, proximal and distal dendrite, 
+labeled as s, p, and d, respectively. Compartments are connected through 
+passive conductances as follows 
+@f[ 
+C_{m.s} d/dt V_{m.s} = \ldots - g_{sp} ( V_{m.s} - V_{m.p} ) \\ 
+C_{m.p} d/dt V_{m.p} = \ldots - g_{sp} ( V_{m.p} - V_{m.s} ) 
+&bull; g_{pd} ( V_{m.p} - V_{m.d} ) \\ 
+C_{m.d} d/dt V_{m.d} = \ldots \qquad - g_{pd} ( V_{m.d} - V_{m.p} ) 
+@f] 
+A spike is fired when the somatic membrane potential exceeds threshold, 
+\f$ V_{m.s} &gt;= V_{th} \f$. After a spike, somatic membrane potential is 
+clamped to a reset potential, \f$ V_{m.s} == V_{reset} \f$, for the refractory 
+period. Dendritic membrane potentials are not manipulated after a spike. 
+There is one excitatory and one inhibitory conductance-based synapse 
+onto each compartment, with alpha-function time course. The alpha 
+function is normalised such that an event of weight 1.0 results in a 
+peak current of 1 nS at t = tau_syn. Each compartment can also receive 
+current input from a current generator, and an external (rheobase) 
+current can be set for each compartment. 
+Synapses, including those for injection external currents, are addressed through 
+the receptor types given in the receptor_types entry of the state dictionary. 
+Note that in contrast to the single-compartment iaf_cond_alpha model, all 
+synaptic weights must be positive numbers!
+
+
+Parameters:
+
+The following parameters can be set in the status dictionary. Parameters 
+for each compartment are collected in a sub-dictionary; these sub-dictionaries 
+are called "soma", "proximal", and "distal", respectively. In the list below, 
+these parameters are marked with an asterisk. 
+\verbatim embed:rst 
+============ ======= ========================================================== 
+V_m*        mV      Membrane potential 
+E_L*        mV      Leak reversal potential 
+C_m*        pF      Capacity of the membrane 
+E_ex*       mV      Excitatory reversal potential 
+E_in*       mV      Inhibitory reversal potential 
+g_L*        nS      Leak conductance 
+tau_syn_ex* ms      Rise time of the excitatory synaptic alpha function 
+tau_syn_in* ms      Rise time of the inhibitory synaptic alpha function 
+I_e*        pA      Constant input current 
+g_sp        nS      Conductance connecting soma and proximal dendrite 
+g_pd        nS      Conductance connecting proximal and distal dendrite 
+t_ref       ms      Duration of refractory period 
+V_th        mV      Spike threshold in mV 
+V_reset     mV      Reset potential of the membrane 
+============ ======= ========================================================== 
+\endverbatim 
+Example: 
+See pynest/examples/mc_neuron.py.
+
+
+Receives:
+
+SpikeEvent, CurrentEvent, DataLoggingRequest
+
+
+Sends:
+
+SpikeEvent
+
+
+Remarks:
+
+This is a prototype for illustration which has undergone only limited 
+testing. Details of the implementation and user-interface will likely 
+change. USE AT YOUR OWN PERIL! 
+&bull;  All parameters that occur for both compartments 
+and dendrite are stored as C arrays, with index 0 being soma.
+
+
+References:
+
+\verbatim embed:rst 
+.. [1] Meffin H, Burkitt AN, Grayden DB (2004). An analytical 
+model for the large, fluctuating synaptic conductance state typical of 
+neocortical neurons in vivo. Journal of Computational Neuroscience, 
+16:159-175. 
+DOI: https://doi.org/10.1023/B:JCNS.0000014108.03012.81 
+.. [2] Bernander O, Douglas RJ, Martin KAC, Koch C (1991). Synaptic background 
+activity influences spatiotemporal integration in single pyramidal 
+cells.  Proceedings of the National Academy of Science USA, 
+88(24):11569-11573. 
+DOI: https://doi.org/10.1073/pnas.88.24.11569 
+\endverbatim
+
+
+Author:
+
+Plesser
+
+
+SeeAlso:
+
+iaf_cond_alpha
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/iaf_cond_alpha_mc.h

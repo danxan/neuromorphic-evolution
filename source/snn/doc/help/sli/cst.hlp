@@ -1,0 +1,32 @@
+Name: cst - Convert string to array of token
+
+Synopsis:
+
+string cst -&gt; array
+
+
+Examples:
+
+(hello) cst -&gt; [hello]
+
+
+Author:
+
+docu by Sirko Straube
+
+
+SeeAlso:
+
+cv1d
+cv2d
+cva
+cvd_s
+cvi_s
+cvlit
+cvn
+cvs
+cvt_a
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/lib/sli/sli-init.sli

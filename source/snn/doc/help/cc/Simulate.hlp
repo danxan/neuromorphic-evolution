@@ -1,0 +1,22 @@
+Name: Simulate - imulate n millisecond
+
+Synopsis:
+
+n(int) Simulate -&gt; -
+
+
+Description:
+
+Simulate the network for n milliseconds.
+
+
+SeeAlso:
+
+Run
+Prepare
+Cleanup
+unit_conversion
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/nestmodule.cpp

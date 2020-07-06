@@ -1,0 +1,30 @@
+Name: length_d - counts elements of a dictionary
+
+Synopsis:
+
+dict length_d -&gt; int
+
+
+Examples:
+
+&lt;&lt;/a 1 /b 2&gt;&gt; length_d -&gt; 2 
+modeldict length_d --&gt; 34
+
+
+Remarks:
+
+Use length if you are not sure of the data type.
+
+
+Author:
+
+docu by Sirko Straube
+
+
+SeeAlso:
+
+length
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slidict.cc

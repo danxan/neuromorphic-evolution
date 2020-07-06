@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: SetStatus</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: SetStatus</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">SetStatus - ets the value of properties of a node, connection, random <br/> deviate generator or object</div>
+<div class="doc_header">Synopsis: </div>
+<div class="doc_paragraph">gid   dict SetStatus -&gt; -  <br/> conn  dict SetStatus -&gt; -  <br/> rdev  dict SetStatus -&gt; -  <br/> obj   dict SetStatus -&gt; - </div>
+<div class="doc_header">Examples: </div>
+<div class="doc_paragraph">/dc_generator Create /dc_gen Set  %Creates a dc_generator, which is a node  <br/> dc_gen GetStatus info %view properties (amplitude is 0)  <br/> dc_gen &lt;&lt; /amplitude 1500. &gt;&gt; SetStatus  <br/> dc_gen GetStatus info % amplitude is now 1500 </div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">SetStatus changes properties of a node (specified by its gid), a connection  <br/> (specified by a connection object), a random deviate generator (see  <br/> GetStatus_v for more) or an object as used in object-oriented programming in  <br/> SLI (see cvo for more). Properties can be inspected with GetStatus.  <br/>   <br/> Note that many properties are read-only and cannot be changed. </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">docu by Sirko Straube </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../sli/ShowStatus.html">ShowStatus</a></li>
+    <li><a href="../cc/GetStatus.html">GetStatus</a></li>
+    <li><a href="../cc/info.html">info</a></li>
+    <li><a href="../cc/modeldict.html">modeldict</a></li>
+    <li><a href="../cc/Set.html">Set</a></li>
+    <li><a href="../sli/SetStatus_v.html">SetStatus_v</a></li>
+    <li><a href="../sli/SetStatus_dict.html">SetStatus_dict</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/nestkernel/nestmodule.cpp</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

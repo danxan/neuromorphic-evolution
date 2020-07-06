@@ -1,0 +1,16 @@
+Name: ReadInt - Read an integer number from an input stream.
+
+Synopsis:
+
+istream ReadInt -&gt; istream int true 
+-&gt; istream false
+
+
+SeeAlso:
+
+ReadDouble
+ReadWord
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/sli_io.cc

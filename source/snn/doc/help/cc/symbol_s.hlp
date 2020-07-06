@@ -1,0 +1,15 @@
+Name: symbol_s - read a symbol from a string
+
+Synopsis:
+
+string symbol_s -&gt; post any true 
+false
+
+
+SeeAlso:
+
+token
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slicontrol.cc

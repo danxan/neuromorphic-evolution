@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    
+        <title>NEST Command Index: stdp_facetshw_synapse_hom</title>
+        <style type="text/css">
+            body {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  padding: 15px 0 0 15px;
+}
+p {
+  padding-left: 15px;
+}
+a {
+  color: #339;
+  text-decoration: none;
+}
+a:visited {
+  color: #339;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+table.headerfooter {
+  margin: 20px 0 20px 0;
+  background-color: #eee;
+  width: 100%;
+  height: 30px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+table.commands {
+  margin: 15px 0 15px 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.commands td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px dotted #ccc;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+table.letteridx {
+  margin: 0;
+  background-color: #eee;
+  width: 90%;
+  border: 2px solid #ccc;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table.letteridx td {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+table.letteridx a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+td.left{
+  width:30%;
+}
+div.wrap {
+  padding-left: 15px;
+}
+div.doc_header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+div.doc_paragraph {
+  font-size: .8em;
+  font-family: Courier New, Courier, fixed;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+         </style>
+        </head>
+        <body>
+    <h1>Command: stdp_facetshw_synapse_hom</h1>
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+    <div class="wrap">
+    <!-- Begin -->
+    <div class="doc_header">Name:</div>
+<div class="doc_paragraph">stdp_facetshw_synapse_hom - Synapse type for spike-timing dependent <br/> plasticity using homogeneous parameters, <br/> i.e. all synapses have the same parameters.</div>
+<div class="doc_header">Description: </div>
+<div class="doc_paragraph">stdp_facetshw_synapse is a connector to create synapses with spike-timing  <br/> dependent plasticity (as defined in [1]).  <br/> This connector is a modified version of stdp_synapse.  <br/> It includes constraints of the hardware developed in the FACETS (BrainScaleS)  <br/> project [2,3], as e.g. 4-bit weight resolution, sequential updates of groups  <br/> of synapses and reduced symmetric nearest-neighbor spike pairing scheme. For  <br/> details see [3].  <br/> The modified spike pairing scheme requires the calculation of tau_minus_  <br/> within this synapse and not at the neuron site via Kplus_ like in  <br/> stdp_connection_hom. </div>
+<div class="doc_header">Parameters: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> ======================= =========== ===========================================  <br/> **Common properties**  <br/> -------------------------------------------------------------------------------  <br/> tau_plus               ms          Time constant of STDP window, causal branch  <br/> tau_minus_stdp         ms          Time constant of STDP window, anti-causal  <br/> branch  <br/> Wmax                   real        Maximum allowed weight  <br/> no_synapses            integer     Total number of synapses  <br/> synapses_per_driver    integer     Number of synapses updated at once  <br/> driver_readout_time    real        Time for processing of one synapse row  <br/> (synapse line driver)  <br/> readout_cycle_duration real        Duration between two subsequent  <br/> updates of same synapse (synapse line  <br/> driver)  <br/> lookuptable_0          list of     Three look-up tables (LUT)  <br/> integers  <br/> lookuptable_1          list of  <br/> integers  <br/> lookuptable_2          list of  <br/> integers  <br/> configbit_0            list of     Configuration bits for evaluation  <br/> integers    function. For details see code in  <br/> function eval_function_ and [4]  <br/> (configbit[0]=e_cc, ..[1]=e_ca,  <br/> ..[2]=e_ac, ..[3]=e_aa).  <br/> Depending on these two sets of  <br/> configuration bits weights are updated  <br/> according LUTs (out of three: (1,0),  <br/> (0,1), (1,1)). For (0,0) continue  <br/> without reset.  <br/> configbit_1            list of  <br/> integers  <br/> reset_pattern          list of     Configuration bits for reset behavior.  <br/> integers    Two bits for each LUT (reset causal  <br/> and acausal). In hardware only (all  <br/> false; never reset) or (all true;  <br/> always reset) is allowed.  <br/> ======================= =========== ===========================================  <br/>   <br/>   <br/> ============  ======= =====================================================  <br/> **Individual properties**  <br/> ---------------------------------------------------------------------------  <br/> a_causal     real    Causal and anti-causal spike pair accumulations  <br/> a_acausal    real  <br/> a_thresh_th  real    Two thresholds used in evaluation function  <br/> No common property, because variation of analog  <br/> synapse circuitry can be applied here  <br/> a_thresh_tl  real  <br/> synapse_id   integer Synapse ID, used to assign synapses to groups (synapse  <br/> drivers)  <br/> ============  ======= =====================================================  <br/> \endverbatim </div>
+<div class="doc_header">Transmits: </div>
+<div class="doc_paragraph">SpikeEvent </div>
+<div class="doc_header">Remarks: </div>
+<div class="doc_paragraph">The synapse IDs are assigned to each synapse in an ascending order (0,1,2,  <br/> ...) according their first presynaptic activity and is used to group synapses  <br/> that are updated at once. It is possible to avoid activity dependent synapse  <br/> ID assignments by manually setting the no_synapses and the synapse_id(s)  <br/> before running the simulation. The weights will be discretized after the  <br/> first presynaptic activity at a synapse.  <br/>   <br/> Common properties can only be set on the synapse model using SetDefaults. </div>
+<div class="doc_header">References: </div>
+<div class="doc_paragraph">\verbatim embed:rst  <br/> .. [1] Morrison A, Diesmann M, Gerstner W (2008). Phenomenological models of  <br/> synaptic plasticity based on spike-timing. Biological Cybernetics,  <br/> 98:459-478. DOI: https://doi.org/10.1007/s00422-008-0233-1  <br/> .. [2] Schemmel J, Gruebl A, Meier K, Mueller E (2006). Implementing synaptic  <br/> plasticity in a VLSI spiking neural network model. In Proceedings of the  <br/> 2006 International Joint Conference on Neural Networks, pp.1--6,  <br/> IEEE Press. DOI: https://doi.org/10.1109/IJCNN.2006.246651  <br/> .. [3] Pfeil T, Potjans TC, Schrader S, Potjans W, Schemmel J, Diesmann M,  <br/> Meier K (2012). Is a 4-bit synaptic weight resolution enough? -  <br/> constraints on enabling spike-timing dependent plasticity in  <br/> neuromorphic hardware. Frontiers in Neuroscience 6(90).  <br/> DOI: https://doi.org/10.3389/fnins.2012.00090  <br/> .. [4] Friedmann, S. in preparation  <br/> \endverbatim </div>
+<div class="doc_header">Author: </div>
+<div class="doc_paragraph">Thomas Pfeil (TP), Moritz Helias, Abigail Morrison </div>
+<div class="doc_header">FirstVersion: </div>
+<div class="doc_paragraph">July 2011 </div>
+<div class="doc_header">SeeAlso: </div>
+<ul>
+    <li><a href="../cc/stdp_synapse.html">stdp_synapse</a></li>
+    <li><a href="../cc/synapsedict.html">synapsedict</a></li>
+    <li><a href="../cc/tsodyks_synapse.html">tsodyks_synapse</a></li>
+    <li><a href="../cc/static_synapse.html">static_synapse</a></li>
+</ul>
+<div class="doc_header">Source:</div>
+<div class="doc_paragraph">/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/models/stdp_connection_facetshw_hom.h</div>
+    <!-- End -->
+    </div>
+
+
+    <table class="headerfooter">
+      <tbody><tr>
+        <td width="30%" align="center"><a href="../../index.html">
+            NEST HelpDesk</a></td>
+        <td width="30%" align="center"><a href="../helpindex.html">
+            Command Index</a></td>
+        <td width="30%" align="center"><a href="../../quickref.html">
+            NEST Quick Reference</a></td>
+      </tr>
+    </tbody></table>
+
+     <p style="text-align:center">
+    &copy; 2004 <a href="https://www.nest-initiative.org">The NEST Initiative</a>
+ </p>
+
+    </body>
+</html>

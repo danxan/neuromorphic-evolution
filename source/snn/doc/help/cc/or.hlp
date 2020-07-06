@@ -1,0 +1,35 @@
+Name: or - logical or operator.
+
+Synopsis:
+
+bool1 bool2 or -&gt; bool 
+int1  int2  or -&gt; int
+
+
+Examples:
+
+true  false or -&gt; true 
+true  true  or -&gt; true 
+false false or -&gt; false 
+2     8     or -&gt; 10 
+1     0     or -&gt; 1
+
+
+Description:
+
+For booleans, or returns true, if either, 
+the arguments are true and false 
+otherwise. 
+For integers, or performs a bitwise or between the 
+two arguments.
+
+
+SeeAlso:
+
+and
+or
+not
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/slimath.cc

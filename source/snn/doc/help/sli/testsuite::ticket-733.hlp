@@ -1,0 +1,15 @@
+Name: testsuite::ticket-733 - neq does not work correctly for intvector and doublevector
+
+Synopsis:
+
+(ticket-773) run -&gt; NEST exits if test fails
+
+
+Description:
+
+This test verify that neq returns false when two intvectors or two double vectors are equals
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/regressiontests/ticket-733.sli

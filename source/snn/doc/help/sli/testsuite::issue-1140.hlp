@@ -1,0 +1,24 @@
+Synopsis:
+
+(issue-1140) run -&gt; NEST exits if test fails
+
+
+Description:
+
+Tests if parameters for inhomogeneous_poisson_generator can be set with empty 
+arrays for rate_times and rate_values.
+
+
+Author:
+
+Håkon Mørk
+
+
+FirstVersion:
+
+March 2019
+
+
+Source:
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/testsuite/regressiontests/issue-1140.sli

@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/get_mem.c
+config.h
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/config.h
+assert.h
+-
+spi/bgp_SPI.h
+-
+kernel/memory.h
+-
+mach/mach.h
+-
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/psignal.c
+psignal.h
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/psignal.h
+
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/psignal.h
+config.h
+/home/dansan/neuromorphic/source/snn/nest-simulator-2.20.0/sli/config.h
+signal.h
+-
+signal.h
+-
+
+libnestutil/config.h
+
