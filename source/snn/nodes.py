@@ -23,9 +23,11 @@ class Unconnected_nodes(object):
         self.asm = pynn.Assembly()
         for i in range(int(num_pop)):
             self.pop = pynn.Population(pop_size, pynn.IF_cond_exp, cellparams=self.neuron_parameters)
+            # self.pop.record('v', 'spikes')
             self.populations.append(self.pop)
             self.asm += self.pop
-            self.pop.record('v')
+
+        # self.asm.record('spikes')
             
 class Fully_connected_nodes(Unconnected_nodes):
     def __init__(self, num_pop=1, pop_size=1):
@@ -33,14 +35,15 @@ class Fully_connected_nodes(Unconnected_nodes):
 
         connector = pynn.AllToAllConnector()
 
-        self.connections = []
-        
-        for pop_a in self.populations:
-            for pop_b in self.populations:
-                self.connections.append(pynn.Projection(pop_a, pop_b, connector)
+        self.connections = { 'exc' : [],
+                             'inh' : [] } 
+
+        for pa in self.populations:
+            for pb in self.populations:
+                self.connections['exc'].append(pynn.Projection(pa, pb, connector, receptor_type='excitatory'))
+                self.connections['inh'].append(pynn.Projection(pa, pb, connector, receptor_type='inhibitory'))
 
 class Input_nodes(Unconnected_nodes):
-    # TODO: Write a method to accept input
     def __init__(self, num_pop=1, pop_size=1, exc_spike_times=100):
         Unconnected_nodes.__init__(self, num_pop, pop_size)
 
@@ -60,3 +63,5 @@ def test_output_nodes():
 if __name__ == '__main__':
     inp = Input_nodes(2,2)
     print(inp.populations)
+    hid = Fully_connected_nodes()
+    out = Output_nodes()
