@@ -189,7 +189,7 @@ def run(config_file):
     max_fit_epochs = []
     mean_fit_epochs = []
 
-    pop_size = [i+i*i for i in range(1,15)]
+    pop_size = [25, 50, 100, 200, 400, 800]
     for ps in pop_size:
         #print(f'init pop')
         # Create the population, which is the top-level object for a NEAT run.
@@ -238,8 +238,9 @@ def run(config_file):
     filename = os.path.join(local_dir, "max-fitness-popsize.svg")
     plt.plot(pop_size, max_fit_epochs, label='Max fitness')
     plt.plot(pop_size, mean_fit_epochs, label='Mean fitness')
+    plt.title("Each run is 60 000 generations")
     plt.xlabel('Population size')
-    plt.ylabel('Fitness: # Successfull trials out of a total of 128 games')
+    plt.ylabel('Fitness: Number of successful trials out of a total of 128 games')
     plt.legend()
     plt.savefig(filename)
     #plt.show()
