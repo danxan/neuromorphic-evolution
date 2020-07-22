@@ -49,21 +49,33 @@ class Animat(object):
                 self.output_connections['inh'].append(pynn.Projection(h, o, connector, receptor_type='inhibitory'))
 
     def setWeights(self, genome):
-        for i, c in enumerate(self.input_connections['exc']):
-            c.set(weight=genome[:self.num_hid*self.num_inp][i])
-        for i, c in enumerate(self.input_connections['inh']):
-            c.set(weight=genome[self.num_hid*self.num_inp:(self.num_hid*self.num_inp+self.num_hid*self.num_inp)][i])
+        if len(genome) < self.num_inp*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out:
+            print("There's not enough genes in the genome to set all the weights. The remainder of the synapses will remain unchanged.")
+        for i, g in enumerate(genome):
 
-        for i, c in enumerate(self.hidden_connections['exc']):
-            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid)][0])
-        for i, c in enumerate(self.hidden_connections['inh']):
-            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid)][i])
+            if i < self.num_inp:
+                self.input_connections['exc'][i%self.num_inp].set(weight=0)
+                self.input_connections['inh'][i%self.num_inp].set(weight=0)
+                if g > 0:
+                    self.input_connections['exc'][i%self.num_inp].set(weight=g)
+                elif g < 0:
+                    self.input_connections['inh'][i%self.num_inp].set(weight=-g)
 
-        for i, c in enumerate(self.output_connections['exc']):
-            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out)][i])
-        for i, c in enumerate(self.output_connections['inh']):
-            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out+self.num_hid*self.num_out)][i])
+            if i < self.num_inp+self.num_hid:
+                self.hidden_connections['exc'][i%self.num_hid].set(weight=0)
+                self.hidden_connections['inh'][i%self.num_hid].set(weight=0)
+                if g > 0:
+                    self.hidden_connections['exc'][i%self.num_hid].set(weight=g)
+                elif g < 0:
+                    self.hidden_connections['inh'][i%self.num_hid].set(weight=-g)
 
+            if i < self.num_inp+self.num_hid+self.num_out:
+                self.output_connections['exc'][i%self.num_out].set(weight=0)
+                self.output_connections['inh'][i%self.num_out].set(weight=0)
+                if g > 0:
+                    self.output_connections['exc'][i%self.num_out].set(weight=g)
+                elif g < 0:
+                    self.output_connections['inh'][i%self.num_out].set(weight=-g)
 
     def plot_spiketrains(self, segment):
         for spiketrain in segment.spiketrains:
@@ -136,16 +148,19 @@ if __name__ == '__main__':
     pynn.setup()
     animat = Animat(pop_size=5, input_n=2, output_n=2, hidden_n=4)
     #genome = [random.randint(0,15) for i in range(2*(2*4+4*4+4*2))]
-    genome = np.random.randint(0,15, 2*(2*4+4*4+4*2))
+    genome = np.random.randint(-15,15, (2*4+4*4+4*2))
     for i, g in enumerate(genome):
         if np.random.random() > 0.3:
             genome[i] = 0
     genome[0] = 15
     genome[1] = 15
 
-    genome = np.array([15,15,0,8,6,0,0,14,0,0,0,12,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,8,13,0,0,13,9,0,0,0,0,0,0,3,0,0,5,6,4,7,0,0,13,0,0,0,0,0,0,13,6,13,0,0,0,0,8,5,0])
-    genome = genome
+    genome = np.array([  2, -11, -11,   1,  14,  11,   0,   0,   0,  -7,  10,   7,   4,
+        -7,   2,   5,   8,  -9,  13,  -5, -11,   3,   7,  -4,   5,   0,
+        -6,  -2,  -4,  14,  -9, -15])
+    genome[0] = 15
+    genome[1] = 15
     print(genome)
     animat.setWeights(genome)
-    animat.run(stimuli=[0,0])
+    animat.run(stimuli=[1,1])
 
