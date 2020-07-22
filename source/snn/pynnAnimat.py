@@ -8,9 +8,16 @@ from nodes import *
 
 class Animat(object):
     def __init__(self, input_n=2, hidden_n=4, output_n=2, pop_size=1):
-        self.inp = Input_nodes(num_pop=input_n, pop_size=pop_size)
+        pynn.setup()
+        self.total_runtime = 0
+
+        self.num_inp = input_n
+        self.num_hid = hidden_n
+        self.num_out = output_n
+
+        self.inp = Input_nodes(num_pop=input_n, pop_size=pop_size, cellclass=pynn.IF_cond_exp())
         print(self.inp.populations)
-        self.hid = Fully_connected_nodes(num_pop=hidden_n, pop_size=pop_size)
+        self.hid = Hidden_nodes(num_pop=hidden_n, pop_size=pop_size)
         print(self.hid.populations)
         self.out = Output_nodes(num_pop=output_n, pop_size=pop_size)
         print(self.out.populations)
@@ -19,6 +26,9 @@ class Animat(object):
 
         self.input_connections = { 'exc' : [],
                                    'inh' : [] }
+
+        self.hidden_connections = { 'exc' : [],
+                                    'inh' : [] }
 
         self.output_connections = { 'exc' : [],
                                     'inh' : [] }
@@ -29,25 +39,31 @@ class Animat(object):
                 self.input_connections['inh'].append(pynn.Projection(i, h, connector, receptor_type='inhibitory'))
 
         for h in self.hid.populations:
+            for h in self.hid.populations:
+                self.hidden_connections['exc'].append(pynn.Projection(h, h, connector, receptor_type='excitatory'))
+                self.hidden_connections['inh'].append(pynn.Projection(h, h, connector, receptor_type='inhibitory'))
+
+        for h in self.hid.populations:
             for o in self.out.populations:
                 self.output_connections['exc'].append(pynn.Projection(h, o, connector, receptor_type='excitatory'))
                 self.output_connections['inh'].append(pynn.Projection(h, o, connector, receptor_type='inhibitory'))
 
-    def setWeights(self):
-        for c in self.input_connections['exc']:
-            c.set(weight=1e3)
-        for c in self.input_connections['inh']:
-            c.set(weight=1e3)
+    def setWeights(self, genome):
+        for i, c in enumerate(self.input_connections['exc']):
+            c.set(weight=genome[:self.num_hid*self.num_inp][i])
+        for i, c in enumerate(self.input_connections['inh']):
+            c.set(weight=genome[self.num_hid*self.num_inp:(self.num_hid*self.num_inp+self.num_hid*self.num_inp)][i])
 
-        for c in self.output_connections['exc']:
-            c.set(weight=1e3)
-        for c in self.output_connections['inh']:
-            c.set(weight=1e3)
+        for i, c in enumerate(self.hidden_connections['exc']):
+            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid)][0])
+        for i, c in enumerate(self.hidden_connections['inh']):
+            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid)][i])
 
-        for c in self.hid.connections['exc']:
-            c.set(weight=1e3)
-        for c in self.hid.connections['inh']:
-            c.set(weight=1e3)
+        for i, c in enumerate(self.output_connections['exc']):
+            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out)][i])
+        for i, c in enumerate(self.output_connections['inh']):
+            c.set(weight=genome[(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out):(self.num_hid*self.num_inp+self.num_hid*self.num_inp+self.num_hid*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out+self.num_hid*self.num_out)][i])
+
 
     def plot_spiketrains(self, segment):
         for spiketrain in segment.spiketrains:
@@ -63,68 +79,73 @@ class Animat(object):
         plt.setp(plt.gca().get_xticklabels(), visible=False)
         plt.legend()
 
-    def __call__(self, stimuli=[0,0], plot=True):
-        stimuli = list(stimuli)
+    def plot(self):
+        from pyNN.utility.plotting import Figure, Panel
+        # PLOT OUTPUT
+        o1 = self.out.populations[0].get_data().segments[0]
 
-        steps = pynn.DCSource(start=20.0, stop=80.0)
-        
-        for i in self.inp.populations:
-            steps.inject_into(i)
+        vm1 = o1.filter(name='v')[0]
 
-        for o in self.out.populations:
-            pynn.record(['v', 'spikes'], o, filename='output1_data.pkl', sampling_interval=1.0)
+        o2 = self.out.populations[1].get_data().segments[0]
 
-        for amp in (-0.2, -0.1, 0.0, 0.1, 0.2):
-            steps.amplitude = amp
-            pynn.run(100.0)
-            pynn.reset(annotations={"amplitude": amp * nA})
+        vm2 = o2.filter(name='v')[0]
+
+        Figure(
+            Panel(vm1, ylabel='Membrane potential (mV)', xticks=True, xlabel="Time (ms)", yticks=True),
+            Panel(o1.spiketrains, xlabel='Output 1', xticks=True),
+            Panel(vm2, ylabel='Membrane potential (mV)', xticks=True, xlabel="Time (ms)", yticks=True),
+            Panel(o2.spiketrains, xlabel='Output 2', xticks=True)
+        ).save('simulation_results_outputnodes.png')
+
+        plt.show()
+
+
+    def run(self, stimuli=[0,0], start=0, runtime=30, plot=False):
+        # TODO: This code only works for animats with 2 input nodes
+        for i, node in enumerate(self.inp.populations):
+            if stimuli[i] == 1:
+                node.initialize(v=1)
+                
+        stop = start+runtime
+        pynn.run_until(stop)
 
         if plot:
+            from pyNN.utility.plotting import Figure, Panel
+            # PLOT OUTPUT
+            o1 = self.out.populations[0].get_data().segments[0]
 
-            fig_settings = {
-                'lines.linewidth': 0.5,
-                'axes.linewidth': 0.5,
-                'axes.labelsize': 'small',
-                'legend.fontsize': 'small',
-                'font.size': 8
-            }
+            vm1 = o1.filter(name='v')[0]
 
-            plt.rcParams.update(fig_settings)
-            plt.figure(1, figsize=(6,8))
+            o2 = self.out.populations[1].get_data().segments[0]
 
-            n_panels = 0
-            for out in self.out.populations:
-                data_out = out.get_data()
-                n_panels += sum(a.shape[1] for a in data_out.segments[0].analogsignals) + 2
+            vm2 = o2.filter(name='v')[0]
 
-            # plot input
-            for inp in self.inp.populations:
-                spikes_in = inp.get_data()
-                self.plot_spiketrains(spikes_in.segments[0])
-                plt.subplot(n_panels, 1, 2)
-
-            # plot output
-            for out in self.out.populations:
-                data_out = out.get_data()
-                plt.subplot(n_panels, 1, 1)
-                self.plot_spiketrains(data_out.segments[0])
-                panel = 3
-                for array in data_out.segments[0].analogsignals:
-                    for i in range(array.shape[1]):
-                        plt.subplot(n_panels, 1, panel)
-                        self.plot_signal(array, i, colour='bg'[panel % 2])
-                        panel += 1
-
-            plt.xlabel('time (%s)' % array.times.units._dimensionality.string)
-            plt.setp(plt.gca().get_xticklabels(), visible=True)
+            Figure(
+                Panel(vm1, ylabel='Membrane potential (mV)', xticks=True, xlabel="Time (ms)", yticks=True),
+                Panel(o1.spiketrains, xlabel='Output 1', xticks=True),
+                Panel(vm2, ylabel='Membrane potential (mV)', xticks=True, xlabel="Time (ms)", yticks=True),
+                Panel(o2.spiketrains, xlabel='Output 2', xticks=True)
+            ).save('simulation_results_outputnodes.png')
 
             plt.show()
 
-        pynn.end()
+        return float(pynn.get_current_time())
 
 if __name__ == '__main__':
+    import random 
     pynn.setup()
-    animat = Animat(pop_size=1)
-    animat.setWeights()
-    animat()
+    animat = Animat(pop_size=5, input_n=2, output_n=2, hidden_n=4)
+    #genome = [random.randint(0,15) for i in range(2*(2*4+4*4+4*2))]
+    genome = np.random.randint(0,15, 2*(2*4+4*4+4*2))
+    for i, g in enumerate(genome):
+        if np.random.random() > 0.3:
+            genome[i] = 0
+    genome[0] = 15
+    genome[1] = 15
+
+    genome = np.array([15,15,0,8,6,0,0,14,0,0,0,12,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,8,13,0,0,13,9,0,0,0,0,0,0,3,0,0,5,6,4,7,0,0,13,0,0,0,0,0,0,13,6,13,0,0,0,0,8,5,0])
+    genome = genome
+    print(genome)
+    animat.setWeights(genome)
+    animat.run(stimuli=[0,0])
 
