@@ -40,8 +40,8 @@ class Unconnected_nodes(object):
                 '''
                 for p in self.populations:
 
-                    if 'v_rev_E' in keys:
-                        p.set(v_rev_E=cellparams['v_rev_E'])
+                    if 'e_rev_E' in keys:
+                        p.set(e_rev_E=cellparams['e_rev_E'])
                         if debug:
                             print('setting params')
 
@@ -60,8 +60,8 @@ class Unconnected_nodes(object):
                         if debug:
                             print('setting params')
 
-                    if 'v_rev_I' in keys:
-                        p.set(v_rev_I=cellparams['v_rev_I'])
+                    if 'e_rev_I' in keys:
+                        p.set(e_rev_I=cellparams['e_rev_I'])
                         if debug:
                             print('setting params')
 

@@ -21,7 +21,7 @@ parser.add_argument(
     "-g", "--generations", 
     help="The number of generations to be run per epoch.", 
     type=int,
-    default=100)
+    default=10)
 parser.add_argument(
     "-p", "--populationsize", 
     help="The number of individuals that each population \
@@ -51,7 +51,7 @@ parser.add_argument(
     help="The number of games to be run per individual per generation. \
         This determines the maximum fitness.", 
     type=int,
-    default=128)
+    default=10)
 args = parser.parse_args()
 
 class Genome(object):
@@ -144,8 +144,8 @@ if __name__ == '__main__':
         genepool.genomes[0].genes = genepool.genomes[sort[0]].genes # Best net doesn't change
         genepool.genomes[0].id = genepool.genomes[sort[0]].id
 
-        if genepool.genomes[0].fitness > best_solution.fitness:
-            best_solution = genepool.genomes[0]
+        if genepool.genomes[sort[0]].fitness > best_solution.fitness:
+            best_solution = genepool.genomes[sort[0]]
 
         for j in range(1, num_individuals):
             old_genome = genepool.genomes[sort[j]]
@@ -160,9 +160,7 @@ if __name__ == '__main__':
             Best fitness (genepool[0]) was {}. \n \
             Best fitness (scoreMax) was {}. \n \
             Mean fitness was {}. \n\
-            ".format(i, genepool.genomes[0].fitness, scoreMax[-1], scoreMean[-1]))
-
-
+            ".format(i, genepool.genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
 
     print("{} generations with {} animats took {}".format(num_gen,num_individuals,time.time()-start))
     print("Plotting mem.pot. and spiketrain of animat with best solution.")
