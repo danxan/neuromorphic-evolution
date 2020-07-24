@@ -3,7 +3,7 @@ import random
 
 import pyNN.nest as pynn
 
-import pynnAnimat
+from pynnAnimat import Animat
 
 class Game:
     '''
@@ -25,6 +25,8 @@ class Game:
 
     #def update_state(self):
     def _update_paddle(self, decision):
+        if decision != 0:
+            self.moves_cnt += 1
         self.paddle_pos += decision
             
 
@@ -107,13 +109,25 @@ class Game:
         
         return decision
 
-    def run(self, animat, fps=60, d=False):
+    def run(self, animat, genome, params, fps=60, d=False):
         '''
         It takes an animat player to play the game.
         This version takes a pynnAnimat.
         '''
         #RESET GAME
-        pynn.reset()
+        pynn.setup()
+        ps = animat.pop_size
+        ni = animat.num_inp
+        nh = animat.num_hid
+        no = animat.num_out
+
+        genes = genome.genes
+
+        animat = Animat(pop_size=ps, input_n=ni, hidden_n=nh, output_n=no)
+        animat.inp.set_params(params)
+        animat.hid.set_params(params)
+        animat.out.set_params(params)
+        animat.setWeights(genes)
 
         self.total_runtime = 0
         self.prev_stop = 0
@@ -155,7 +169,6 @@ class Game:
                 self._print_game()
                 print(sens_in)
             
-            #sens_in = [1,1]
             self.prev_stop = self.total_runtime
             self.total_runtime = animat.run(stimuli=sens_in, start=self.prev_stop, runtime=self.runtime, plot=False)
 
@@ -223,9 +236,8 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    animat = pynnAnimat.Animat(pop_size=5)
-    genome = np.array([15,15,0,8,6,0,0,14,0,0,0,12,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,8,13,0,0,13,9,0,0,0,0,0,0,3,0,0,5,6,4,7,0,0,13,0,0,0,0,0,0,13,6,13,0,0,0,0,8,5,0])
-    genome = np.random.randint(0,15, 2*(2*4+4*4+4*2))
+    animat = Animat(pop_size=5)
+    genome = np.random.randint(-5,5, (2*4+4*4+4*2))
     for i, g in enumerate(genome):
         if np.random.random() > 0.9:
             genome[i] = 0

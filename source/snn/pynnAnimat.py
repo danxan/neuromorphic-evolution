@@ -11,16 +11,18 @@ class Animat(object):
         pynn.setup()
         self.total_runtime = 0
 
+        self.pop_size = pop_size
+
         self.num_inp = input_n
         self.num_hid = hidden_n
         self.num_out = output_n
 
         self.inp = Input_nodes(num_pop=input_n, pop_size=pop_size, cellclass=pynn.IF_cond_exp())
-        print(self.inp.populations)
+        #print(self.inp.populations)
         self.hid = Hidden_nodes(num_pop=hidden_n, pop_size=pop_size)
-        print(self.hid.populations)
+        #print(self.hid.populations)
         self.out = Output_nodes(num_pop=output_n, pop_size=pop_size)
-        print(self.out.populations)
+        #print(self.out.populations)
 
         connector = pynn.AllToAllConnector()
 
@@ -49,7 +51,7 @@ class Animat(object):
                 self.output_connections['inh'].append(pynn.Projection(h, o, connector, receptor_type='inhibitory'))
 
     def setWeights(self, genome):
-        if len(genome) < self.num_inp*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out:
+        if len(genome) < (self.num_inp*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out):
             print("There's not enough genes in the genome to set all the weights. The remainder of the synapses will remain unchanged.")
         for i, g in enumerate(genome):
 

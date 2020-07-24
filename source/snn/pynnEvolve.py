@@ -57,9 +57,9 @@ args = parser.parse_args()
 class Genome(object):
     def __init__(self, num_inp=2, num_hid=4, num_out=2, id=0):
         self.fitness = 0
-        self.genes = np.random.randint(0,15, 2*(num_inp*num_hid+num_hid*num_hid+num_hid*num_out))
-        self.genes[0] = 15
-        self.genes[1] = 15
+        self.genes = np.random.uniform(-5,5, 2*(num_inp*num_hid+num_hid*num_hid+num_hid*num_out))
+        self.genes[0] = 5
+        self.genes[1] = 5
         self.id = id
 
 class Genepool(object):
@@ -68,14 +68,13 @@ class Genepool(object):
         for i in range(num_individuals):
             self.genomes.append(Genome(num_inp=num_inp, num_hid=num_hid, num_out=num_out, id=i))
 
-def fitness_function(genepool, animats, num_games=128):
+def fitness_function(genepool, animats, params, num_games=128):
     for i in range(len(genepool.genomes)):
-        animats[i].setWeights(genepool.genomes[i].genes)
+
         genepool.genomes[i].fitness = 0
 
         for j in range(num_games):
-            # reset simulator
-            genepool.genomes[i].fitness += game.run(animats[i])
+            genepool.genomes[i].fitness += game.run(animats[0], genepool.genomes[i], params=cellparams)
 
     return genepool
 
@@ -102,20 +101,18 @@ if __name__ == '__main__':
     best_solution = genepool.genomes[0]
 
 
-    # Initializing SNNs once, which will be adjusted based on their genomes
     cellparams = {
-        'tau_m' : 0.1,
-        'tau_syn_E' : 1,
-        'tau_syn_I' : 2
+        'tau_m' : 5,
+        'tau_syn_E' : 5,
+        'tau_syn_I' : 5
     }
 
     animats = []
-    for i in range(num_individuals):
+    for i in range(1):
         animats.append(Animat(pop_size=5, input_n=2, hidden_n=4, output_n=2))
         animats[i].inp.set_params(cellparams)
         animats[i].hid.set_params(cellparams)
         animats[i].out.set_params(cellparams)
-        a = animats[i].out
 
     print(animats[0].hid.populations[0].get('tau_m'))
     # Set up mutation
@@ -134,7 +131,7 @@ if __name__ == '__main__':
     # Starting epoch
     start = time.time()
     for i in range(num_gen):
-        genepool = fitness_function(genepool=genepool, animats=animats, num_games=num_games)
+        genepool = fitness_function(genepool=genepool, animats=animats, params=cellparams, num_games=num_games)
 
         scores = [g.fitness for g in genepool.genomes]
         sort = np.argsort(scores)[::-1]
@@ -170,16 +167,16 @@ if __name__ == '__main__':
 
     timestamp = datetime.now()
     timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
-    gname = 'best-solution_fitness['+str(best_solution.fitness)+']_date['+str(timestamp)+']'
+    gname = 'results/best-solution_fitness['+str(best_solution.fitness)+']_date['+str(timestamp)+']'
     log_path = os.path.join(local_dir, gname)
     with open(log_path, 'wb') as handle:
         pickle.dump(best_solution, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     plt.plot(scoreMean)
-    log_path = os.path.join(local_dir, 'scoreMean.png')
+    log_path = os.path.join(local_dir, 'results/scoreMean.png')
     plt.savefig(log_path)
     plt.plot(scoreMax)
-    log_path = os.path.join(local_dir, 'scoreMax.png')
+    log_path = os.path.join(local_dir, 'results/scoreMax.png')
     plt.savefig(log_path)
 
     # redirect print

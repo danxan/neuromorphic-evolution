@@ -2,6 +2,7 @@ import pyNN.nest as pynn
 from pyNN.utility.plotting import Figure, Panel
 import matplotlib.pyplot as plt
 
+from pynnAnimat import Animat
 pynn.setup()
 
 a = pynn.Population(5, pynn.SpikeSourceArray(spike_times=[10]))
@@ -50,28 +51,35 @@ pdi.set(weight=8)
 pei.set(weight=8)
 poi.set(weight=8)
 
+a = Animat(pop_size=5, input_n=1, hidden_n=1, output_n=1)
+w = [15]*3
+a.setWeights(w)
+
 pynn.run_until(10)
 pynn.run_until(12)
-b.initialize(v=1)
-c.initialize(v=1)
-d.initialize(v=1)
+i = a.inp.populations[0]
+i.initialize(v=1)
 time = pynn.get_current_time()
 stop = time+20
 pynn.run_until(stop)
-a.set(spike_times=[20])
+i.initialize(v=1)
 time = pynn.get_current_time()
 stop = time+20
 pynn.run_until(stop)
 
+time = pynn.get_current_time()
+stop = time+20
+pynn.run_until(stop)
 
+o = a.out.populations[0]
 do = o.get_data().segments[0]
 print(len(do.spiketrains[0]))
-da = a.get_data().segments[0]
-print(len(da.spiketrains[0]))
+di = i.get_data().segments[0]
+print(len(di.spiketrains[0].times))
 
 Figure(
     Panel(do.spiketrains),
-    Panel(da.spiketrains)
+    Panel(di.spiketrains)
 )
 
 
