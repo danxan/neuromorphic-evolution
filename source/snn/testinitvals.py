@@ -52,7 +52,7 @@ pei.set(weight=8)
 poi.set(weight=8)
 
 a = Animat(pop_size=5, input_n=1, hidden_n=1, output_n=1)
-w = [15]*3
+w = [0.1]*3
 a.setWeights(w)
 
 pynn.run_until(10)
@@ -62,9 +62,11 @@ i.initialize(v=1)
 time = pynn.get_current_time()
 stop = time+20
 pynn.run_until(stop)
-i.initialize(v=1)
+pynn.reset()
 time = pynn.get_current_time()
 stop = time+20
+pynn.run_until(stop)
+i.initialize(v=1)
 pynn.run_until(stop)
 
 time = pynn.get_current_time()

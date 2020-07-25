@@ -1,24 +1,18 @@
-import multiprocessing
-import sys
-import os
-
-import math
-import re
-from matplotlib import pyplot as plt
-import time
-from datetime import datetime
-import pickle
-import numpy as np
-
 import pyNN.nest as pynn
 
-from pynnGame import Game
 from pynnAnimat import Animat
 from genome import SgaGenome
+from pynnGame import Game
 
-import multiprocessing
 from parallel import ParallelEvaluator
+
+import numpy as np
+from numpy.random import randint
 from nest import SetKernelStatus
+import os
+
+from datetime import datetime
+
 SetKernelStatus({'local_num_threads': 10})
 
 import argparse
@@ -60,30 +54,18 @@ parser.add_argument(
     default=10)
 args = parser.parse_args()
 
+class Troll(object):
+    def __init__(self):
+        self.weight = randint(1,100)
+    
+    def get(self):
+        return self.weight
 
-class Genepool(object):
-    def __init__(self, num_individuals=10, num_inp=2, num_hid=4, num_out=2):
-        self.genomes = []
-        for i in range(num_individuals):
-            self.genomes.append(SgaGenome(num_inp=num_inp, num_hid=num_hid, num_out=num_out, id=i))
+x = 10
 
-'''
-def eval_genome(g, p, num_games):
-    g : SgaGenome object
-    p : parameter dictionary
-    num_games : number of games to be run
-    game = Game()
-    g.fitness = 0
-    print("num_games = {}".format(num_games))
-    for j in range(num_games):
-        g.fitness += game.run(g, {})
+t = Troll()
 
-    print("fitness: {}".format(g.fitness))
-
-    return g.fitness
-'''
-
-def eval_genome(genome, params, num_games):
+def f(genome, params, num_games):
     params = params 
     game = Game()
     genome.fitness = 0
@@ -91,12 +73,7 @@ def eval_genome(genome, params, num_games):
         genome.fitness += game.run(genome, params)
     return genome.fitness
 
-def eval_genomes(genomes, p, num_games):
-        for g in genomes:
-            g.fitness = eval_genome(g, p, num_games)
-
 if __name__ == '__main__':
-
     # Creating population
     num_gen = args.generations
 
@@ -128,6 +105,7 @@ if __name__ == '__main__':
     increase = 0.9
 
     local_dir = os.path.dirname(__file__)
+    pe = ParallelEvaluator(8, f)
     # redirect print
     '''
     original = sys.stdout
@@ -139,10 +117,10 @@ if __name__ == '__main__':
     scoreMean = []
 
     # Creating pool of workers
-    pe = ParallelEvaluator(8, eval_genome)
+    pe = ParallelEvaluator(8, f)
 
     # Starting epoch
-    start = time.time()
+    start = datetime.now()
     for i in range(num_gen):
 
         pe.evaluate_sga(genomes=genomes, params=cellparams, num_games=num_games)
@@ -151,7 +129,7 @@ if __name__ == '__main__':
         sort = np.argsort(scores)[::-1]
         scoreMean.append(np.mean(scores))
         scoreMax.append(np.max(scores))
-
+        
         genomes[0].genes = genomes[sort[0]].genes # Best net doesn't change
         genomes[0].id = genomes[sort[0]].id
 
@@ -172,6 +150,7 @@ if __name__ == '__main__':
             Best fitness (scoreMax) was {}. \n \
             Mean fitness was {}. \n\
             ".format(i, genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
+
 
     print("{} generations with {} animats took {}".format(num_gen,num_individuals,time.time()-start))
     print("Plotting mem.pot. and spiketrain of animat with best solution.")
@@ -196,3 +175,5 @@ if __name__ == '__main__':
     # redirect print
     sys.stdout = original
 
+
+    print(datetime.now() - start)

@@ -1,8 +1,14 @@
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 from quantities import nA
 
 import pyNN.nest as pynn
+from nest import Rank
+from nest import SetKernelStatus
+
+from threading import Thread
 
 from nodes import *
 
@@ -17,7 +23,7 @@ class Animat(object):
         self.num_hid = hidden_n
         self.num_out = output_n
 
-        self.inp = Input_nodes(num_pop=input_n, pop_size=pop_size, cellclass=pynn.IF_cond_exp())
+        self.inp = Input_nodes(num_pop=input_n, pop_size=pop_size)
         #print(self.inp.populations)
         self.hid = Hidden_nodes(num_pop=hidden_n, pop_size=pop_size)
         #print(self.hid.populations)
@@ -54,7 +60,6 @@ class Animat(object):
         if len(genome) < (self.num_inp*self.num_hid+self.num_hid*self.num_hid+self.num_hid*self.num_out):
             print("There's not enough genes in the genome to set all the weights. The remainder of the synapses will remain unchanged.")
         for i, g in enumerate(genome):
-
             if i < self.num_inp:
                 self.input_connections['exc'][i%self.num_inp].set(weight=0)
                 self.input_connections['inh'][i%self.num_inp].set(weight=0)
@@ -96,11 +101,11 @@ class Animat(object):
     def plot(self):
         from pyNN.utility.plotting import Figure, Panel
         # PLOT OUTPUT
-        o1 = self.out.populations[0].get_data().segments[0]
+        o1 = self.out.populations[0].get_data(gather=False).segments[0]
 
         vm1 = o1.filter(name='v')[0]
 
-        o2 = self.out.populations[1].get_data().segments[0]
+        o2 = self.out.populations[1].get_data(gather=False).segments[0]
 
         vm2 = o2.filter(name='v')[0]
 
@@ -118,6 +123,12 @@ class Animat(object):
         # TODO: This code only works for animats with 2 input nodes
         for i, node in enumerate(self.inp.populations):
             if stimuli[i] == 1:
+                '''
+                start = start+1
+                print("START")
+                print(start)
+                node.set(spike_times=[start])
+                '''
                 node.initialize(v=1)
                 
         stop = start+runtime
@@ -126,11 +137,11 @@ class Animat(object):
         if plot:
             from pyNN.utility.plotting import Figure, Panel
             # PLOT OUTPUT
-            o1 = self.out.populations[0].get_data().segments[0]
+            o1 = self.out.populations[0].get_data(gather=False).segments[0]
 
             vm1 = o1.filter(name='v')[0]
 
-            o2 = self.out.populations[1].get_data().segments[0]
+            o2 = self.out.populations[1].get_data(gather=False).segments[0]
 
             vm2 = o2.filter(name='v')[0]
 

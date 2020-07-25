@@ -1,7 +1,10 @@
+import os 
+
 import numpy as np
 import random
 
 import pyNN.nest as pynn
+from nest import Rank, SetKernelStatus
 
 from pynnAnimat import Animat
 
@@ -86,7 +89,7 @@ class Game:
             # SpikeTrain is a class from the neo package
             # getting the spiketrain from the first neuron of the population, 
             # assuming the populations are alltoallconnected
-            spiketrains = o.get_data().segments[0].spiketrains[0]
+            spiketrains = o.get_data(gather=False).segments[0].spiketrains[0]
             #print("\nspiketrains:")
             #print(spiketrains)
 
@@ -109,25 +112,25 @@ class Game:
         
         return decision
 
-    def run(self, animat, genome, params, fps=60, d=False):
+    def run(self, genome, params, fps=60, d=False):
         '''
         It takes an animat player to play the game.
         This version takes a pynnAnimat.
         '''
         #RESET GAME
         pynn.setup()
-        ps = animat.pop_size
-        ni = animat.num_inp
-        nh = animat.num_hid
-        no = animat.num_out
 
-        genes = genome.genes
-
+        ps = genome.pop_size
+        ni = genome.num_inp
+        nh = genome.num_hid
+        no = genome.num_out
         animat = Animat(pop_size=ps, input_n=ni, hidden_n=nh, output_n=no)
         animat.inp.set_params(params)
         animat.hid.set_params(params)
         animat.out.set_params(params)
+        genes = genome.genes
         animat.setWeights(genes)
+        
 
         self.total_runtime = 0
         self.prev_stop = 0
@@ -148,6 +151,7 @@ class Game:
         w = self.game_width # to make code readable
 
         while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
+            
             self._update_block()
 
             w = self.game_width
@@ -201,6 +205,9 @@ class Game:
             if d == True:
                 self._print_game()
                 print(sens_in)
+        
+        # after while loop
+        pynn.end()
 
         # at the last time-step
         if self.block_pos[0] == self.game_height-1:
@@ -231,7 +238,6 @@ class Game:
             if d == True:
                 print(score)
 
-            print(score)
             return score
 
 if __name__ == '__main__':

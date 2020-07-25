@@ -1,5 +1,6 @@
 import pyNN.nest as pynn
 from pyNN.utility.plotting import Figure, Panel
+from pyNN.random import RandomDistribution
 
 import matplotlib.pyplot as plt
 
@@ -17,18 +18,21 @@ connector = pynn.AllToAllConnector()
 pe = pynn.Projection(e,o, connector)
 pi = pynn.Projection(i,o, connector,receptor_type='inhibitory')
 
-pe.set(weight=2)
+pe.set(weight=0.1)
 pi.set(weight=6)
 
 o.record('spikes')
 
+#e.set(spike_times=[1])
 e.initialize(v=1)
-pynn.run(20)
+pynn.run_until(20)
+time = pynn.get_current_time()+1
+#e.set(spike_times=[time])
 e.initialize(v=1)
-i.initialize(v=1)
+#i.initialize(v=0)
 
 
-pynn.run(50)
+pynn.run(100)
 
 spikes = o.get_data().segments[0].spiketrains
 Figure(
@@ -37,3 +41,4 @@ Figure(
 
 plt.plot(o)
 plt.show()
+print(RandomDistribution('uniform', (-5,5)).next(10))

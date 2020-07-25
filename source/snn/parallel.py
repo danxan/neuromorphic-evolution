@@ -21,7 +21,7 @@ class ParallelEvaluator(object):
         self.pool.close() # should this be terminate?
         self.pool.join()
 
-    def evaluate(self, genomes, config):
+    def evaluate_neat(self, genomes, config):
         jobs = []
         for ignored_genome_id, genome in genomes:
             jobs.append(self.pool.apply_async(self.eval_function, (genome, config)))
@@ -29,3 +29,17 @@ class ParallelEvaluator(object):
         # assign the fitness back to each genome
         for job, (ignored_genome_id, genome) in zip(jobs, genomes):
             genome.fitness = job.get(timeout=self.timeout)
+
+    def evaluate_sga(self, genomes, params, num_games):
+        jobs = []
+        for g in genomes:
+            jobs.append(self.pool.apply_async(self.eval_function, (g, params, num_games))) 
+
+        # assign the fitness back to each genome
+        for job, g in zip(jobs, genomes):
+            job.wait()
+            g.fitness = job.get(timeout=self.timeout)
+
+        return genomes
+
+            

@@ -16,10 +16,12 @@ from pynnAnimat import Animat
 import nodes
 from plotutil import plot_paramsfile, find_factors
 
-import parallel
+from parallel import ParallelEvaluator
 
-        
+from mpi4py import MPI
+
 if __name__ == '__main__':
+
     print(find_factors(12))
     pynn.setup()
     local_dir = os.path.dirname(__file__)
@@ -32,13 +34,13 @@ if __name__ == '__main__':
     tau_m = np.random.uniform(low=20, high=20, size=(nt,))
     tau_syn_E = np.random.uniform(low=5, high=5, size=(ntse,))
     tau_syn_I = np.random.uniform(low=5, high=5, size=(ntsi,))
-    
+
     v_reset = np.linspace(-65, -65, 1)
     e_rev_E = np.linspace(0, 0, 1)
     e_rev_I = np.linspace(-70, -70, 1)
 
     # Number of random sets of weights to be tested
-    nw = 100*60 
+    nw = 1*60
 
     # chain of 3 single nodes
     # input is always spiked.
@@ -51,7 +53,7 @@ if __name__ == '__main__':
     no = 2 # number of output
 
     id_cnt = 0
-    
+
     # For saving data to file
     timestamp = datetime.now()
     timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
@@ -70,21 +72,29 @@ if __name__ == '__main__':
 
     plt_cnt = 0
 
-    # Creating figure for plotting 
-    fig = plt.figure(constrained_layout=True)
-    spec = gridspec.GridSpec(ncols=r2, nrows=r1, figure=fig) 
+    # MPI parallel setup
+    comm = MPI.COMM_WORLD
+    rank = MPI.COMM_WORLD.Get_rank()
+    size = MPI.COMM_WORLD.Get_size()
+
+    if rank != 0:
+        nw_frac = int(nw/size)
+    else:
+        if nw/size > int(nw/size):
+            nw_frac = 1
+        else:
+            nw_frac = 0
+
+    if size == 1:
+        nw_frac = nw
+
     for i,t in enumerate(tau_m[:nt]):
-        n1 = i%r1
-        n2 = i%r2
-        ax = fig.add_subplot(spec[n1, n2])
-        ax.title.set_text('tau_m='+str(t))
-        
         for tse in tau_syn_E[:ntse]:
             for tsi in tau_syn_I[:ntsi]:
                 for vr in v_reset[:1]:
                     for ere in e_rev_E[:1]:
                         for eri in e_rev_I[:1]:
-                
+
                             id_cnt += 1
                             # Set each combination of parameters
                             params = {
@@ -99,8 +109,8 @@ if __name__ == '__main__':
                                 'mean_w'    : [], # mean_w  and outputs are to be plotted against each other
                                 'outputs'   : []
                             }
-                            
-                            for idx in range(nw):
+
+                            for idx in range(nw_frac):
                                 pynn.setup()
                                 a = Animat(pop_size=5, input_n=ni, hidden_n=nh, output_n=no)
                                 a.id = id_cnt
@@ -130,39 +140,24 @@ if __name__ == '__main__':
                                     s += len(onode.get_data().segments[0].spiketrains[0].times)
                                 params['outputs'].append(s)
 
-                            alabel = 'Animat ID: '+str(a.id)
-                            idxa = np.argsort(params['mean_w'])
+                                animatlogs.append(params)
 
-                            eps = np.linspace(0,0.01,len(params['mean_w']))
-                            mean_w = np.array([params['mean_w'][i] for i in idxa])
-                            mean_w = mean_w+eps
-                            outputs = np.array([params['outputs'][i] for i in idxa])
-                            outputs = outputs + 3*np.random.rand(len(outputs))
-                            xnew = np.linspace(0,np.max(params['mean_w']), num=1000, endpoint=True)
-                            f = interp1d(mean_w, outputs)
-                            ax.plot(params['mean_w'], params['outputs'], 'o', xnew, f(xnew), '--')
-                            ax.legend(['data', 'cs'])
-                            animatlogs.append(params)
 
-    # End of a tau_m iteration
-    figname = 'paramplot_date['+str(timestamp)+'].svg'
-    figname = os.path.join(local_dir, figname)
-    fig.savefig(figname)
     with open(animatlog, 'ab') as handle:
         pickle.dump(animatlogs, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    plt.show()
+    #plt.show()
 
-    plot_paramsfile(animatlog)
-
-
+    #plot_paramsfile(animatlog)
 
 
-                                
-
-                                
-
-                            
 
 
-                            
+
+
+
+
+
+
+
+
