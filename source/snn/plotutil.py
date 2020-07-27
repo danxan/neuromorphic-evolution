@@ -48,13 +48,15 @@ def plot_paramsfile(filename):
             eps = np.linspace(0,0.01,len(params['mean_w']))
             mean_w = np.array([params['mean_w'][i] for i in idxa])
             mean_w = mean_w+eps
+            print(len(mean_w))
             outputs = np.array([params['outputs'][i] for i in idxa])
-            outputs = outputs + 3*np.random.rand(len(outputs))
+            #outputs = outputs + 3*np.random.rand(len(outputs))
+            print(len(outputs))
 
-            xnew = np.linspace(0,np.max(params['mean_w']), num=1000, endpoint=True)
-            f = interp1d(mean_w, outputs)
+            #xnew = np.linspace(0,np.max(params['mean_w']), num=1000, endpoint=True)
+            #f = interp1d(mean_w, outputs)
 
-            ax.plot(mean_w, outputs, 'o', xnew, f(xnew), '--')
+            ax.plot(mean_w, outputs)#, 'o', xnew, f(xnew), '--')
 
             if cnt%nps == 0:
                 ax.legend()

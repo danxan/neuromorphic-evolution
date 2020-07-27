@@ -15,7 +15,7 @@ import pyNN.nest as pynn
 # b: tau_syn_E
 # c: tau_syn_I
 # d: v_reset 
-class pynnIFCondExpGene(BaseGene):
+class pynnIFNodeGene(BaseGene):
     ''' Tailored for the
     pyNN.nest.IF_cond_exp gene and determines genomic distances.
     '''
@@ -37,8 +37,72 @@ class pynnIFCondExpGene(BaseGene):
 # TODO: Next week: Do an IIT analysis. 
 # TODO: Next week: Move
 
-class 
+class pynnIFGenome(DefaultGenome):
+    @classmethod
+    def parse_config(cls, param_dict):
+        param_dict['node_gene_type'] = pynnIFNodeGene
+        param_dict['connection_gene_type'] = DefaultConnectionGene
+        return DefaultGenomeConfig(param_dict)
 
+class pynnIFNeuron(object):
+    """
+    # TODO: Implement an initiation of NEST neurons here...
+    def __init__(self, bias, a, b, c, d, inputs):
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.bias = bias
+        self.inputs = inputs
+
+        self.v = self.c
+
+        self.u = self.b * self.v
+
+        self.fired = 0.0
+        self.current = self.bias
+
+    def advance(self, dt_msec):
+        try:
+
+    def reset(self):
+    """
+
+class pynnIFNN(object):
+    # TODO initialization of the NEST simulator
+    def __init__(self, neurons, inputs, outputs):
+        self.neurons = neurons
+        self.inputs = inputs
+        self.outputs = outputs
+        self.input_values = {}
+
+    def set_inputs(self, inputs):
+
+    def reset(self):
+
+    def get_time_step_msec(self):
+
+    def advance(self, dt_msec):
+
+    @staticmethod
+    def create(genome, config):
+        """ receives a genome and returns its phenotype (a neural network). """
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+    
+
+
+        
 
 
     

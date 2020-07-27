@@ -3,6 +3,8 @@ import os
 import numpy as np
 import random
 
+import matplotlib.pyplot as plt
+
 import pyNN.nest as pynn
 from nest import Rank, SetKernelStatus
 
@@ -112,7 +114,7 @@ class Game:
         
         return decision
 
-    def run(self, genome, params, fps=60, d=False):
+    def run(self, genome, params, fps=60, d=False, plot=False):
         '''
         It takes an animat player to play the game.
         This version takes a pynnAnimat.
@@ -237,6 +239,9 @@ class Game:
 
             if d == True:
                 print(score)
+
+            if plot:
+                animat.plot()
 
             return score
 

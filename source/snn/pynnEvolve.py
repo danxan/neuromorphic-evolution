@@ -1,102 +1,85 @@
-import multiprocessing
-import sys
-import os
-
-import math
-import re
-from matplotlib import pyplot as plt
-import time
-from datetime import datetime
-import pickle
-import numpy as np
-
 import pyNN.nest as pynn
 
-from pynnGame import Game
 from pynnAnimat import Animat
 from genome import SgaGenome
+from pynnGame import Game
 
-import multiprocessing
 from parallel import ParallelEvaluator
+
+import numpy as np
+from numpy.random import randint
 from nest import SetKernelStatus
-SetKernelStatus({'local_num_threads': 10})
+
+import os
+import sys
+import pickle
+
+import matplotlib.pyplot as plt
+
+from datetime import datetime
+
+T = os.cpu_count()+2
+SetKernelStatus({'local_num_threads': T})
 
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "-g", "--generations", 
-    help="The number of generations to be run per epoch.", 
+    "-g", "--generations",
+    help="The number of generations to be run per epoch.",
     type=int,
     default=10)
 parser.add_argument(
-    "-p", "--populationsize", 
+    "-p", "--populationsize",
     help="The number of individuals that each population \
-        consist of per generation.", 
+        consist of per generation.",
     type=int,
     default=10)
 parser.add_argument(
-    "-i", "--input", 
+    "-i", "--input",
     help="The number of input nodes per animat. \
-        Currently this number has to be two.", 
+        Currently this number has to be two.",
     type=int,
     default=2)
 parser.add_argument(
-    "-n", "--network", 
+    "-n", "--network",
     help="The number of hidden nodes in each animats network.\
-        Currently this number has to be 4.", 
+        Currently this number has to be 4.",
     type=int,
     default=4)
 parser.add_argument(
-    "-o", "--output", 
+    "-o", "--output",
     help="The number of output nodes per animat. \
-        Currently this number has to be two.", 
+        Currently this number has to be two.",
         type=int,
         default=2)
 parser.add_argument(
-    "-t", "--trials", 
+    "-t", "--trials",
     help="The number of games to be run per individual per generation. \
-        This determines the maximum fitness.", 
+        This determines the maximum fitness.",
     type=int,
     default=10)
 args = parser.parse_args()
 
+class Troll(object):
+    def __init__(self):
+        self.weight = randint(1,100)
 
-class Genepool(object):
-    def __init__(self, num_individuals=10, num_inp=2, num_hid=4, num_out=2):
-        self.genomes = []
-        for i in range(num_individuals):
-            self.genomes.append(SgaGenome(num_inp=num_inp, num_hid=num_hid, num_out=num_out, id=i))
+    def get(self):
+        return self.weight
 
-'''
-def eval_genome(g, p, num_games):
-    g : SgaGenome object
-    p : parameter dictionary
-    num_games : number of games to be run
-    game = Game()
-    g.fitness = 0
-    print("num_games = {}".format(num_games))
-    for j in range(num_games):
-        g.fitness += game.run(g, {})
+x = 10
 
-    print("fitness: {}".format(g.fitness))
+t = Troll()
 
-    return g.fitness
-'''
-
-def eval_genome(genome, params, num_games):
-    params = params 
+def f(genome, params, num_games):
+    params = params
     game = Game()
     genome.fitness = 0
     for i in range(num_games):
         genome.fitness += game.run(genome, params)
     return genome.fitness
 
-def eval_genomes(genomes, p, num_games):
-        for g in genomes:
-            g.fitness = eval_genome(g, p, num_games)
-
 if __name__ == '__main__':
-
     # Creating population
     num_gen = args.generations
 
@@ -128,21 +111,21 @@ if __name__ == '__main__':
     increase = 0.9
 
     local_dir = os.path.dirname(__file__)
+    workers = os.cpu_count()
+    pe = ParallelEvaluator(workers, f)
     # redirect print
-    '''
     original = sys.stdout
     log_path = os.path.join(local_dir, 'pynnEvolve.log')
     sys.stdout = open(log_path, 'w')
-    '''
 
     scoreMax = []
     scoreMean = []
 
     # Creating pool of workers
-    pe = ParallelEvaluator(8, eval_genome)
+    pe = ParallelEvaluator(8, f)
 
     # Starting epoch
-    start = time.time()
+    start = datetime.now()
     for i in range(num_gen):
 
         pe.evaluate_sga(genomes=genomes, params=cellparams, num_games=num_games)
@@ -173,11 +156,11 @@ if __name__ == '__main__':
             Mean fitness was {}. \n\
             ".format(i, genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
 
-    print("{} generations with {} animats took {}".format(num_gen,num_individuals,time.time()-start))
+
+    print("{} generations with {} animats took {}".format(num_gen,num_individuals,datetime.now()-start))
     print("Plotting mem.pot. and spiketrain of animat with best solution.")
-    animats[0].setWeights(best_solution.genes)
-    game.run(animats[0])
-    animats[0].plot()
+    game = Game()
+    game.run(best_solution, params=cellparams, plot=True)
 
     timestamp = datetime.now()
     timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
@@ -187,12 +170,23 @@ if __name__ == '__main__':
         pickle.dump(best_solution, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     plt.plot(scoreMean)
-    log_path = os.path.join(local_dir, 'results/scoreMean.png')
+    plt.xlabel("Generations")
+    plt.ylabel("Mean fitness")
+    figname = "results/scoreMean_date["+str(timestamp)+"].png"
+    figname = os.path.join(local_dir, figname)
     plt.savefig(log_path)
+    plt.show()
+
     plt.plot(scoreMax)
-    log_path = os.path.join(local_dir, 'results/scoreMax.png')
+    plt.xlabel("Generations")
+    plt.ylabel("Max fitness")
+    figname = 'results/scoreMax_date['+str(timestamp)+'].png'
+    log_path = os.path.join(local_dir, figname)
     plt.savefig(log_path)
+    plt.show()
 
     # redirect print
     sys.stdout = original
 
+
+    print(datetime.now() - start)
