@@ -268,7 +268,7 @@ if __name__ == '__main__':
                 'best_solution': best_solution}
 
     if Rank() == 0:
-        filename = "run_g["+str(num_gen)+"]_t["+str(trials)+"]_i["+str(num_ind)+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
+        filename = "results/run_g["+str(num_gen)+"]_t["+str(trials)+"]_i["+str(num_ind)+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
         with open(filename, 'wb') as f:
             pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
 
