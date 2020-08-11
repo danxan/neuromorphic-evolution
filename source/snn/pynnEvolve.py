@@ -13,13 +13,12 @@ from nest import SetKernelStatus
 import os
 import sys
 import pickle
+import multiprocessing
 
 import matplotlib.pyplot as plt
 
 from datetime import datetime
 
-T = os.cpu_count()+2
-SetKernelStatus({'local_num_threads': T})
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -80,6 +79,7 @@ def f(genome, params, num_games):
     return genome.fitness
 
 if __name__ == '__main__':
+    print(1)
     # Creating population
     num_gen = args.generations
 
@@ -96,6 +96,7 @@ if __name__ == '__main__':
     genomes = []
     for i in range(num_individuals):
         genomes.append(SgaGenome(num_inp=num_inp, num_hid=num_hid, num_out=num_out, id=i))
+    print(2)
 
     # Initial Best Solution
     best_solution = genomes[0]
@@ -113,6 +114,7 @@ if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
     workers = os.cpu_count()
     pe = ParallelEvaluator(workers, f)
+    print(3)
     # redirect print
     original = sys.stdout
     log_path = os.path.join(local_dir, 'pynnEvolve.log')
@@ -122,13 +124,17 @@ if __name__ == '__main__':
     scoreMean = []
 
     # Creating pool of workers
-    pe = ParallelEvaluator(8, f)
+    workers = multiprocessing.cpu_count()
+    pe = ParallelEvaluator(workers, f)
+    print(4)
 
     # Starting epoch
     start = datetime.now()
     for i in range(num_gen):
+        print(4)
 
         pe.evaluate_sga(genomes=genomes, params=cellparams, num_games=num_games)
+        print(5)
 
         scores = [g.fitness for g in genomes]
         sort = np.argsort(scores)[::-1]
@@ -157,6 +163,8 @@ if __name__ == '__main__':
             ".format(i, genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
 
 
+
+    print(6)
     print("{} generations with {} animats took {}".format(num_gen,num_individuals,datetime.now()-start))
     print("Plotting mem.pot. and spiketrain of animat with best solution.")
     game = Game()
