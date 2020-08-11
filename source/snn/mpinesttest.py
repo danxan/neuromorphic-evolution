@@ -4,263 +4,275 @@ import neo
 import numpy as np
 from nest import raster_plot
 import matplotlib.pyplot as plt
+from datetime import datetime
+import pickle
+
+
+from nestAnimat import Animat
+from nestGenome import Genome
 SetKernelStatus({"total_num_virtual_procs": 8,'local_num_threads':2})
 
 comm = MPI.COMM_WORLD
 numprocs = NumProcesses()
 
-class Genome(object):
-    def __init__(self):
+if __name__ == '__main__':
 
+    ResetKernel()
 
-class Animat(object):
-    def __init__(self, sgs, sds, genome):
-        self.ps = 10# population size / neurons per node
-        self.ni = 2 # num input nodes
-        self.nh = 4 # num hidden nodes
-        self.no = 2 # num output nodes
+    scoreMax = []
+    scoreMean = []
 
-        self.sgs = sgs
-        self.sds = sds
+    r = 12
+    increase = 0.9
 
-        self.hid = []
-        for i in range(self.nh):
-            self.hid.append(Create('iaf_cond_exp', self.ps))
+    num_gen = 10
+    trials = 10
+    steps = 36
+    num_ind = 10
+    gamewidth = 16
 
-        self.out = []
-        for i in range(self.no):
-            self.out.append(Create('iaf_cond_exp', self.ps))
+    # CREATING GENOMES
 
-        for i in range(self.ni):
-            for j in range(self.nh):
-                syn_dict = {'weight': genome['iw'][i][j]}
-                Connect(sgs[i], self.hid[j], syn_spec=syn_dict)
+    ni = 2 # THIS MUST ALWAYS BE 2
+    nh = 4
+    no = 2 # THIS MUST ALWAYS BE 2
 
-        for i in range(self.nh):
-            for j in range(self.nh):
-                syn_dict = {'weight': genome['hw'][i][j]}
-                Connect(self.hid[i], self.hid[j], syn_spec=syn_dict)
+    ps = 5 # Population Size
 
-            for j in range(self.no):
-                syn_dict = {'weight': genome['ow'][i][j]}
-                Connect(self.hid[i], self.out[j], syn_spec=syn_dict)
+    genomes = []
+    for i in range(num_ind):
+        if Rank() == 0:
+            genomes.append(Genome(ps, nh, id=i))
+        else:
+            genomes.append(None)
 
-        for i in range(self.no):
-            Connect(self.out[i], sds[i])
+    genomes = comm.bcast(genomes, root=0)
 
+    best_solution = genomes[0]
 
+    sgs = [None]*num_ind
+    sds = [None]*num_ind
+    animats = []
 
-generations = 1
-trials = 10
-steps = 10
-num_ind = 10
+    for i in range(0,num_ind):
+        sgs[i] = []
+        for j in range(ni):
+            sgs[i].append(Create("spike_generator"))
 
-ResetKernel()
-SetKernelStatus({"data_prefix": "generation_0_"})
+        sds[i] = []
+        for j in range(no):
+            sds[i].append(Create("spike_detector"))#, params={"to_file": True}))
 
+        animats.append(Animat(sgs[i], sds[i], genomes[i]))
 
-ni = 2 # THIS MUST ALWAYS BE 2
-nh = 4
-no = 2 # THIS MUST ALWAYS BE 2
+    Prepare()
 
-sgs = [None]*num_ind
-sds = [None]*num_ind
-animats = []
-'''
-iw = [ [1000.0, -4000.0, 2000.0, -1000.0], [-4000.0, -2000, -1000.0, -2000.0 ] ]
-hw = [ [1000.0, -4000.0, 2000.0, -1000.0], [2000.0, -3000.0, 1000.0, -4000.0], [1000.0, -4000.0, 2000.0, -1000.0], [2000.0, -3000.0, 1000.0, -4000.0]]
-ow = [ [4000.0, 2000.0], [3000.0, 4000.0], [0.0, 0.0], [0.0, 0.0] ]
-iw = [ [1.0, -4.0, 2.0, -1.0], [-4.0, -20.0, -1.0, -2.0 ] ]
-hw = [ [1.0, -4.0, 2.0, -1.0], [2.0, -3.0, 1.0, -4.0], [1.0, -4.0, 2.0, -1.0], [2.0, -3.0, 1.0, -4.0]]
-ow = [ [4000.0, 2000.0, 1000.0],[4000.0, 2000.0, 1000.0], [4000.0, 2000.0, 1000.0], [4000.0, 2000.0, 1000.0]]
-'''
-iw = [ [1.0, -4.0, 2.0, -1.0], [-4.0, -20.0, -1.0, -2.0 ] ]
-hw = [ [1.0, -4.0, 2.0, -1.0], [2.0, -3.0, 1.0, -4.0], [1.0, -4.0, 2.0, -1.0], [2.0, -3.0, 1.0, -4.0]]
-ow = [ [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0] ]
-genome = { 'iw': iw,
-            'hw': hw,
-            'ow': ow }
-
-sgs[0] = []
-for j in range(ni):
-    sgs[0].append(Create("spike_generator"))
-sds[0] = []
-for j in range(no):
-    sds[0].append(Create("spike_detector"))#, params={"to_file": True}))
-
-animats.append(Animat(sgs[0], sds[0], genome))
-
-'''
-iw = [ [1.0, -4.0, 2.0, -1.0], [-4.0, -20.0, -1.0, -2.0 ] ]
-hw = [ [1.0, -4.0, 2.0, -1.0], [2.0, -3.0, 1.0, -4.0], [1.0, -4.0, 2.0, -1.0], [2.0, -3.0, 1.0, -4.0]]
-ow = [ [4.0, 2], [3.0, 4.0], [0.0, 0.0], [0.0, 0.0] ]
-'''
-
-iw = [ [1000.0, 1000.0, 1000.0, 1000.0], [1000.0, 1000, 1000.0, 1000.0 ] ]
-hw = [ [1000.0, 1000.0, 1000.0, 1000.0], [1000.0, 1000.0, 1000.0, 1000.0], [1000.0, 1000.0, 1000.0, 1000.0], [1000.0, 1000.0, 1000.0, 1000.0]]
-ow = [ [1000.0, 1000.0],[1000.0, 1000.0], [1000.0, 1000.0], [1000.0, 1000.0]]
-genome = { 'iw': iw,
-            'hw': hw,
-            'ow': ow
-            'fitness': 0}
-
-
-for i in range(1,num_ind):
-    sgs[i] = []
-    for j in range(ni):
-        sgs[i].append(Create("spike_generator"))
-
-    sds[i] = []
-    for j in range(no):
-        sds[i].append(Create("spike_detector"))#, params={"to_file": True}))
-
-    animats.append(Animat(sgs[i], sds[i], genome))
-
-
-Prepare()
-
-for trial in range(trials):
     start = 1.0
     runtime = 33.0
 
-    # Initialize games
-    gamewidth = 16
-
-    # Setting random variables, broadcasting
-    if Rank() == 0:
-        ## Block
-        blockstates = np.random.randint(0, high=15, size=num_ind)
-
-        decision = np.random.randint(-1,1)
-
-        p = np.random.randint(0,1)
-        if p == 1:
-            blocksize = 1
-        else:
-            blocksize = 3
-
-        ## Paddle
-        paddlestates = np.random.randint(0, high=15, size=num_ind)
-
-    else:
-        blockstates = None
-        decision = None
-        blocksize = None
-        paddlestates = None
-
-    blockstates = comm.bcast(blockstates, root=0)
-    decision = comm.bcast(decision, root=0)
-    blocksize = comm.bcast(blocksize, root=0)
-    paddlestates = comm.bcast(paddlestates, root=0)
-
-    print("Rank {}: decision = {}".format(Rank(),decision))
-
-    for i in blockstates:
-        i = (i+decision)%gamewidth
-
-
-    for step in range(steps):
-        spikes = [[0]*ni]*num_ind
-
-        # Evaluate gamestates
-        for i in range(num_ind):
-            bs = blockstates[i] # Start of block
-            be = start + blocksize # end of block
-            pl = paddlestates[i]-1 # left paddle unit
-            pr = paddlestates[i]+1 # right paddle unit
-
-            # TODO: MAKE THIS LOGIC SMARTER
-            s = np.zeros(ni) # TODO: THIS REQUIRES A SET NUMBER OF INPUT: 2
-            if pl >= bs and pl <= be:
-                s[0] = 1
-            elif pr >= bs and pr <= be:
-                s[1] = 1
-
-            spikes[i] = s
+    starttime = datetime.now()
+    for gen in range(num_gen):
+        SetKernelStatus({"data_prefix": "generation_"+str(gen)+"_"})
 
         for i in range(num_ind):
-            for j in range(ni):
-                if spikes[i][j] == 1:
-                    SetStatus(sgs[i][j], {'spike_times': [start]})
+            genomes[i].fitness = 0
+            animats[i].set_weights(genomes[i])
 
-        Run(runtime)
-        start = start+runtime+1.0
+        # TRIAL
+        for trial in range(trials):
 
-        ns = np.zeros((num_ind, no))
-        #print("rank {}: before loop ns={}".format(Rank(),ns))
-        for i in range(num_ind):
-            spikes = [0]*no
-            for k in range(no):
-                s = 0
-                s = len(GetStatus(sds[i][k], 'events')[0]['times'])
-                #print("hey! i={}, k={}, s={}".format(i,k,s))
-                spikes[k] = float(s)
+            # Setting random variables, broadcasting
+            if Rank() == 0:
+                ## Block
+                blockstates = np.random.randint(0, high=15, size=num_ind)
 
-                SetStatus(sds[i][k], {'n_events': 0})
-            ns[i] = spikes
+                direction = np.random.randint(-1,1)
 
+                p = np.random.randint(0,1)
+                if p == 1:
+                    blocksize = 1
+                else:
+                    blocksize = 3
 
-        if Rank() == 0:
-            for p in range(1,numprocs):
-                req = comm.irecv(source=p)
-                ns += req.wait()
-        else:
-            comm.send(ns, dest=0)
+                ## Paddle
+                paddlestates = np.random.randint(0, high=15, size=num_ind)
 
-        if Rank() == 0:
-            for p in range(1,numprocs):
-                comm.send(ns, dest=p)
-        else:
-            req = comm.irecv(source=0)
-            ns = req.wait()
+            else:
+                blockstates = None
+                direction = None
+                blocksize = None
+                paddlestates = None
 
-        #print("{} has ns value {}".format(Rank(), ns))
+            blockstates = comm.bcast(blockstates, root=0)
+            direction = comm.bcast(direction, root=0)
+            blocksize = comm.bcast(blocksize, root=0)
+            paddlestates = comm.bcast(paddlestates, root=0)
 
-        # MAKE DECISION
-        for i, s in enumerate(ns):
-            decision = 0
-            if s[0] < s[1]:
-                decision = 1
-            elif s[0] > s[1]:
-                decision = -1
+            #print("Rank {}: decision = {}".format(Rank(),decision))
 
-            paddlestates[i] = (paddlestates[i]+decision)%gamewidth
+            for i in blockstates:
+                i = (i+direction)%gamewidth
 
-        print("Rank {} has blockstates {}".format(Rank(),blockstates))
-        print("Rank {} has paddlestates {}".format(Rank(),paddlestates))
+            # STEP
+            for step in range(steps):
+                spikes = [[0]*ni]*num_ind
 
+                # Evaluate gamestates
+                for i in range(num_ind):
+                    bs = blockstates[i] # Start of block
+                    be = (bs + blocksize)%gamewidth # end of block
+                    pl = (paddlestates[i]-1)%gamewidth # left paddle unit
+                    pr = (paddlestates[i]+1)%gamewidth # right paddle unit
 
+                    # TODO: MAKE THIS LOGIC SMARTER
+                    s = np.zeros(ni) # TODO: THIS REQUIRES A SET NUMBER OF INPUT: 2
+                    if pl >= bs and pl <= be:
+                        s[0] = 1
+                    elif pr >= bs and pr <= be:
+                        s[1] = 1
 
-Cleanup()
+                    spikes[i] = s
 
-'''
-    ResetKernel()
-    SetKernelStatus({"data_prefix": "generation_1_"})
+                for i in range(num_ind):
+                    for j in range(ni):
+                        if spikes[i][j] == 1:
+                            SetStatus(sgs[i][j], {'spike_times': [start]})
 
-sgs = []
-sds = []
-animats = []
-w = [ [100.0, 40.0, 200.0, 10.0], [20.0, 30.0, 100.0, 40.0], [10.0, 40.0, 20.0, 100.0], [20.0, 30.0, 100.0, 40.0]]
-for i in range(10):
-    sgs.append(Create("spike_generator", params={"spike_times": [1.0]}))
-    sds.append(Create("spike_detector", params={"to_file": True}))
-    animats.append(Animat(sgs[i], sds[i], genome))
+                Run(runtime)
+                start = start+runtime+1.0
 
-Simulate(100.0)
-
-spikes = [1,0,1,0,1,1,1,0,1,0]
-
-for i in range(10):
-    if spikes[i] == 1:
-        SetStatus(sgs[i], {'spike_times': [101.0]})
-    elif spikes[i] == 0:
-        print("do not set stimulus")
+                for i in range(num_ind):
+                    for j in range(no):
+                        print(GetStatus(sds[i][j], 'events')[0]['times'])
 
 
-Simulate(100.0)
+                # Collect number of spikes for each spike detector
+                ns = np.zeros((num_ind, no))
+                #print("rank {}: before loop ns={}".format(Rank(),ns))
+                for i in range(num_ind):
+                    spikes = [0]*no
+                    for k in range(no):
+                        s = 0
+                        s = len(GetStatus(sds[i][k], 'events')[0]['times'])
+                        #print("hey! i={}, k={}, s={}".format(i,k,s))
+                        spikes[k] = float(s)
 
-for sg in sgs:
-    print(GetStatus(sg))
+                        # Clear spike detector
+                        SetStatus(sds[i][k], {'n_events': 0})
+                    ns[i] = spikes
 
-'''
+                if Rank() == 0:
+                    for p in range(1,numprocs):
+                        req = comm.irecv(source=p)
+                        ns += req.wait()
+                else:
+                    comm.send(ns, dest=0)
+
+                ns = comm.bcast(ns, root=0)
+
+                #print("{} has ns value {}".format(Rank(), ns))
+
+                # MAKE DECISION
+                for i, s in enumerate(ns):
+                    decision = 0
+                    if s[0] < s[1]:
+                        decision = 1
+                    elif s[0] > s[1]:
+                        decision = -1
+
+                    paddlestates[i] = (paddlestates[i]+decision)%gamewidth
+                # END OF STEP
+
+            # END OF STEPS
+            for i in range(num_ind):
+                bs = blockstates[i] # Start of block
+                be = bs + blocksize # end of block
+                crash = False
+                pl = paddlestates[i]-1 # left paddle unit
+                pr = paddlestates[i]+1 # right paddle unit
+
+                score = -1
+                for j in range(bs, be, 1):
+                    for k in range(pl, pr+1, 1):
+                        crash = (j%gamewidth) == (k%gamewidth)
+                        if crash: break
+                    if crash: break
+
+                if crash:
+                    if blocksize == 1:
+                        score = 1
+                else:
+                    if blocksize == 3:
+                        score = 1
+
+                genomes[i].fitness += score
+                # END OF TRIAL
+
+        # END OF TRIALS
+        for g in genomes:
+            print("Rank {}: Genome with id {} has fitness {}".format(Rank(), g.id, g.fitness))
+
+        scores = [g.fitness for g in genomes]
+        sort = np.argsort(scores)[::-1]
+        scoreMean.append(np.mean(scores))
+        scoreMax.append(np.max(scores))
+
+        genomes[0].iw = genomes[sort[0]].iw # Best net doesn't change
+        genomes[0].hw = genomes[sort[0]].hw # Best net doesn't change
+        genomes[0].ow = genomes[sort[0]].ow # Best net doesn't change
+        genomes[0].id = genomes[sort[0]].id
+
+        if  genomes[sort[0]].fitness > best_solution.fitness:
+            best_solution = genomes[sort[0]]
+
+        for j in range(1, num_ind):
+            if Rank() == 0:
+                old_genome = genomes[sort[j]]
+                old_iw = old_genome.iw
+                old_hw = old_genome.hw
+                old_ow = old_genome.ow
+                liw = np.shape(old_iw)
+                lhw = np.shape(old_hw)
+                low = np.shape(old_ow)
+                # Mutation based on rank, lower rank, more mutation
+                new_iw = old_iw + ((np.random.rand(liw[0],liw[1])-0.5)/r*increase**j)
+                new_hw = old_hw + ((np.random.rand(lhw[0], lhw[1])-0.5)/r*increase**j)
+                new_ow = old_hw + ((np.random.rand(low[0], lhw[1])-0.5)/r*increase**j)
+                genomes[j].iw = new_iw
+                genomes[j].hw = new_hw
+                genomes[j].ow = new_ow
+                genomes[j].id = old_genome.id
+            else:
+                genomes = None
+
+            genomes = comm.bcast(genomes, root=0)
+
+
+        print("Generation {} finished. \n \
+            Best fitness (genepool[0]) was {}. \n \
+            Best fitness (scoreMax) was {}. \n \
+            Mean fitness was {}. \n\
+            ".format(i, genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
+
+
+        timestamp = datetime.now()
+        timer = timestamp-starttime
+        timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
+        print("Time this took: {}".format(timer))
+        # END OF GENERATION
+
+    # END OF GENERATIONS
+
+    results = { 'scoreMax' : scoreMax,
+                'scoreMean': scoreMean,
+                'best_solution': best_solution}
+
+    filename = "run_g["+str(g)+"]_t["+str(trials)+"]_i["+str(num_ind)+"]_bf["+scoreMax[-1]+"]_time["+str(timestamp)+"]"
+    with open(filename) as f:
+        pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    Cleanup()
+
+
+        # np.logical_or(np.any((bl+p)%10<1), np.any(np.abs(bl-p)<2))
 
