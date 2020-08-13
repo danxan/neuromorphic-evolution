@@ -6,11 +6,14 @@ from nest import raster_plot
 import matplotlib.pyplot as plt
 from datetime import datetime
 import pickle
+import os
 
 
 from nestAnimat import Animat
 from nestGenome import Genome
-SetKernelStatus({"total_num_virtual_procs": 8,'local_num_threads':2})
+
+P = 56
+SetKernelStatus({"total_num_virtual_procs": P,'local_num_threads':1})
 
 comm = MPI.COMM_WORLD
 numprocs = NumProcesses()
@@ -23,14 +26,15 @@ if __name__ == '__main__':
     scoreMean = []
 
     # EVOSTATS
-    r = 12
-    increase = 0.9
+    r = 12 # arbitrary mutation rate that affects every mutation linearly
+    increase = 0.9 # increase that is scaled exponentially with the rank
+    muadj = 10000 # adjustment for weight scale
 
-    num_gen = 10
-    trials = 10
-    steps = 36
+    num_gen = 1000
+    trials = 128
+    steps = 16
     num_ind = 10
-    gamewidth = 16
+    gamewidth = 8
 
     # CREATING GENOMES
     ni = 2 # THIS MUST ALWAYS BE 2
@@ -78,6 +82,8 @@ if __name__ == '__main__':
             genomes[i].fitness = 0
             animats[i].set_weights(genomes[i])
 
+        ResetNetwork()
+
         # TRIAL
         for trial in range(trials):
 
@@ -108,7 +114,6 @@ if __name__ == '__main__':
             blocksize = comm.bcast(blocksize, root=0)
             paddlestates = comm.bcast(paddlestates, root=0)
 
-            #print("Rank {}: decision = {}".format(Rank(),decision))
 
             for i in blockstates:
                 i = (i+direction)%gamewidth
@@ -121,19 +126,20 @@ if __name__ == '__main__':
                 for i in range(num_ind):
                     bs = blockstates[i] # Start of block
                     be = (bs + blocksize)%gamewidth # end of block
-                    pl = (paddlestates[i]-1)%gamewidth # left paddle unit
-                    pr = (paddlestates[i]+1)%gamewidth # right paddle unit
+                    pl = (paddlestates[i]-1) # left paddle sensor
+                    pr = (paddlestates[i]+1) # right paddle sensor
 
-                    # TODO: MAKE THIS LOGIC SMARTER
-                    s = np.zeros(ni) # TODO: THIS REQUIRES A SET NUMBER OF INPUT: 2
-                    if pl >= bs and pl <= be:
-                        s[0] = 1
-                    elif pr >= bs and pr <= be:
-                        s[1] = 1
+
+                    s = [0,0] # TODO: This code only works for two input neurons
+
+                    for i in range(bs, be, 1):
+                        if (i%w) == pl%w:
+                            s[0] = 1
+                        if (i%w) == pr%w:
+                            s[1] = 1
 
                     spikes[i] = s
 
-                for i in range(num_ind):
                     for j in range(ni):
                         if spikes[i][j] == 1:
                             SetStatus(sgs[i][j], {'spike_times': [start]})
@@ -141,24 +147,20 @@ if __name__ == '__main__':
                 Run(runtime)
                 start = start+runtime+1.0
 
-                for i in range(num_ind):
-                    for j in range(no):
-                        print(GetStatus(sds[i][j], 'events')[0]['times'])
-
-
                 # Collect number of spikes for each spike detector
                 ns = np.zeros((num_ind, no))
                 #print("rank {}: before loop ns={}".format(Rank(),ns))
                 for i in range(num_ind):
                     spikes = [0]*no
-                    for k in range(no):
-                        s = 0
-                        s = len(GetStatus(sds[i][k], 'events')[0]['times'])
-                        #print("hey! i={}, k={}, s={}".format(i,k,s))
-                        spikes[k] = float(s)
+                    s1 = len(GetStatus(sds[i][0], 'events')[0]['times'])
+                    s2 = len(GetStatus(sds[i][1], 'events')[0]['times'])
 
-                        # Clear spike detector
-                        SetStatus(sds[i][k], {'n_events': 0})
+                    spikes[0] = float(s1)
+                    spikes[1] = float(s2)
+
+                    # Clear spike detector
+                    SetStatus(sds[i][0], {'n_events': 0})
+                    SetStatus(sds[i][1], {'n_events': 0})
                     ns[i] = spikes
 
                 if Rank() == 0:
@@ -209,8 +211,6 @@ if __name__ == '__main__':
                 # END OF TRIAL
 
         # END OF TRIALS
-        for g in genomes:
-            print("Rank {}: Genome with id {} has fitness {}".format(Rank(), g.id, g.fitness))
 
         scores = [g.fitness for g in genomes]
         sort = np.argsort(scores)[::-1]
@@ -235,9 +235,9 @@ if __name__ == '__main__':
                 lhw = np.shape(old_hw)
                 low = np.shape(old_ow)
                 # Mutation based on rank, lower rank, more mutation
-                new_iw = old_iw + ((np.random.rand(liw[0],liw[1])-0.5)/r*increase**j)
-                new_hw = old_hw + ((np.random.rand(lhw[0], lhw[1])-0.5)/r*increase**j)
-                new_ow = old_hw + ((np.random.rand(low[0], lhw[1])-0.5)/r*increase**j)
+                new_iw = old_iw + ((np.random.rand(liw[0],liw[1])-0.5)*muadj/(r*increase**j))
+                new_hw = old_hw + ((np.random.rand(lhw[0], lhw[1])-0.5)*muadj/(r*increase**j))
+                new_ow = old_hw + ((np.random.rand(low[0], lhw[1])-0.5)*muadj/(r*increase**j))
                 genomes[j].iw = new_iw
                 genomes[j].hw = new_hw
                 genomes[j].ow = new_ow
@@ -252,28 +252,33 @@ if __name__ == '__main__':
             Best fitness (genepool[0]) was {}. \n \
             Best fitness (scoreMax) was {}. \n \
             Mean fitness was {}. \n\
-            ".format(i, genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
+            ".format(gen, genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
 
 
         timestamp = datetime.now()
         timer = timestamp-starttime
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
         print("Time this took: {}".format(timer))
+        print(6)
+
+        results = { 'scoreMax' : scoreMax,
+                    'scoreMean': scoreMean,
+                    'best_solution': best_solution}
+
+        if Rank() == 0:
+            filename = "results/run_np["+str(P)+"g["+str(num_gen)+"]_t["+str(trials)+"]_i["+str(num_ind)+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
+            with open(filename, 'wb') as f:
+                pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
+
         # END OF GENERATION
 
     # END OF GENERATIONS
 
-    results = { 'scoreMax' : scoreMax,
-                'scoreMean': scoreMean,
-                'best_solution': best_solution}
 
-    if Rank() == 0:
-        filename = "results/run_g["+str(num_gen)+"]_t["+str(trials)+"]_i["+str(num_ind)+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
-        with open(filename, 'wb') as f:
-            pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-    Cleanup()
 
 
         # np.logical_or(np.any((bl+p)%10<1), np.any(np.abs(bl-p)<2))
+
+
+    Cleanup()
 
