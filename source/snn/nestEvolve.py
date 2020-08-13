@@ -133,9 +133,9 @@ if __name__ == '__main__':
                     s = [0,0] # TODO: This code only works for two input neurons
 
                     for i in range(bs, be, 1):
-                        if (i%w) == pl%gamewidth:
+                        if (i%gamewidth) == pl%gamewidth:
                             s[0] = 1
-                        if (i%w) == pr%gamewidth:
+                        if (i%gamewidth) == pr%gamewidth:
                             s[1] = 1
 
                     spikes[i] = s
