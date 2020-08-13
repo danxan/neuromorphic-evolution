@@ -26,7 +26,7 @@ parser.add_argument(
     "-g", "--generations",
     help="The number of generations to be run per epoch.",
     type=int,
-    default=10)
+    default=1)
 parser.add_argument(
     "-p", "--populationsize",
     help="The number of individuals that each population \
@@ -56,7 +56,7 @@ parser.add_argument(
     help="The number of games to be run per individual per generation. \
         This determines the maximum fitness.",
     type=int,
-    default=10)
+    default=1)
 args = parser.parse_args()
 
 class Troll(object):
@@ -70,12 +70,15 @@ x = 10
 
 t = Troll()
 
-def f(genome, params, num_games):
-    params = params
+from evaltest import Eval
+def f(genome, animat):#, params, num_games):
+    #params = params
     game = Game()
+    e = Eval()
     genome.fitness = 0
-    for i in range(num_games):
-        genome.fitness += game.run(genome, params)
+    #for i in range(num_games):
+        #genome.fitness += game.run(genome, params)
+    genome.fitness += e.eval_genome(genome, animat)
     return genome.fitness
 
 if __name__ == '__main__':
@@ -94,9 +97,10 @@ if __name__ == '__main__':
     num_games = args.trials
 
     genomes = []
+    animats = []
     for i in range(num_individuals):
         genomes.append(SgaGenome(num_inp=num_inp, num_hid=num_hid, num_out=num_out, id=i))
-    print(2)
+        animats.append(Animat())
 
     # Initial Best Solution
     best_solution = genomes[0]
@@ -126,7 +130,6 @@ if __name__ == '__main__':
     # Creating pool of workers
     workers = multiprocessing.cpu_count()
     pe = ParallelEvaluator(workers, f)
-    print(4)
 
     # Starting epoch
     start = datetime.now()
@@ -134,7 +137,6 @@ if __name__ == '__main__':
         print(4)
 
         pe.evaluate_sga(genomes=genomes, params=cellparams, num_games=num_games)
-        print(5)
 
         scores = [g.fitness for g in genomes]
         sort = np.argsort(scores)[::-1]
@@ -181,7 +183,7 @@ if __name__ == '__main__':
     plt.xlabel("Generations")
     plt.ylabel("Mean fitness")
     figname = "results/scoreMean_date["+str(timestamp)+"].png"
-    figname = os.path.join(local_dir, figname)
+    log_path = os.path.join(local_dir, figname)
     plt.savefig(log_path)
     plt.show()
 
