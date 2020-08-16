@@ -30,7 +30,7 @@ if __name__ == '__main__':
     increase = 0.9 # increase that is scaled exponentially with the rank
     muadj = 10000 # adjustment for weight scale
 
-    num_gen = 1000
+    num_gen = 100
     trials = 128
     steps = 16
     num_ind = 10
@@ -43,6 +43,8 @@ if __name__ == '__main__':
 
     ps = 5 # Population Size
 
+
+    #Prepare()
     genomes = []
     for i in range(num_ind):
         if Rank() == 0:
@@ -54,23 +56,6 @@ if __name__ == '__main__':
 
     best_solution = genomes[0]
 
-    sgs = [None]*num_ind
-    sds = [None]*num_ind
-    animats = []
-
-    for i in range(0,num_ind):
-        sgs[i] = []
-        for j in range(ni):
-            sgs[i].append(Create("spike_generator"))
-
-        sds[i] = []
-        for j in range(no):
-            sds[i].append(Create("spike_detector"))#, params={"to_file": True}))
-
-        animats.append(Animat(sgs[i], sds[i], genomes[i]))
-
-    Prepare()
-
     start = 1.0
     runtime = 33.0
 
@@ -78,19 +63,30 @@ if __name__ == '__main__':
     for gen in range(num_gen):
         SetKernelStatus({"data_prefix": "generation_"+str(gen)+"_"})
 
-        for i in range(num_ind):
-            genomes[i].fitness = 0
-            animats[i].set_weights(genomes[i])
-
-        ResetNetwork()
-
         # TRIAL
         for trial in range(trials):
+
+            ResetKernel()
+
+            sgs = [None]*num_ind
+            sds = [None]*num_ind
+            animats = []
+
+            for i in range(0,num_ind):
+                sgs[i] = []
+                for j in range(ni):
+                    sgs[i].append(Create("spike_generator"))
+
+                sds[i] = []
+                for j in range(no):
+                    sds[i].append(Create("spike_detector"))#, params={"to_file": True}))
+
+                animats.append(Animat(sgs[i], sds[i], genomes[i]))
 
             # Setting random variables, broadcasting
             if Rank() == 0:
                 ## Block
-                blockstates = np.random.randint(0, high=15, size=num_ind)
+0                blockstates = np.random.randint(0, high=15, size=num_ind)
 
                 direction = np.random.randint(-1,1)
 
@@ -133,9 +129,9 @@ if __name__ == '__main__':
                     s = [0,0] # TODO: This code only works for two input neurons
 
                     for i in range(bs, be, 1):
-                        if (i%gamewidth) == pl%gamewidth:
+                        if (i%w) == pl%w:
                             s[0] = 1
-                        if (i%gamewidth) == pr%gamewidth:
+                        if (i%w) == pr%w:
                             s[1] = 1
 
                     spikes[i] = s
@@ -143,8 +139,11 @@ if __name__ == '__main__':
                     for j in range(ni):
                         if spikes[i][j] == 1:
                             SetStatus(sgs[i][j], {'spike_times': [start]})
+                        else:
+                            SetStatus(sgs[i][j], {'spike_times': []})
 
-                Run(runtime)
+
+                Simulate(runtime)
                 start = start+runtime+1.0
 
                 # Collect number of spikes for each spike detector
@@ -221,6 +220,7 @@ if __name__ == '__main__':
         genomes[0].hw = genomes[sort[0]].hw # Best net doesn't change
         genomes[0].ow = genomes[sort[0]].ow # Best net doesn't change
         genomes[0].id = genomes[sort[0]].id
+        genomes[0].fitness = 0
 
         if  genomes[sort[0]].fitness > best_solution.fitness:
             best_solution = genomes[sort[0]]
@@ -242,6 +242,7 @@ if __name__ == '__main__':
                 genomes[j].hw = new_hw
                 genomes[j].ow = new_ow
                 genomes[j].id = old_genome.id
+                genomes[j].fitness[0]
             else:
                 genomes = None
 
@@ -280,5 +281,5 @@ if __name__ == '__main__':
         # np.logical_or(np.any((bl+p)%10<1), np.any(np.abs(bl-p)<2))
 
 
-    Cleanup()
+    #Cleanup()
 
