@@ -33,13 +33,26 @@ class ParallelEvaluator(object):
     def evaluate_sga(self, genomes, params, num_games):
         jobs = []
         for g in genomes:
-            jobs.append(self.pool.apply_async(self.eval_function, (g, params, num_games))) 
+            jobs.append(self.pool.apply_async(self.eval_function, (g, params, num_games)))
 
         # assign the fitness back to each genome
         for job, g in zip(jobs, genomes):
-            job.wait()
             g.fitness = job.get(timeout=self.timeout)
 
         return genomes
 
-            
+    def evaluate_map(self, genomes, animats):
+        iterable = zip(genomes, animats)
+        return self.pool.map(self.eval_function, iterable)
+
+    def evaluate_xor(self, genomes):
+        jobs = []
+        for g in genomes:
+            jobs.append(self.pool.apply_async(self.eval_function, (g,)))
+
+        for job, g in zip(jobs, genomes):
+            g.fitness = job.get(timeout=self.timeout)
+
+        return genomes
+
+

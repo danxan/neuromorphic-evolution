@@ -2,7 +2,7 @@ from nest import *
 from nestGenome import Genome
 
 class Animat(object):
-    def __init__(self, genome, sds):
+    def __init__(self, genome):
         self.ps = genome.ps # population size / neurons per node
         self.ni = genome.ni # num input nodes
         self.nh = genome.nh # num hidden nodes
@@ -16,10 +16,10 @@ class Animat(object):
         for i in range(self.ni):
             self.sgs.append(Create('spike_generator'))
 
-        self.sds = sds
-        #self.sds = []
-        #for o in range(self.no):
-        #    self.sds.append(Create('spike_detector'))
+        #self.sds = sds
+        self.sds = []
+        for o in range(self.no):
+            self.sds.append(Create('spike_detector'))
 
         self.conn = { "in": [],
                  "out": [],
