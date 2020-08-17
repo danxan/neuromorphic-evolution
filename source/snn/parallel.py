@@ -43,4 +43,18 @@ class ParallelEvaluator(object):
 
         return genomes
 
+    def evaluate_map(self, genomes, animats):
+        iterable = zip(genomes, animats)
+        return self.pool.map(self.eval_function, iterable)
+
+    def evaluate_xor(self, genomes):
+        jobs = []
+        for g in genomes:
+            jobs.append(self.pool.apply_async(self.eval_function, (g,)))
+
+        for job, g in zip(jobs, genomes):
+            g.fitness = job.get(timeout=self.timeout)
+
+        return genomes
+
 

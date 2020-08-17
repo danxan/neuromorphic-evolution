@@ -29,7 +29,7 @@ class Unconnected_nodes(object):
             keys = cellparams.keys()
             if len(keys) == 0:
                 print("Cellparams is empty. Using default parametervalues.")
-            else:
+            elif self.populations[0].label != 'input':
                 # TODO: Check celltype
                 '''
                 c = self.populations[0].celltype
@@ -133,7 +133,7 @@ class Input_nodes(Unconnected_nodes):
         self.asm = pynn.Assembly()
         
         for i in range(int(num_pop)):
-            self.pop = pynn.Population(pop_size, cellclass=pynn.IF_cond_exp(), label=label)
+            self.pop = pynn.Population(pop_size, cellclass=cellclass, label=label)
             self.pop.record('spikes')
             self.populations.append(self.pop)
             self.asm += self.pop

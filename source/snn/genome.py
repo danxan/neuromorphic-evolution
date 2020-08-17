@@ -13,6 +13,9 @@ class SgaGenome(object):
         nh = self.num_hid
         no = self.num_out
         rng = NumpyRNG(seed=id*ni*nh*no, parallel_safe=True)
-        self.genes = RandomDistribution('normal', (-5,5), rng=rng).next(ni*nh+nh*nh+nh*no)
+        self.genes = RandomDistribution('uniform', (-1,1), rng=rng).next(ni*nh+nh*nh+nh*no)
+        print("Genes")
+        print(self.genes)
+        print("after genes")
         self.genes[0] = 5
         self.genes[1] = 5

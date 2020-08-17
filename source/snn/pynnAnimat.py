@@ -14,7 +14,7 @@ from nodes import *
 
 class Animat(object):
     def __init__(self, input_n=2, hidden_n=4, output_n=2, pop_size=1):
-        pynn.setup()
+        print('Creating animat')
         self.total_runtime = 0
 
         self.pop_size = pop_size
@@ -101,11 +101,11 @@ class Animat(object):
     def plot(self):
         from pyNN.utility.plotting import Figure, Panel
         # PLOT OUTPUT
-        o1 = self.out.populations[0].get_data(gather=False).segments[0]
+        o1 = self.out.populations[0].get_data(gather=False).segments[-1]
 
         vm1 = o1.filter(name='v')[0]
 
-        o2 = self.out.populations[1].get_data(gather=False).segments[0]
+        o2 = self.out.populations[1].get_data(gather=False).segments[-1]
 
         vm2 = o2.filter(name='v')[0]
 
@@ -123,25 +123,23 @@ class Animat(object):
         # TODO: This code only works for animats with 2 input nodes
         for i, node in enumerate(self.inp.populations):
             if stimuli[i] == 1:
-                '''
                 start = start+1
-                print("START")
-                print(start)
+                #print("START")
+                #print(start)
                 node.set(spike_times=[start])
-                '''
-                node.initialize(v=1)
-                
+                #node.initialize(v=1)
+
         stop = start+runtime
         pynn.run_until(stop)
 
         if plot:
             from pyNN.utility.plotting import Figure, Panel
             # PLOT OUTPUT
-            o1 = self.out.populations[0].get_data(gather=False).segments[0]
+            o1 = self.out.populations[0].get_data(gather=False).segments[-1]
 
             vm1 = o1.filter(name='v')[0]
 
-            o2 = self.out.populations[1].get_data(gather=False).segments[0]
+            o2 = self.out.populations[1].get_data(gather=False).segments[-1]
 
             vm2 = o2.filter(name='v')[0]
 
@@ -157,7 +155,7 @@ class Animat(object):
         return float(pynn.get_current_time())
 
 if __name__ == '__main__':
-    import random 
+    import random
     pynn.setup()
     animat = Animat(pop_size=5, input_n=2, output_n=2, hidden_n=4)
     #genome = [random.randint(0,15) for i in range(2*(2*4+4*4+4*2))]

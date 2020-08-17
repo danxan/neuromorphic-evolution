@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 import pyNN.nest as pynn
 from nest import Rank, SetKernelStatus
+import neat #with pnifconn
 
 from pynnAnimat import Animat
 
@@ -114,7 +115,7 @@ class Game:
         
         return decision
 
-    def run(self, genome, params, fps=60, d=False, plot=False):
+    def run(self, genome, params=None, config=None, fps=60, d=False, plot=False):
         '''
         It takes an animat player to play the game.
         This version takes a pynnAnimat.
@@ -122,16 +123,30 @@ class Game:
         #RESET GAME
         pynn.setup()
 
-        ps = genome.pop_size
-        ni = genome.num_inp
-        nh = genome.num_hid
-        no = genome.num_out
-        animat = Animat(pop_size=ps, input_n=ni, hidden_n=nh, output_n=no)
-        animat.inp.set_params(params)
-        animat.hid.set_params(params)
-        animat.out.set_params(params)
-        genes = genome.genes
-        animat.setWeights(genes)
+        if config:
+            animat = neat.pnifconn.pnifcoNN.create(genome, config)
+
+        elif params:
+            ps = genome.pop_size
+            ni = genome.num_inp
+            nh = genome.num_hid
+            no = genome.num_out
+            animat = Animat(pop_size=ps, input_n=ni, hidden_n=nh, output_n=no)
+            animat.inp.set_params(params)
+            animat.hid.set_params(params)
+            animat.out.set_params(params)
+            genes = genome.genes
+            animat.setWeights(genes)
+
+        else:
+            ps = genome.pop_size
+            ni = genome.num_inp
+            nh = genome.num_hid
+            no = genome.num_out
+            animat = Animat(pop_size=ps, input_n=ni, hidden_n=nh, output_n=no)
+            genes = genome.genes
+            animat.setWeights(genes)
+
         
 
         self.total_runtime = 0
@@ -176,7 +191,7 @@ class Game:
                 print(sens_in)
             
             self.prev_stop = self.total_runtime
-            self.total_runtime = animat.run(stimuli=sens_in, start=self.prev_stop, runtime=self.runtime, plot=False)
+            self.total_runtime = animat.run(stimuli=sens_in, start=self.prev_stop, runtime=self.runtime)
 
             decision = self.translate_spikes(animat)
 
@@ -247,16 +262,7 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    animat = Animat(pop_size=5)
-    genome = np.random.randint(-5,5, (2*4+4*4+4*2))
-    for i, g in enumerate(genome):
-        if np.random.random() > 0.9:
-            genome[i] = 0
-    genome[0] = 15
-    genome[1] = 15
-    print(genome)
-    animat.setWeights(genome)
-    game.run(animat, fps=30, d=False)            
-    animat.plot()
+    animat = neat.pnifconn.pnifcoNN.create(genome, config)
+
 
 
