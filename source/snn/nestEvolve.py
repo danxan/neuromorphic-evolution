@@ -30,7 +30,7 @@ if __name__ == '__main__':
     increase = 0.9 # increase that is scaled exponentially with the rank
     muadj = 10000 # adjustment for weight scale
 
-    num_gen = 100
+    num_gen = 10
     trials = 128
     steps = 16
     num_ind = 10
@@ -56,8 +56,6 @@ if __name__ == '__main__':
 
     best_solution = genomes[0]
 
-    start = 1.0
-    runtime = 33.0
 
     starttime = datetime.now()
     for gen in range(num_gen):
@@ -65,6 +63,8 @@ if __name__ == '__main__':
 
         # TRIAL
         for trial in range(trials):
+            start = 1.0
+            runtime = 33.0
 
             ResetKernel()
 
@@ -86,7 +86,7 @@ if __name__ == '__main__':
             # Setting random variables, broadcasting
             if Rank() == 0:
                 ## Block
-0                blockstates = np.random.randint(0, high=15, size=num_ind)
+                blockstates = np.random.randint(0, high=15, size=num_ind)
 
                 direction = np.random.randint(-1,1)
 
@@ -128,10 +128,10 @@ if __name__ == '__main__':
 
                     s = [0,0] # TODO: This code only works for two input neurons
 
-                    for i in range(bs, be, 1):
-                        if (i%w) == pl%w:
+                    for u in range(bs, be, 1):
+                        if (u%gamewidth) == pl%gamewidth:
                             s[0] = 1
-                        if (i%w) == pr%w:
+                        if (u%gamewidth) == pr%gamewidth:
                             s[1] = 1
 
                     spikes[i] = s
@@ -144,7 +144,7 @@ if __name__ == '__main__':
 
 
                 Simulate(runtime)
-                start = start+runtime+1.0
+                start = start+runtime
 
                 # Collect number of spikes for each spike detector
                 ns = np.zeros((num_ind, no))
@@ -216,14 +216,15 @@ if __name__ == '__main__':
         scoreMean.append(np.mean(scores))
         scoreMax.append(np.max(scores))
 
+        if  genomes[sort[0]].fitness > best_solution.fitness:
+            best_solution = genomes[sort[0]]
+
         genomes[0].iw = genomes[sort[0]].iw # Best net doesn't change
         genomes[0].hw = genomes[sort[0]].hw # Best net doesn't change
         genomes[0].ow = genomes[sort[0]].ow # Best net doesn't change
         genomes[0].id = genomes[sort[0]].id
-        genomes[0].fitness = 0
+        genomes[0].fitness = -128
 
-        if  genomes[sort[0]].fitness > best_solution.fitness:
-            best_solution = genomes[sort[0]]
 
         for j in range(1, num_ind):
             if Rank() == 0:
@@ -242,7 +243,7 @@ if __name__ == '__main__':
                 genomes[j].hw = new_hw
                 genomes[j].ow = new_ow
                 genomes[j].id = old_genome.id
-                genomes[j].fitness[0]
+                genomes[j].fitness = -128
             else:
                 genomes = None
 
@@ -250,10 +251,10 @@ if __name__ == '__main__':
 
 
         print("Generation {} finished. \n \
-            Best fitness (genepool[0]) was {}. \n \
+            Best solution had fitness {}. \n \
             Best fitness (scoreMax) was {}. \n \
             Mean fitness was {}. \n\
-            ".format(gen, genomes[sort[0]].fitness, scoreMax[-1], scoreMean[-1]))
+            ".format(gen, best_solution.fitness, scoreMax[-1], scoreMean[-1]))
 
 
         timestamp = datetime.now()
