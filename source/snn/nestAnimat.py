@@ -4,6 +4,7 @@ from nestGenome import Genome
 class Animat(object):
     def __init__(self, genome):
         self.ps = genome.ps # population size / neurons per node
+        self.genome = genome
         self.ni = genome.ni # num input nodes
         self.nh = genome.nh # num hidden nodes
         self.no = genome.no # num output nodes

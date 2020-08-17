@@ -30,8 +30,8 @@ if __name__ == '__main__':
     increase = 0.9 # increase that is scaled exponentially with the rank
     muadj = 10000 # adjustment for weight scale
 
-    num_gen = 10
-    trials = 128
+    num_gen = 2
+    num_trials = 10
     steps = 16
     num_ind = 10
     gamewidth = 8
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     genomes = []
     for i in range(num_ind):
         if Rank() == 0:
-            genomes.append(Genome(ps, nh, id=i))
+            genomes.append(Genome(id=i, ps=ps, nh=nh))
         else:
             genomes.append(None)
 
@@ -60,154 +60,130 @@ if __name__ == '__main__':
     starttime = datetime.now()
     for gen in range(num_gen):
         SetKernelStatus({"data_prefix": "generation_"+str(gen)+"_"})
+        ResetKernel()
 
-        # TRIAL
-        for trial in range(trials):
-            start = 1.0
-            runtime = 33.0
+        # Create num_trials in parallel
+        inds = []
+        for ind in range(num_ind):
+            tris = []
+            for t in range(num_trials):
+                tris.append(Animat(genomes[ind]))
+            inds.append(tris)
 
-            ResetKernel()
+        # Setting random variables, broadcasting
+        if Rank() == 0:
+            ## Block
+            blockstates = np.random.randint(0, high=16, size=(num_ind, num_trials))
+            #print("blockstates: \n{}".format(blockstates))
 
-            sgs = [None]*num_ind
-            sds = [None]*num_ind
-            animats = []
+            directions = np.random.randint(-1, high=2, size=(num_ind, num_trials))
+            #print("directions: \n{}".format(directions))
 
-            for i in range(0,num_ind):
-                sgs[i] = []
-                for j in range(ni):
-                    sgs[i].append(Create("spike_generator"))
+            blocksizes = np.random.randint(1, high=5, size=(num_ind, num_trials))
+            blocksizes = blocksizes - ((blocksizes == 4)+0) - ((blocksizes == 2)+0)
 
-                sds[i] = []
-                for j in range(no):
-                    sds[i].append(Create("spike_detector"))#, params={"to_file": True}))
+            #print("blocksizes: \n {}".format(blocksizes))
 
-                animats.append(Animat(sgs[i], sds[i], genomes[i]))
+            ## Paddle
+            paddlestates = np.random.randint(0, high=16, size=(num_ind, num_trials))
+            #print("paddlestates: \n{}".format(paddlestates))
 
-            # Setting random variables, broadcasting
-            if Rank() == 0:
-                ## Block
-                blockstates = np.random.randint(0, high=15, size=num_ind)
+        else:
+            blockstates = None
+            directions = None
+            blocksizes = None
+            paddlestates = None
 
-                direction = np.random.randint(-1,1)
+        blockstates = comm.bcast(blockstates, root=0)
+        directions = comm.bcast(directions, root=0)
+        blocksizes = comm.bcast(blocksizes, root=0)
+        paddlestates = comm.bcast(paddlestates, root=0)
 
-                p = np.random.randint(0,1)
-                if p == 1:
-                    blocksize = 1
-                else:
-                    blocksize = 3
+        # STEP
+        start = 1.0
+        runtime = 33.0
+        for step in range(steps):
+            spikes = np.zeros((num_ind, num_trials, ni))
 
-                ## Paddle
-                paddlestates = np.random.randint(0, high=15, size=num_ind)
+            # Evaluate gamestates
+            b_ends = (blockstates + blocksizes)
+            p_left = paddlestates-1
+            p_right = paddlestates+1
 
-            else:
-                blockstates = None
-                direction = None
-                blocksize = None
-                paddlestates = None
+            # TODO: VECTORIZE THIS?
+            for i in range(num_ind):
+                for j in range(num_trials):
+                    SetStatus(inds[i][j].sgs[0], {'spike_times': []})
+                    SetStatus(inds[i][j].sgs[1], {'spike_times': []})
 
-            blockstates = comm.bcast(blockstates, root=0)
-            direction = comm.bcast(direction, root=0)
-            blocksize = comm.bcast(blocksize, root=0)
-            paddlestates = comm.bcast(paddlestates, root=0)
+                    for u in range(blockstates[i][j], b_ends[i][j], 1):
 
+                        if (u%gamewidth) == p_left[i][j]%gamewidth:
+                            SetStatus(inds[i][j].sgs[0], {'spike_times': [start]})
 
-            for i in blockstates:
-                i = (i+direction)%gamewidth
+                        if (u%gamewidth) == p_right[i][j]%gamewidth:
+                            SetStatus(inds[i][j].sgs[1], {'spike_times': [start]})
 
-            # STEP
-            for step in range(steps):
-                spikes = [[0]*ni]*num_ind
+            Simulate(runtime)
+            start = start+runtime
 
-                # Evaluate gamestates
-                for i in range(num_ind):
-                    bs = blockstates[i] # Start of block
-                    be = (bs + blocksize)%gamewidth # end of block
-                    pl = (paddlestates[i]-1) # left paddle sensor
-                    pr = (paddlestates[i]+1) # right paddle sensor
-
-
-                    s = [0,0] # TODO: This code only works for two input neurons
-
-                    for u in range(bs, be, 1):
-                        if (u%gamewidth) == pl%gamewidth:
-                            s[0] = 1
-                        if (u%gamewidth) == pr%gamewidth:
-                            s[1] = 1
-
-                    spikes[i] = s
-
-                    for j in range(ni):
-                        if spikes[i][j] == 1:
-                            SetStatus(sgs[i][j], {'spike_times': [start]})
-                        else:
-                            SetStatus(sgs[i][j], {'spike_times': []})
-
-
-                Simulate(runtime)
-                start = start+runtime
-
-                # Collect number of spikes for each spike detector
-                ns = np.zeros((num_ind, no))
-                #print("rank {}: before loop ns={}".format(Rank(),ns))
-                for i in range(num_ind):
-                    spikes = [0]*no
-                    s1 = len(GetStatus(sds[i][0], 'events')[0]['times'])
-                    s2 = len(GetStatus(sds[i][1], 'events')[0]['times'])
-
-                    spikes[0] = float(s1)
-                    spikes[1] = float(s2)
+            # Collect number of spikes for each spike detector
+            ns = np.zeros((num_ind, num_trials, no)) # this has to be strange in order
+            #print("rank {}: before loop ns={}".format(Rank(),ns))
+            for i in range(num_ind):
+                for j in range(num_trials):
+                    ns[i][j][0] = GetStatus(inds[i][j].sds[0])[0]['n_events']
+                    ns[i][j][1] = GetStatus(inds[i][j].sds[1])[0]['n_events']
 
                     # Clear spike detector
-                    SetStatus(sds[i][0], {'n_events': 0})
-                    SetStatus(sds[i][1], {'n_events': 0})
-                    ns[i] = spikes
+                    SetStatus(inds[i][j].sds[0], {'n_events': 0})
+                    SetStatus(inds[i][j].sds[1], {'n_events': 0})
 
-                if Rank() == 0:
-                    for p in range(1,numprocs):
-                        req = comm.irecv(source=p)
-                        ns += req.wait()
-                else:
-                    comm.send(ns, dest=0)
+            if Rank() == 0:
+                for p in range(1,numprocs):
+                    req = comm.irecv(source=p)
+                    ns += req.wait()
+            else:
+                comm.send(ns, dest=0)
 
-                ns = comm.bcast(ns, root=0)
+            ns = comm.bcast(ns, root=0)
 
-                #print("{} has ns value {}".format(Rank(), ns))
+            #print("{} has ns value {}".format(Rank(), ns))
 
-                # MAKE DECISION
-                for i, s in enumerate(ns):
-                    decision = 0
-                    if s[0] < s[1]:
-                        decision = 1
-                    elif s[0] > s[1]:
-                        decision = -1
+            # MAKE DECISION
+            ld = ns[:,:,0] > ns[:,:,1]
+            rd = ns[:,:,0] < ns[:,:,1]
+            decisions = (rd + 0) - (ld + 0)
 
-                    paddlestates[i] = (paddlestates[i]+decision)%gamewidth
-                # END OF STEP
+            paddlestates = (paddlestates+decisions)%gamewidth
+            # END OF STEP
 
-            # END OF STEPS
-            for i in range(num_ind):
-                bs = blockstates[i] # Start of block
-                be = bs + blocksize # end of block
+        # END OF STEPS
+        # Evaluate gamestates
+        b_ends = (blockstates + blocksizes)
+        p_left = paddlestates-1
+        p_right = paddlestates+1
+
+        # TODO: VECTORIZE THIS?
+        for i in range(num_ind):
+            for j in range(num_trials):
                 crash = False
-                pl = paddlestates[i]-1 # left paddle unit
-                pr = paddlestates[i]+1 # right paddle unit
-
                 score = -1
-                for j in range(bs, be, 1):
-                    for k in range(pl, pr+1, 1):
-                        crash = (j%gamewidth) == (k%gamewidth)
+
+                for u in range(blockstates[i][j], b_ends[i][j], 1):
+                    for p in range(p_left[i][j], p_right[i][j]+1, 1):
+                        crash = (u%gamewidth) == (p%gamewidth)
                         if crash: break
                     if crash: break
 
                 if crash:
-                    if blocksize == 1:
+                    if blocksizes[i][j] == 1:
                         score = 1
                 else:
-                    if blocksize == 3:
+                    if blocksizes[i][j] == 3:
                         score = 1
 
-                genomes[i].fitness += score
-                # END OF TRIAL
+                inds[i][j].genome.fitness += score
 
         # END OF TRIALS
 
@@ -223,7 +199,7 @@ if __name__ == '__main__':
         genomes[0].hw = genomes[sort[0]].hw # Best net doesn't change
         genomes[0].ow = genomes[sort[0]].ow # Best net doesn't change
         genomes[0].id = genomes[sort[0]].id
-        genomes[0].fitness = -128
+        genomes[0].fitness = 0
 
 
         for j in range(1, num_ind):
@@ -243,7 +219,7 @@ if __name__ == '__main__':
                 genomes[j].hw = new_hw
                 genomes[j].ow = new_ow
                 genomes[j].id = old_genome.id
-                genomes[j].fitness = -128
+                genomes[j].fitness = 0
             else:
                 genomes = None
 
@@ -268,7 +244,7 @@ if __name__ == '__main__':
                     'best_solution': best_solution}
 
         if Rank() == 0:
-            filename = "results/run_np["+str(P)+"g["+str(num_gen)+"]_t["+str(trials)+"]_i["+str(num_ind)+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
+            filename = "results/run_np["+str(P)+"g["+str(num_gen)+"]_t["+str(num_trials)+"]_i["+str(num_ind)+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
             with open(filename, 'wb') as f:
                 pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
 

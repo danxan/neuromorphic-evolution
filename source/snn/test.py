@@ -39,14 +39,14 @@ print("iw\n{}\nhw\n{}\now\n{}".format(g.iw, g.hw, g.ow))
 #for i in range(2):
 trial_a = []
 
-trials = 10
+trials = 128
 
+print("g.fitness: {}".format(g.fitness))
 for t in range(trials):
     a = Animat(g)
     for i in range(2):
         SetStatus(a.sgs[i], {'spike_times': [21.0]})
     trial_a.append(a)
-
 
 Simulate(40)
 for a in trial_a:
@@ -54,6 +54,12 @@ for a in trial_a:
     print(GetStatus(a.sds[i]))
     SetStatus(a.sds[i], {'n_events': 0})
 Simulate(20)
+
+for a in trial_a:
+    a.genome.fitness += 1
+
+print("g.fitness: {}".format(g.fitness))
+
 
 '''
 for s in sg:
