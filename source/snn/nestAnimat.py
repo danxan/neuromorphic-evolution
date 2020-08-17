@@ -45,7 +45,7 @@ class Animat(object):
             for j in range(self.no):
                 syn_dict = {'weight': self.ow[i][j]}
                 Connect(self.hid[i], self.out[j], syn_spec=syn_dict)
-                self.conn['out'][i].append(GetConnections(self.hid[i],self.out[j]))
+                #self.conn['out'][i].append(GetConnections(self.hid[i],self.out[j]))
 
         for i in range(self.no):
             Connect(self.out[i], sds[i])
