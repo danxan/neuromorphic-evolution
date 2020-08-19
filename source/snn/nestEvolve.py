@@ -30,8 +30,8 @@ if __name__ == '__main__':
     increase = 0.9 # increase that is scaled exponentially with the rank
     muadj = 10000 # adjustment for weight scale
 
-    num_gen = 2
-    num_trials = 10
+    num_gen = 1000
+    num_trials = 128
     steps = 16
     num_ind = 10
     gamewidth = 8
