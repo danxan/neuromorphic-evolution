@@ -2,7 +2,7 @@ from nest import *
 import numpy as np
 
 class Genome(object):
-    def __init__(self, id, ps=5, nh=4, low=-1000, high=1000, min_fitness=0):
+    def __init__(self, id, ps=5, nh=4, low=-10000, high=10000, min_fitness=0):
         self.id = id
         self.fitness = min_fitness
         self.ps = ps
