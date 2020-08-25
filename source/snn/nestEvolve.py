@@ -30,7 +30,7 @@ if __name__ == '__main__':
     increase = 0.9 # increase that is scaled exponentially with the rank
     muadj = 10000 # adjustment for weight scale
 
-    num_gen = 1000
+    num_gen = 3000
     num_trials = 128
     steps = 16
     num_ind = 10
@@ -103,7 +103,8 @@ if __name__ == '__main__':
         start = 1.0
         runtime = 33.0
         for step in range(steps):
-            spikes = np.zeros((num_ind, num_trials, ni))
+            # Update blockstate
+            blockstates = (blockstates + directions)%gamewidth
 
             # Evaluate gamestates
             b_ends = (blockstates + blocksizes)
