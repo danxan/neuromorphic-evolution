@@ -16,7 +16,55 @@ import copy
 from nestAnimat import Animat
 from nestGenome import Genome
 
-def setup_game(gamewidth, num_ind, num_trials):
+def create_genomes():
+    # CREATING GENOMES
+    ni = 2 # THIS MUST ALWAYS BE 2
+    nh = 4
+    no = 2 # THIS MUST ALWAYS BE 2
+
+    ps = 5 # Population Size
+
+    #Prepare()
+    genomes = []
+    for i in range(num_ind):
+        if Rank() == 0:
+            genomes.append(Genome(id=i, ps=ps, nh=nh))
+        else:
+            genomes.append(None)
+
+    genomes = comm.bcast(genomes, root=0)
+
+    best_solution = genomes[0]
+
+    mean_smax = 0
+
+    return genomes, best_solution, mean_smax
+
+def load_solutions(comm, num_ind):
+    genomes = []
+    if Rank() == 0:
+        for i in range(num_ind):
+            log = get_data()
+            best_solution = log['best_solution']
+            genomes.append(copy.deepcopy(best_solution))
+            genomes[i].fitness = 0
+
+            mean_smax = np.mean(log['scoreMax'])
+    else:
+        genomes.append(None)
+        best_solution = None
+
+        mean_smax = None
+
+    genomes = comm.bcast(genomes, root=0)
+    best_solution = comm.bcast(best_solution, root=0)
+
+    mean_smax = comm.bcast(mean_smax, root=0)
+    print("MEAN SMAX: {}".format(mean_smax))
+
+    return genomes, best_solution, mean_smax
+
+def setup_game(comm, gamewidth, num_ind, num_trials):
     # Setting random variables, broadcasting
     if Rank() == 0:
         ## Block
@@ -48,12 +96,13 @@ def setup_game(gamewidth, num_ind, num_trials):
 
     return blockstates, directions, blocksizes, paddlestates
 
-def run_steps(num_ind, num_trials, ni, nh, no, blockstates, blocksizes, paddlestates, direction, gamewidth, inds):
+def run_steps(comm, gameheight, num_ind, num_trials, ni, nh, no, blockstates, blocksizes, paddlestates, directions, gamewidth, inds):
     # STEPS
     start = 1.0
     runtime = 33.0
-    for step in range(steps):
-        spikes = np.zeros((num_ind, num_trials, ni))
+    for step in range(gameheight):
+        # Update blockstate
+        blockstates = (blockstates + directions)%gamewidth
 
         # Evaluate gamestates
         b_ends = (blockstates + blocksizes)
@@ -109,6 +158,37 @@ def run_steps(num_ind, num_trials, ni, nh, no, blockstates, blocksizes, paddlest
         # END OF STEP
 
     # END OF STEPS
+    return blockstates, paddlestates
+
+def last_step(comm, blockstates, blocksizes, paddlestates, num_ind, num_trials, gamewidth, inds):
+    # Evaluate gamestates
+    b_ends = (blockstates + blocksizes)
+    p_left = paddlestates-1
+    p_right = paddlestates+1
+
+    # TODO: VECTORIZE THIS?
+    for i in range(num_ind):
+        for j in range(num_trials):
+            crash = False
+            score = -1
+
+            for u in range(blockstates[i][j], b_ends[i][j], 1):
+                for p in range(p_left[i][j], p_right[i][j]+1, 1):
+                    crash = (u%gamewidth) == (p%gamewidth)
+                    if crash: break
+                if crash: break
+
+            if crash:
+                if blocksizes[i][j] == 1:
+                    score = 1
+            else:
+                if blocksizes[i][j] == 3:
+                    score = 1
+
+            inds[i][j].genome.fitness += score
+
+    return inds
+
 def test_solution_parallel():
     P = 56
     SetKernelStatus({"total_num_virtual_procs": P,'local_num_threads':1})
@@ -129,7 +209,7 @@ def test_solution_parallel():
 
     num_gen = 1
     num_trials = 128
-    steps = 16
+    gameheight = 16
     num_ind = 1
     gamewidth = 8
 
@@ -192,7 +272,7 @@ def test_solution_parallel():
         # STEP
         start = 1.0
         runtime = 33.0
-        for step in range(steps):
+        for step in range(gameheight):
             spikes = np.zeros((num_ind, num_trials, ni))
 
             # Evaluate gamestates
@@ -640,14 +720,12 @@ def test_solution2():
 
     #Cleanup()
 
-def run_epoch():
-    P = 56
-    SetKernelStatus({"total_num_virtual_procs": P,'local_num_threads':1})
+def run_epoch(comm, genomes, best_solution, mean_smax):
 
-    comm = MPI.COMM_WORLD
-    numprocs = NumProcesses()
+    genomes = genomes
+    best_solution = best_solution
+    mean_smax = mean_smax
 
-    ResetKernel()
 
     scoreMax = []
     scoreMean = []
@@ -659,42 +737,19 @@ def run_epoch():
 
     #num_gen = 500
     num_trials = 128
-    steps = 16
+    gameheight = 16
     num_ind = 10
     gamewidth = 8
 
     num_tests = 5
     num_top = 10
 
-    # CREATING GENOMES
-    ni = 2 # THIS MUST ALWAYS BE 2
+
+    ni = 2
     nh = 4
-    no = 2 # THIS MUST ALWAYS BE 2
+    no = 2
 
     ps = 5 # Population Size
-
-
-    #Prepare()
-    genomes = []
-    if Rank() == 0:
-        for i in range(num_ind):
-            log = get_data()
-            best_solution = log['best_solution']
-            genomes.append(copy.deepcopy(best_solution))
-            genomes[i].fitness = 0
-
-            mean_smax = np.mean(log['scoreMax'])
-    else:
-        genomes.append(None)
-        best_solution = None
-
-        mean_smax = None
-
-    genomes = comm.bcast(genomes, root=0)
-    best_solution = comm.bcast(best_solution, root=0)
-
-    mean_smax = comm.bcast(mean_smax, root=0)
-    print("MEAN SMAX: {}".format(mean_smax))
 
     top_solutions = []
 
@@ -746,9 +801,7 @@ def run_epoch():
         # STEP
         start = 1.0
         runtime = 33.0
-        for step in range(steps):
-            spikes = np.zeros((num_ind, num_trials, ni))
-
+        for step in range(gameheight):
             # Evaluate gamestates
             b_ends = (blockstates + blocksizes)
             p_left = paddlestates-1
@@ -772,7 +825,7 @@ def run_epoch():
             start = start+runtime
 
             # Collect number of spikes for each spike detector
-            ns = np.zeros((num_ind, num_trials, no)) # this has to be strange in order
+            ns = np.zeros((num_ind, num_trials, no))
             #print("rank {}: before loop ns={}".format(Rank(),ns))
             for i in range(num_ind):
                 for j in range(num_trials):
@@ -917,51 +970,87 @@ def run_epoch():
     print("RANK {}: WHILE LOOP IS FINISHED".format(Rank()))
     print("Current number of top solutions: {}".format(len(top_solutions)))
     tests = 5
+    scores = np.zeros((tests, num_top))
     for i in range(tests):
-        scores = []
-        for j in range(num_top):
-            scores.append([])
-
+        ResetKernel()
         animats = []
+        for ind in range(num_top):
+            tris = []
+            for t in range(num_trials):
+                tris.append(Animat(top_solutions[ind]))
+            animats.append(tris)
+
+        # TRIALS
+        blockstates, directions, blocksizes, paddlestates = setup_game(comm, gamewidth, num_top, num_trials)
+        blockstates, paddlestates = run_steps(comm, gameheight, num_top, num_trials, ni, nh, no, blockstates, blocksizes, paddlestates, directions, gamewidth, animats)
+        animats = last_step(comm, blockstates, blocksizes, paddlestates, num_top, num_trials, gamewidth, animats)
+
         for j in range(num_top):
-            animats.append(Animat(top_solutions[j]))
+            scores[i][j] = animats[j][0].genome.fitness
+            for k in range(num_trials):
+                print(animats[j][k].genome.fitness)
 
-        blockstates, directions, blocksizes, paddlestates = setup_game(gamewidth=gamewidth, num_ind=num_top, num_trials=num_trials)
-        blockstates, paddlestates = run_steps(num_ind, num_trials, ni, nh, no, blockstates, blocksizes, paddlestates, direction, gamewidth, inds):
+    mean_scores = np.mean(scores, axis=0)
+    sort = np.argsort(mean_scores)[::-1]
+
+    eef = 2 # epoch elitism fraction
+    nelit = int(num_top/eef) # number of top solutions to take over (elitism number)
+    sort = sort[0:nelit]
+    genomes = []
+    for i in range(nelit):
+        genomes.append(top_solutions[sort[i]])
+
+    for i in range(nelit, num_ind):
+        genomes.append(Genome(id=i, ps=ps, nh=nh))
+
+    mean_smax = np.mean(scoreMax)
+
+    return genomes, best_solution, mean_smax
 
 
-                # END OF STEPS
-                # Evaluate gamestates
-                b_ends = (blockstates + blocksizes)
-                p_left = paddlestates-1
-                p_right = paddlestates+1
 
-                # TODO: VECTORIZE THIS?
-                for i in range(num_ind):
-                    for j in range(num_trials):
-                        crash = False
-                        score = -1
-
-                        for u in range(blockstates[i][j], b_ends[i][j], 1):
-                            for p in range(p_left[i][j], p_right[i][j]+1, 1):
-                                crash = (u%gamewidth) == (p%gamewidth)
-                                if crash: break
-                            if crash: break
-
-                        if crash:
-                            if blocksizes[i][j] == 1:
-                                score = 1
-                        else:
-                            if blocksizes[i][j] == 3:
-                                score = 1
-
-                        inds[i][j].genome.fitness += score
-
-                # END OF TRIALS
-
-        # np.logical_or(np.any((bl+p)%10<1), np.any(np.abs(bl-p)<2))
-
-    #Cleanup()
 if __name__ == '__main__':
-    run_epoch()
+    P = 56
+    SetKernelStatus({"total_num_virtual_procs": P,'local_num_threads':1})
+
+    comm = MPI.COMM_WORLD
+    numprocs = NumProcesses()
+
+    ResetKernel()
+
+    genomes, best_solution, mean_smax = load_solutions(comm, 10)
+
+    scoreMean = []
+    scoreMax = []
+
+    start_ep = datetime.now()
+    for ep in range(5):
+        genomes, best_solution, mean_smax = run_epoch(comm, genomes, best_solution, mean_smax)
+        scores = [g.fitness for g in genomes]
+        sort = np.argsort(scores)[::-1]
+        scoreMean.append(np.mean(scores))
+        scoreMax.append(np.max(scores))
+# END OF EPOCH
+        print("Epoch {} finished. \n \
+            Best solution had fitness {}. \n \
+            Best fitness (scoreMax) was {}. \n \
+            Mean fitness was {}. \n\
+            ".format(ep, best_solution.fitness, scoreMax[-1], scoreMean[-1]))
+
+        results = { 'scoreMax' : scoreMax,
+                    'scoreMean': scoreMean,
+                    'best_solution': best_solution}
+
+        timestamp_e = datetime.now()
+        timer = timestamp_e-start_ep
+        timestamp_e = timestamp_e.strftime("%Y-%b-%d-%H:%M:%S:%f")
+        print("Time this took: {}".format(timer))
+
+        if Rank() == 0:
+            filename = "results/run_np["+str(P)+"epoch["+str(ep)+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp_e)+"]"
+            with open(filename, 'wb') as f:
+                pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
+        # END OF EPOCH
+
+
 
