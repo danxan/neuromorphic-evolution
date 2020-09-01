@@ -6,8 +6,8 @@ import sys
 import pickle
 import numpy as np
 
-def get_data():
-    filename = str(sys.argv[1])
+def get_data(filename):
+    filename = filename
 
     log = None
     with open(filename, 'rb') as f:
@@ -31,5 +31,7 @@ def mean_scoreMax():
     return np.mean(scoreMax)
 
 
-
+if __name__ == '__main__':
+    filename = sys.argv[1]
+    get_data(filename)
 
