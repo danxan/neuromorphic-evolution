@@ -116,7 +116,7 @@ if __name__ == "__main__":
     num_nets = 10
     genome_id = list(range(num_nets))
 
-    increase=0.9 # if below 1, worse performing num_nets change more. If above, worse performing num_nets change less
+    increase=1.1 # if below 1, worse performing num_nets change more. If above, worse performing num_nets change less
     its = 128
     itses = 60000
     w,h=8,16,

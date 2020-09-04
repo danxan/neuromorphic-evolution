@@ -179,9 +179,9 @@ class Sga(object):
 
         # mutation
         m_scalar = 12
-        m_exp_incr = 0.9
+        m_exp_incr = 1.1
 
-        self.m_power = [(1/(m_scalar)*i**m_exp_incr) for i in range(1,self.num_ind)]
+        self.m_power = [(1/m_scalar*m_exp_incr**i) for i in range(1,self.num_ind)]
 
         #if sys.argv[1] == "load":
         #    filename = sys.argv[2]

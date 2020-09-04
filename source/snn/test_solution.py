@@ -889,7 +889,7 @@ def run_epoch(comm, numprocs, num_top, num_ind, num_tests, num_trials, gameheigh
 
     # EVOSTATS
     r = 12 # arbitrary mutation rate that affects every mutation linearly
-    increase = 0.9 # increase that is scaled exponentially with the rank
+    increase = 1.1 # increase that is scaled exponentially with the rank
     muadj = 1 # adjustment for weight scale
 
     ni = 2
@@ -1065,9 +1065,9 @@ def run_epoch(comm, numprocs, num_top, num_ind, num_tests, num_trials, gameheigh
                 lhw = np.shape(old_hw)
                 low = np.shape(old_ow)
                 # Mutation based on rank, lower rank, more mutation
-                new_iw = old_iw + ((np.random.rand(liw[0],liw[1])-0.5)*muadj/(r*increase**j))
-                new_hw = old_hw + ((np.random.rand(lhw[0], lhw[1])-0.5)*muadj/(r*increase**j))
-                new_ow = old_hw + ((np.random.rand(low[0], lhw[1])-0.5)*muadj/(r*increase**j))
+                new_iw = old_iw + ((np.random.rand(liw[0],liw[1])-0.5)*(muadj/r*increase**j))
+                new_hw = old_hw + ((np.random.rand(lhw[0], lhw[1])-0.5)*(muadj/r*increase**j))
+                new_ow = old_hw + ((np.random.rand(low[0], lhw[1])-0.5)*(muadj/r*increase**j))
                 genomes[j].iw = new_iw
                 genomes[j].hw = new_hw
                 genomes[j].ow = new_ow
