@@ -53,7 +53,7 @@ def load_solutions(filename, comm, num_ind):
             genomes = genomes[0:num_ind]
         else:
             for i in range(num_ind):
-                genomes += copy.deepcopy(genomes[i%num_ind])
+                genomes.append(copy.deepcopy(genomes[i%num_ind]))
 
         mean_smax = np.mean(log['scoreMax'])
 
@@ -177,7 +177,7 @@ def last_step(comm, blockstates, blocksizes, paddlestates, num_ind, num_trials, 
     for i in range(num_ind):
         for j in range(num_trials):
             crash = False
-            score = -1
+            score = 0
 
             for u in range(blockstates[i][j], b_ends[i][j], 1):
                 for p in range(p_left[i][j], p_right[i][j]+1, 1):
@@ -201,7 +201,7 @@ def test_top_solutions(comm, numprocs, top_solutions, num_tests, num_ind, num_tr
     no = 2
     scores = np.zeros((num_tests, num_ind))
     # AVERAGING TESTS
-    for i in range(num_tests):
+    for test in range(num_tests):
         ResetKernel()
         inds = []
         for ind in range(num_ind):
@@ -315,11 +315,11 @@ def test_top_solutions(comm, numprocs, top_solutions, num_tests, num_ind, num_tr
         p_left = paddlestates-1
         p_right = paddlestates+1
 
-        # todo: vectorize this?
+        # TODO: VECTORIZE THIS?
         for i in range(num_ind):
             for j in range(num_trials):
                 crash = False
-                score = -1
+                score = 0
 
                 for u in range(blockstates[i][j], b_ends[i][j], 1):
                     for p in range(p_left[i][j], p_right[i][j]+1, 1):
@@ -335,9 +335,9 @@ def test_top_solutions(comm, numprocs, top_solutions, num_tests, num_ind, num_tr
                         score = 1
 
                 inds[i][j].genome.fitness += score
-
-        for j in range(num_ind):
-            scores[i][j] = top_solutions[j].fitness
+        for i in range(num_ind):
+            for j in range(num_trials):
+                scores[test][i] = inds[i][j].genome.fitness
 
     mean_scores = np.mean(scores, axis=0)
     print("Mean scores:\n {}".format(mean_scores))
@@ -362,7 +362,7 @@ def test_solution_parallel():
     # EVOSTATS
     r = 12 # arbitrary mutation rate that affects every mutation linearly
     increase = 0.9 # increase that is scaled exponentially with the rank
-    muadj = 10000 # adjustment for weight scale
+    muadj = 1 # adjustment for weight scale
 
     num_gen = 1
     num_trials = 128
@@ -495,7 +495,7 @@ def test_solution_parallel():
         for i in range(num_ind):
             for j in range(num_trials):
                 crash = False
-                score = -1
+                score = 0
 
                 for u in range(blockstates[i][j], b_ends[i][j], 1):
                     for p in range(p_left[i][j], p_right[i][j]+1, 1):
@@ -600,7 +600,7 @@ def test_solution():
     # last step
     bso.fitness = 0
     for i in range(trials):
-        score = -1
+        score = 0
         crash = False
         for bu in range(bp[i], be[i]):
             for pu in range(pl[i], pr[i]+1):
@@ -780,7 +780,7 @@ def test_solution2():
         for i in range(num_ind):
             for j in range(num_trials):
                 crash = False
-                score = -1
+                score = 0
 
                 for u in range(blockstates[i][j], b_ends[i][j], 1):
                     for p in range(p_left[i][j], p_right[i][j]+1, 1):
@@ -890,7 +890,7 @@ def run_epoch(comm, numprocs, num_top, num_ind, num_tests, num_trials, gameheigh
     # EVOSTATS
     r = 12 # arbitrary mutation rate that affects every mutation linearly
     increase = 0.9 # increase that is scaled exponentially with the rank
-    muadj = 10000 # adjustment for weight scale
+    muadj = 1 # adjustment for weight scale
 
     ni = 2
     nh = 4
@@ -1011,26 +1011,25 @@ def run_epoch(comm, numprocs, num_top, num_ind, num_tests, num_trials, gameheigh
         p_right = paddlestates+1
 
         # TODO: VECTORIZE THIS?
-        if Rank() == 0:
-            for i in range(num_ind):
-                for j in range(num_trials):
-                    crash = False
-                    score = -1
+        for i in range(num_ind):
+            for j in range(num_trials):
+                crash = False
+                score = 0
 
-                    for u in range(blockstates[i][j], b_ends[i][j], 1):
-                        for p in range(p_left[i][j], p_right[i][j]+1, 1):
-                            crash = (u%gamewidth) == (p%gamewidth)
-                            if crash: break
+                for u in range(blockstates[i][j], b_ends[i][j], 1):
+                    for p in range(p_left[i][j], p_right[i][j]+1, 1):
+                        crash = (u%gamewidth) == (p%gamewidth)
                         if crash: break
+                    if crash: break
 
-                    if crash:
-                        if blocksizes[i][j] == 1:
-                            score = 1
-                    else:
-                        if blocksizes[i][j] == 3:
-                            score = 1
+                if crash:
+                    if blocksizes[i][j] == 1:
+                        score = 1
+                else:
+                    if blocksizes[i][j] == 3:
+                        score = 1
 
-                    inds[i][j].genome.fitness += score
+                inds[i][j].genome.fitness += score
 
         # END OF TRIALS
 
@@ -1236,7 +1235,7 @@ def run_epoch(comm, numprocs, num_top, num_ind, num_tests, num_trials, gameheigh
         for i in range(num_ind):
             for j in range(num_trials):
                 crash = False
-                score = -1
+                score = 0
 
                 for u in range(blockstates[i][j], b_ends[i][j], 1):
                     for p in range(p_left[i][j], p_right[i][j]+1, 1):
@@ -1287,10 +1286,10 @@ def run_sga_epoch(comm, numprocs):
     gameheight = 16
     gamewidth = 8
     num_trials = 128
-    num_ep = 20
-    num_top = 20
+    num_ep = 1000
+    num_top = 10
     num_ind = 10
-    num_tests = 20
+    num_tests = 10
     if sys.argv[1] == "load":
         filename = sys.argv[2]
         genomes, best_solution, mean_smax = load_solutions(filename, comm, num_ind)
@@ -1333,8 +1332,8 @@ if __name__ == '__main__':
     P = 56
     SetKernelStatus({"total_num_virtual_procs": P,'local_num_threads':1})
 
-    num_tests = 10
-    num_ind = 10
+    num_tests = 20
+    num_ind = 1
     num_trials = 128
     gameheight = 16
     gamewidth = 8
@@ -1343,5 +1342,19 @@ if __name__ == '__main__':
     numprocs = NumProcesses()
 
     run_sga_epoch(comm, numprocs)
+
+    '''
+    filename = sys.argv[1]
+    genomes, best_solution, mean_smax = load_solutions(filename, comm, num_ind)
+    print("best solution fitness: {}".format(best_solution.fitness))
+
+    for g in genomes:
+        print(g.fitness)
+
+    scores, mean_scores, argsort_ms = test_top_solutions(comm, numprocs, [best_solution], num_tests, num_ind, num_trials, gameheight, gamewidth)
+
+    print("scores: {} \nmean_scores: {} \nargsort_ms: {}".format(scores, mean_scores, argsort_ms))
+    '''
+
 
 
