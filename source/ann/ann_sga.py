@@ -6,7 +6,7 @@ from datetime import datetime
 import copy
 
 class Genome(object):
-    def __init__(self, gid, low=-5, high=5):
+    def __init__(self, gid, low=-1, high=1):
         self.id = gid
 
         self.fitness = 0
@@ -15,8 +15,9 @@ class Genome(object):
         self.nh = 4
         self.no = 2
 
-        self.thresh_h = np.random.randint(low, high=high, size=(self.nh))
-        self.thresh_o = np.random.randint(low, high=high, size=(self.no))
+        # The threshold is based on how many nodes that could possibly be connected to it, and assuming that weights are around 1.
+        self.thresh_h = np.random.randint(self.ni-1, high=self.nh+1, size=(self.nh))
+        self.thresh_o = np.random.randint(self.nh-2, high=self.nh+2, size=(self.no))
 
         self.bias_h = np.random.randint(low, high=high, size=(self.nh))
         self.bias_o = np.random.randint(low, high=high, size=(self.no))
@@ -67,9 +68,6 @@ class Animat(object):
         self.hl = np.where(np.sum(self.il.dot(self.iw), axis=0)+np.sum(self.hl.dot(self.hw), axis=0)+self.bias_h > self.thresh_h, 1, 0)
         self.ol = np.where(np.sum(self.hl.dot(self.ow), axis=0)+self.bias_o > self.thresh_o, 1, 0)
 
-        print("il:\n{}".format(self.il))
-        print("hl:\n{}".format(self.hl))
-        print("ol:\n{}".format(self.ol))
 
         self.decision = 0
         if self.ol[0] > self.ol[1]:
@@ -357,8 +355,8 @@ class Sga(object):
 
 
 if __name__ == '__main__':
-    sga = Sga(num_ind=1, num_trials=1, gameheight=16, gamewidth=8)
-    sga.run_sga_gen(1, 1, 1)
+    sga = Sga(num_ind=10, num_trials=128, gameheight=16, gamewidth=8)
+    sga.run_sga_gen(60000, 100, 100)
 
 
 
