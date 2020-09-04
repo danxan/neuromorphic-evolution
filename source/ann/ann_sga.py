@@ -6,7 +6,7 @@ from datetime import datetime
 import copy
 
 class Genome(object):
-    def __init__(self, gid, low=-1, high=1):
+    def __init__(self, gid, low=-1, high=2):
         self.id = gid
 
         self.fitness = 0
@@ -183,11 +183,11 @@ class Sga(object):
 
         self.m_power = [1/(m_scalar*(i**m_exp_incr)) for i in range(1,self.num_ind)]
 
-        if sys.argv[1] == "load":
-            filename = sys.argv[2]
-            self.load_solutions(filename)
-        else:
-            self.create_solutions(self.num_ind)
+        #if sys.argv[1] == "load":
+        #    filename = sys.argv[2]
+        #    self.load_solutions(filename)
+        #else:
+        self.create_solutions(self.num_ind)
 
     def create_solutions(self, num_ind):
         print("create solutions")
@@ -343,7 +343,8 @@ class Sga(object):
             self.run_generation(mean_smax)
 
             if gen%100 == 0:
-                filename = "results/ann_sga_gen["+str(self.gencnt)+"of"+str(self.num_gen)+"]_bf["+str(self.best_solution.fitness)+"]_scoremax_gen[-1]["+str(self.score_max_gen[-1])+"]"
+                ts = datetime.now()
+                filename = "results/ann_sga_gen["+str(self.gencnt)+"of"+str(self.num_gen)+"]_bf["+str(self.best_solution.fitness)+"]_scoremax_gen[-1]["+str(self.score_max_gen[-1])+"]_t["+str(ts)+"]"
                 with open(filename, 'wb') as f:
                     pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
 
