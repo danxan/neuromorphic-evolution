@@ -6,7 +6,7 @@ from datetime import datetime
 import copy
 
 class Genome(object):
-    def __init__(self, gid, low=-1, high=2):
+    def __init__(self, gid, low=-0.1, high=0.5):
         self.id = gid
 
         self.fitness = 0
@@ -16,18 +16,18 @@ class Genome(object):
         self.no = 2
 
         # The threshold is based on how many nodes that could possibly be connected to it, and assuming that weights are around 1.
-        self.thresh_h = np.random.randint(self.ni-1, high=self.nh+1, size=(self.nh))
-        self.thresh_o = np.random.randint(self.nh-2, high=self.nh+2, size=(self.no))
+        self.thresh_h = np.random.randint(self.ni-1, high=self.nh-1, size=(self.nh))
+        self.thresh_o = np.random.randint(self.nh-3, high=self.nh-1, size=(self.no))
 
-        self.bias_h = np.random.randint(low, high=high, size=(self.nh))
-        self.bias_o = np.random.randint(low, high=high, size=(self.no))
+        self.bias_h = np.random.uniform(low, high=high, size=(self.nh))
+        self.bias_o = np.random.uniform(low, high=high, size=(self.no))
 
 
-        self.iw = np.random.randint(low, high=high, size=(self.ni,self.nh))
+        self.iw = np.random.uniform(low, high=high, size=(self.ni,self.nh))
         self.iw = self.iw.astype(np.float)
-        self.hw = np.random.randint(low, high=high, size=(self.nh,self.nh))
+        self.hw = np.random.uniform(low, high=high, size=(self.nh,self.nh))
         self.hw = self.hw.astype(np.float)
-        self.ow = np.random.randint(low, high=high, size=(self.nh,self.no))
+        self.ow = np.random.uniform(low, high=high, size=(self.nh,self.no))
         self.ow = self.ow.astype(np.float)
 
     def mutate(self, mutation_power):
@@ -181,7 +181,7 @@ class Sga(object):
         m_scalar = 12
         m_exp_incr = 0.9
 
-        self.m_power = [1/(m_scalar*(i**m_exp_incr)) for i in range(1,self.num_ind)]
+        self.m_power = [(1/(m_scalar)*i**m_exp_incr) for i in range(1,self.num_ind)]
 
         #if sys.argv[1] == "load":
         #    filename = sys.argv[2]
