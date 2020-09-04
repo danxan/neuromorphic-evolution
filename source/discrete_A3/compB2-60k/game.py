@@ -98,7 +98,7 @@ class Game:
         self.paddle_pos = random.randint(0, self.game_width-1)# along the x-axis / cols
         self.direction = random.randint(-1,1)
 
-        score = 1 # return value
+        score = 0 # return value
         w = self.game_width # to make code readable
 
         while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
@@ -152,10 +152,10 @@ class Game:
 
             if crash:
                 if self.block_size == 1:
-                    score = -1
+                    score = 1
             else:
                 if self.block_size == 3:
-                    score = -1
+                    score = 1
 
             if d == True:
                 print(score)

@@ -113,13 +113,13 @@ if __name__ == "__main__":
              "Henrik","Tassen","Lutte",
              "Dag","Frode","Lenin"]
     '''
-    num_nets = 20
+    num_nets = 10
     genome_id = list(range(num_nets))
 
     increase=0.9 # if below 1, worse performing num_nets change more. If above, worse performing num_nets change less
     its = 128
     itses = 60000
-    w,h=10,10
+    w,h=8,16,
     l = h-1 #find length
     score=0
     sleep = 0.2
@@ -138,9 +138,9 @@ if __name__ == "__main__":
 
     # redirect print
     local_dir = os.path.dirname(__file__)
-    original = sys.stdout
-    log_path = os.path.join(local_dir, 'quicktest.log')
-    sys.stdout = open(log_path, 'w')
+    # original = sys.stdout
+    # log_path = os.path.join(local_dir, 'quicktest.log')
+    # sys.stdout = open(log_path, 'w')
 
 
 
@@ -178,4 +178,4 @@ if __name__ == "__main__":
     plt.savefig(log_path)
 
     # redirect print
-    sys.stdout = original
+    # sys.stdout = original
