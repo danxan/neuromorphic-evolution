@@ -33,26 +33,26 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    if genome.fitness > (num_games*2*0.80 - 128):
+    #if genome.fitness > (num_games*2*0.80 - 128):
 
-        # Getting the local directory path
-        local_dir = os.path.dirname(__file__)
+    #    # Getting the local directory path
+    #    local_dir = os.path.dirname(__file__)
 
-        timestamp = datetime.now()
-        timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
+    #    timestamp = datetime.now()
+    #    timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-        genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
-        os.makedirs(genomedir)
+    #    genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
+    #    os.makedirs(genomedir)
 
-        genomepath = os.path.join(genomedir, 'genome')
-        # Save the good genome.
-        with open(genomepath, 'wb') as f:
-            pickle.dump(genome, f)
+    #    genomepath = os.path.join(genomedir, 'genome')
+    #    # Save the good genome.
+    #    with open(genomepath, 'wb') as f:
+    #        pickle.dump(genome, f)
 
-        configpath = os.path.join(genomedir, 'config')
+    #    configpath = os.path.join(genomedir, 'config')
 
-        # Save the good genome's config.
-        config.save(configpath)
+    #    # Save the good genome's config.
+    #    config.save(configpath)
 
     return genome.fitness
 
@@ -202,9 +202,16 @@ def run(config_file):
     filename = os.path.join(local_dir, 'neat-checkpoint-')
     p.add_reporter(neat.Checkpointer(generation_interval=60000, time_interval_seconds=43200, filename_prefix=filename))
 
+    score_max = []
+    score_mean = []
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = p.run(pe.evaluate, n=1000 )
+    winner = p.run(pe.evaluate, n=60000)#, score_max=score_max, score_mean=score_mean)
 
+    filename = "neat_scoremax[-1]="+str(score_max[-1])+"scoremean[-1]="+str(score_mean[-1])+"time="+str(datetime.now())
+    with open(filename, 'wb') as f:
+        log = { 'scoreMax': score_max,
+                'scoreMean': score_mean }
+        pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     # Display the winning genome
     print('\nBest genome:\n%f', winner)
