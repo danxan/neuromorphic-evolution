@@ -192,10 +192,10 @@ def run(config_file):
 
     local_dir = os.path.dirname(__file__)
 
-    filename = os.path.join(local_dir, "avg_fitness-ctrnn.svg")
+    filename = os.path.join(local_dir, "avg_fitness-iznn.svg")
     visualize.plot_stats(stats, ylog=False, view=True, filename=filename)
 
-    filename = os.path.join(local_dir, "species-ctrnn.svg")
+    filename = os.path.join(local_dir, "species-iznn.svg")
     visualize.plot_species(stats, view=True, filename=filename)
 
 if __name__ == '__main__':
@@ -205,11 +205,11 @@ if __name__ == '__main__':
     # current working directory.
 
     local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'config-ctrnn')
+    config_path = os.path.join(local_dir, 'config-iznn')
 
     # redirect print
     original = sys.stdout
-    log_path = os.path.join(local_dir, 'ctrnn.log')
+    log_path = os.path.join(local_dir, 'iznn.log')
     sys.stdout = open(log_path, 'w')
 
     # run program
