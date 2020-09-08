@@ -214,13 +214,13 @@ if __name__ == '__main__':
     config_path = os.path.join(local_dir, 'config-iznn')
 
     # redirect print
-    #original = sys.stdout
-    #log_path = os.path.join(local_dir, 'iznn.log')
-    #sys.stdout = open(log_path, 'w')
+    original = sys.stdout
+    log_path = os.path.join(local_dir, 'iznn.log')
+    sys.stdout = open(log_path, 'w')
 
     # run program
     run(config_path)
 
 
     # redirect print
-    #sys.stdout = original
+    sys.stdout = original
