@@ -26,6 +26,7 @@ def eval_genome(genome, config):
     genome.fitness = 0
     net = neat.iznn.IZNN.create(genome, config)
     game = Game(8, time_const)
+    print("evaluating genome")
     for i in range(num_games):
         ret = game.run(net)
         # print('game return: %d' %ret)
@@ -183,6 +184,7 @@ def run(config_file):
     score_max = []
     score_mean = []
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
+    print("starting run")
     winner = p.run(pe.evaluate, n=100, score_max=score_max, score_mean=score_mean )
 
     timestamp = datetime.now()
@@ -213,13 +215,13 @@ if __name__ == '__main__':
     config_path = os.path.join(local_dir, 'config-iznn')
 
     # redirect print
-    original = sys.stdout
-    log_path = os.path.join(local_dir, 'iznn.log')
-    sys.stdout = open(log_path, 'w')
+    #original = sys.stdout
+    #log_path = os.path.join(local_dir, 'iznn.log')
+    #sys.stdout = open(log_path, 'w')
 
     # run program
     run(config_path)
 
 
     # redirect print
-    sys.stdout = original
+    #sys.stdout = original

@@ -124,7 +124,7 @@ class Game:
 
             animat.set_inputs(sens_in)
             for step in range(steps): # 33 ms
-                output = animat.advance(dt*step)
+                output = animat.advance(dt)
                 outputs += output
             self._update_paddle(outputs)
 
