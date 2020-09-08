@@ -26,7 +26,6 @@ def eval_genome(genome, config):
     genome.fitness = 0
     net = neat.iznn.IZNN.create(genome, config)
     game = Game(8, time_const)
-    print("evaluating genome")
     for i in range(num_games):
         ret = game.run(net)
         # print('game return: %d' %ret)
