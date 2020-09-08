@@ -126,7 +126,6 @@ class Game:
             for step in range(steps): # 33 ms
                 output = animat.advance(dt*step)
                 outputs += output
-            print(outputs)
             self._update_paddle(outputs)
 
             # check for crash to give score for tracking

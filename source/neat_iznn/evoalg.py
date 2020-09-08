@@ -183,10 +183,10 @@ def run(config_file):
     score_max = []
     score_mean = []
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = p.run(pe.evaluate, n=1000, score_max=score_max, score_mean=score_mean )
+    winner = p.run(pe.evaluate, n=100, score_max=score_max, score_mean=score_mean )
 
     timestamp = datetime.now()
-    filename = "neat_iznn_results/scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_time=["+str(timestamp)+"]"
+    filename = "results/scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_time=["+str(timestamp)+"]"
     log = { 'scoreMax': score_max,
             'scoreMean': score_mean }
     with open(filename, 'wb') as f:
