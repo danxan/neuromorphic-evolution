@@ -117,10 +117,17 @@ class Game:
                 self._print_game()
                 print(sens_in)
 
-            dt = animat.get_time_step_msec()*i
-            animat.set_input(sens_in)
-            output = animat.advance(dt)
-            self._update_paddle(output)
+            outputs = np.zeros(2)
+            runtime = 33 # ms
+            dt = animat.get_time_step_msec()
+            steps = int(runtime/dt)
+
+            animat.set_inputs(sens_in)
+            for step in range(steps): # 33 ms
+                output = animat.advance(dt*step)
+                outputs += output
+            print(outputs)
+            self._update_paddle(outputs)
 
             # check for crash to give score for tracking
             start = self.block_pos[1]
@@ -149,35 +156,34 @@ class Game:
                 print(sens_in)
 
         # at the last time-step
-        if self.block_pos[0] == self.game_height-1:
-            # TESTING "KILLING LASER"
-            if self.moves_cnt == 0:
-                return 0
+        # TESTING "KILLING LASER"
+        if self.moves_cnt == 0:
+            return 0
 
-            # check for crash
-            start = self.block_pos[1]
-            end = start+self.block_size
-            crash = False
-            paddle_start = self.paddle_pos-1
-            paddle_end = self.paddle_pos+1
+        # check for crash
+        start = self.block_pos[1]
+        end = start+self.block_size
+        crash = False
+        paddle_start = self.paddle_pos-1
+        paddle_end = self.paddle_pos+1
 
-            for i in range(start, end, 1):
-                for j in range(paddle_start, paddle_end+1, 1):
-                    crash = (i%w) == (j%w)
-                    if crash: break
+        for i in range(start, end, 1):
+            for j in range(paddle_start, paddle_end+1, 1):
+                crash = (i%w) == (j%w)
                 if crash: break
+            if crash: break
 
-            if crash:
-                if self.block_size == 1:
-                    score = 1
-            else:
-                if self.block_size == 3:
-                    score = 1
+        if crash:
+            if self.block_size == 1:
+                score = 1
+        else:
+            if self.block_size == 3:
+                score = 1
 
-            if d == True:
-                print(score)
+        if d == True:
+            print(score)
 
-            return score
+        return score
 
 if __name__ == '__main__':
     game = Game(8)

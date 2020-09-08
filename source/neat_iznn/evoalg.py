@@ -146,10 +146,9 @@ def connect_full_direct(genome, config):
 
 def run(config_file):
     # Load configuration
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-            neat.DefaultSpeciesSet, neat.DefaultStagnation,
-            config_file)
-
+    config = neat.Config(neat.iznn.IZGenome, neat.DefaultReproduction,
+                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                         config_path)
 
     config.genome_config.add_activation('OR_gate', OR_gate)
     config.genome_config.add_activation('AND_gate', AND_gate)
@@ -186,6 +185,12 @@ def run(config_file):
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
     winner = p.run(pe.evaluate, n=1000, score_max=score_max, score_mean=score_mean )
 
+    timestamp = datetime.now()
+    filename = "neat_iznn_results/scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_time=["+str(timestamp)+"]"
+    log = { 'scoreMax': score_max,
+            'scoreMean': score_mean }
+    with open(filename, 'wb') as f:
+        pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     # Display the winning genome
     print('\nBest genome:\n%f', winner)

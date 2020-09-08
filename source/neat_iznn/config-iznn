@@ -7,25 +7,15 @@ pop_size              = 150
 reset_on_extinction   = True
 no_fitness_termination = False
 
-[DefaultGenome]
-# node activation options
-activation_default      = sigmoid
-activation_mutate_rate  = 0.0
-activation_options      = OR_gate AND_gate XOR_gate sigmoid
-
-# node aggregation options
-aggregation_default     = sum
-aggregation_mutate_rate = 0.0
-aggregation_options     = or_aggregation and_aggregation xor_aggregation copy_aggregation not_aggregation
-
+[IZGenome]
 # node bias options
 bias_init_mean          = 0.0
-bias_init_stdev         = 1.0
-bias_max_value          = 30.0
-bias_min_value          = -30.0
-bias_mutate_power       = 0.3
-bias_mutate_rate        = 0.4
-bias_replace_rate       = 0.2
+bias_init_stdev         = 20.0
+bias_max_value          = 100.0
+bias_min_value          = -100.0
+bias_mutate_power       = 5.0
+bias_mutate_rate        = 0.7
+bias_replace_rate       = 0.1
 
 # genome compatibility options
 compatibility_disjoint_coefficient = 1.0
@@ -47,7 +37,7 @@ node_add_prob           = 0
 node_delete_prob        = 0
 
 # network parameters
-num_hidden              = 5
+num_hidden              = 4
 num_inputs              = 2
 num_outputs             = 2
 
@@ -95,11 +85,11 @@ d_replace_rate   = 0.0
 
 # connection weight options
 weight_init_mean        = 0.0
-weight_init_stdev       = 1.0
-weight_max_value        = 30.0
-weight_min_value        = -30.0
-weight_mutate_power     = 0.8
-weight_mutate_rate      = 0.5
+weight_init_stdev       = 10.0
+weight_max_value        = 100
+weight_min_value        = -100
+weight_mutate_power     = 5.0
+weight_mutate_rate      = 0.8
 weight_replace_rate     = 0.1
 
 
