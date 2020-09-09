@@ -81,16 +81,16 @@ class Game:
         '''
 
         #RESET GAME
-        self.block_pos = [0, random.randint(0,self.game_width-1)] # postion in y,x / rows, cols
+        self.block_pos = [0, random.randint(0,self.game_width)] # postion in y,x / rows, cols
         # Set block size with a "coin flip"
-        p = random.randint(0,1)
+        p = random.randint(0,2)
         if p == 1:
             self.block_size = 1
         else:
             self.block_size = 3
         #self.board[self.block_pos[0]][self.block_pos[1]] = 1
-        self.paddle_pos = random.randint(0, self.game_width-1)# along the x-axis / cols
-        self.direction = random.randint(-1,1)
+        self.paddle_pos = random.randint(0, self.game_width)# along the x-axis / cols
+        self.direction = random.randint(-1,2)
 
         score = 0 # return value
         w = self.game_width # to make code readable
