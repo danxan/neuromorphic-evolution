@@ -1,7 +1,9 @@
 ## SOME FUN TESTING
+import pickle
 import numpy as np
 import scipy as sp
 import time
+from datetime import datetime
 import copy
 import matplotlib.pyplot as plt
 
@@ -115,6 +117,7 @@ genome=org_seed(nodes)
 lg=len(genome)
 t2=time.time()
 List_ann=[ANN(genome,names[i]) for i in range(nets)]
+best_solution = List_ann[0]
 
 for iteration in range(itses):
   ti=time.time()
@@ -122,12 +125,17 @@ for iteration in range(itses):
     for i in range(its): #trials
       a = np.zeros([h,w]) #make game board
       p = np.random.rand() #rand number
-      a[l,4:6]=1 #make paddle
+      pstart = np.random.randint(0, w-3)
+      pend = pstart+3
+      a[l,pstart:pend]=1 #make paddle
 
+      bstart = np.random.randint(0, w-3)
       if p>0.5: #50/50 if short or long block, i.e. trial type
-        a[0,4:5]=1
+        bend = bstart+1
+        a[0,bstart:bend]=1
       else:
-        a[0,4:6]=1
+        bend = bstart+3
+        a[0,bstart:bend]=1
 
       for x in range(1,l+1):  #iterate over gamestates (falling block)
         #plotit(a,ann.getStuff("score"),i,ann.getStuff("name")) #plot
@@ -138,21 +146,30 @@ for iteration in range(itses):
       #plotit(a,ann.getStuff("score"),i,ann.getStuff("name")) #plot
       u,c = np.unique(a[l],return_counts=True) #check values in bottom line (0=nothing, 1=paddle/block, 2=paddle+block)
 
-      if p>0.5 and 2 in u: #if it didn't dodge it (2), lose a point
-         ann.scoring(-1)
-      elif p<0.5 and 2 not in u: #if it didn't catch any part of it (2), lose a point
-         ann.scoring(-1)
-      else:
+      ann.scoring(0)
+      if p>0.5 and 2 in u: #catch: Get a point if it got any part of it (2),
          ann.scoring(1)
-      #plt.close()
+      elif p<=0.5 and 2 not in u: #dodge. Get a point if it didn't get any part of it (2)
+         ann.scoring(1)
 
   scores = [ann.getStuff("score") for ann in List_ann]
   sort = np.argsort(scores)[::-1]
   scoreMean.append(np.mean(scores))
   scoreMax.append(np.max(scores))
+  if List_ann[sort[0]].getStuff('score') > best_solution.getStuff('score'):
+      # in this program "best_solution" is an animat, not a genome (contrary to other scripts)
+      best_solution = List_ann[sort[0]]
 
   if iteration % 10:
     print("Iteration: {0} of {1}, ANNs: {2}, Score, mean: {3:.2f}, max: {4:.2f} - took {5:.2f}s".format(iteration,itses,nets,scoreMean[-1],scoreMax[-1],time.time()-ti))
+  if iteration % 100:
+    log = { 'scoreMax': scoreMax,
+            'scoreMean': scoreMean,
+            'best_solution': best_solution}
+
+    filename = "results/quicktest["+str(iteration)+"]_bf["+str(best_solution.getStuff('score'))+"]_scoreMax[-1]["+str(scoreMax[-1])+"]_scoreMean[-1]["+str(scoreMean[-1])+"]_time["+str(datetime.now())+"]"
+    with open(filename, 'wb') as f:
+        pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
   List_ann[0].reset(List_ann[sort[0]].getStuff("genome"),names[sort[0]]) # Best net doesn't change
   for i in range(1,nets):
