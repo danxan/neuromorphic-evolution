@@ -205,12 +205,14 @@ def run(config_file):
     score_max = []
     score_mean = []
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = p.run(pe.evaluate, n=60000)#, score_max=score_max, score_mean=score_mean)
+    winner = p.run(pe.evaluate, n=60000, score_max=score_max, score_mean=score_mean)
 
-    filename = "neat_scoremax[-1]="+str(score_max[-1])+"scoremean[-1]="+str(score_mean[-1])+"time="+str(datetime.now())
+    timestamp = datetime.now().strftime("%Y-%b-%d-%H:%M:%S:%f")
+    filename = "results/neat_rnn_bf["+str(winner.fitness)+"]_scoremax[-1]="+str(score_max[-1])+"_scoremean[-1]="+str(score_mean[-1])+"_time="+str(timestamp)
     with open(filename, 'wb') as f:
         log = { 'scoreMax': score_max,
-                'scoreMean': score_mean }
+                'scoreMean': score_mean,
+                'best_solution': winner }
         pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     # Display the winning genome
