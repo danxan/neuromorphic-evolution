@@ -6,17 +6,17 @@ from datetime import datetime
 import copy
 
 class Genome(object):
-    def __init__(self, gid, low=-0.1, high=0.5):
+    def __init__(self, gid, low=-0.5, high=0.5):
         self.id = gid
 
         self.fitness = 0
 
         self.ni = 2
-        self.nh = 4
+        self.nh = 5
         self.no = 2
 
         # The threshold is based on how many nodes that could possibly be connected to it, and assuming that weights are around 1.
-        self.thresh_h = np.random.randint(self.ni-1, high=self.nh-1, size=(self.nh))
+        self.thresh_h = np.random.randint(self.ni-2, high=self.nh-1, size=(self.nh))
         self.thresh_o = np.random.randint(self.nh-3, high=self.nh-1, size=(self.no))
 
         self.bias_h = np.random.uniform(low, high=high, size=(self.nh))
@@ -24,11 +24,8 @@ class Genome(object):
 
 
         self.iw = np.random.uniform(low, high=high, size=(self.ni,self.nh))
-        self.iw = self.iw.astype(np.float)
         self.hw = np.random.uniform(low, high=high, size=(self.nh,self.nh))
-        self.hw = self.hw.astype(np.float)
         self.ow = np.random.uniform(low, high=high, size=(self.nh,self.no))
-        self.ow = self.ow.astype(np.float)
 
     def mutate(self, mutation_power):
         self.thresh_h = self.thresh_h + (np.random.rand(self.nh) - 0.5)*mutation_power
@@ -62,11 +59,14 @@ class Animat(object):
         """ stimuli is a 2x1 array of integers
         step activation function
         """
-        stimuli = np.reshape(stimuli, (1,2), order='C')
+        #stimuli = np.reshape(stimuli, (1,2), order='C')
         self.il = np.where(stimuli > 0, 1, 0)
         #self.hl_r = np.where(np.sum(self.hl.dot(self.hw), axis=0) > self.thresh_h, 1, 0) # hidden layer recurrent
-        self.hl = np.where(np.sum(self.il.dot(self.iw), axis=0)+np.sum(self.hl.dot(self.hw), axis=0)+self.bias_h > self.thresh_h, 1, 0)
-        self.ol = np.where(np.sum(self.hl.dot(self.ow), axis=0)+self.bias_o > self.thresh_o, 1, 0)
+        #+np.sum(self.hl.dot(self.hw), axis=0)
+        # TODO: FIGURE OUT IF THESE DOT PRODUCTS DO AS I WANT THEM TO
+        self.hl = np.where(self.il.dot(self.iw) + self.hl.dot(self.hw) > self.thresh_h, 1, 0)
+        self.ol = self.hl.dot(self.ow) # no threshold on output neuron, compare size instead, this is a replacement for sigmoid, in a way...
+
 
 
         self.decision = 0
@@ -151,14 +151,6 @@ class Game(object):
         return self.nets
 
 
-
-
-
-
-
-
-
-
 class Sga(object):
     def __init__(self, num_ind, num_trials, gameheight, gamewidth):
         self.num_ind, self.num_trials, self.gameheight, self.gamewidth = num_ind, num_trials, gameheight, gamewidth
@@ -179,9 +171,11 @@ class Sga(object):
 
         # mutation
         m_scalar = 12
-        m_exp_incr = 1.1
+        m_scalar_h = 212
+        m_exp_incr = 0.9
 
-        self.m_power = [(1/m_scalar*m_exp_incr**i) for i in range(1,self.num_ind)]
+        self.m_power = [(1/(m_scalar*m_exp_incr**i)) for i in range(1,self.num_ind)]
+        #self.m_power_h = [(1/m_scalar*m_exp_incr**i) for i in range(1,self.num_ind)]
 
         #if sys.argv[1] == "load":
         #    filename = sys.argv[2]
@@ -349,15 +343,15 @@ class Sga(object):
                     pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
 
         self.num_top = len(self.top_solutions)
-        scores, self.mean_scores, self.mean_smax = self.test_top_solutions(self.top_solutions)
         filename = "results/ann_sga_gen["+str(self.gencnt)+"of"+str(self.num_gen)+"]_bf["+str(self.best_solution.fitness)+"]_scoremax_gen[-1]["+str(self.score_max_gen[-1])+"]"
         with open(filename, 'wb') as f:
             pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == '__main__':
-    sga = Sga(num_ind=10, num_trials=128, gameheight=16, gamewidth=8)
-    sga.run_sga_gen(60000, 100, 100)
+    for i in range(1000):
+        sga = Sga(num_ind=10, num_trials=128, gameheight=32, gamewidth=16)
+        sga.run_sga_gen(100, 100, 10)
 
 
 
