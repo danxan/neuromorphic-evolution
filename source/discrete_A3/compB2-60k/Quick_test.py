@@ -1,4 +1,5 @@
 ## SOME FUN TESTING
+import pickle
 import sys
 import os
 import numpy as np
@@ -116,7 +117,7 @@ if __name__ == "__main__":
     num_nets = 10
     genome_id = list(range(num_nets))
 
-    increase=1.1 # if below 1, worse performing num_nets change more. If above, worse performing num_nets change less
+    increase=0.9 # if below 1, worse performing num_nets change more. If above, worse performing num_nets change less
     its = 128
     itses = 60000
     w,h=8,16,
@@ -162,6 +163,13 @@ if __name__ == "__main__":
 
       if iteration % 10:
         print("Iteration: {0} of {1}, ANNs: {2}, Score, mean: {3:.2f}, max: {4:.2f} - took {5:.2f}s".format(iteration,itses,num_nets,scoreMean[-1],scoreMax[-1],time.time()-ti))
+      if iteration % 999:
+        log = { 'scoreMax': scoreMax,
+                'scoreMean': scoreMean}
+
+        filename = "results/quicktest["+str(iteration)+"]_scoreMax[-1]["+str(scoreMax[-1])+"]_scoreMean[-1]["+str(scoreMean[-1])+"]_time["+str(datetime.now())+"]"
+        with open(filename, 'wb') as f:
+            pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
       List_ann[0].reset(List_ann[sort[0]].getStuff("genome"),genome_id[sort[0]]) # Best net doesn't change
       for i in range(1,num_nets):
