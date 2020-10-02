@@ -186,10 +186,11 @@ def run(config_file):
     print("starting run")
     winner = p.run(pe.evaluate, n=100, score_max=score_max, score_mean=score_mean )
 
-    timestamp = datetime.now()
-    filename = "results/scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_time=["+str(timestamp)+"]"
+    timestamp = datetime.now().strftime("%Y-%b-%d-%H:%M:%S:%f")
+    filename = "results/100gen_scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_bf=["+str(winner.fitness)+"]_time=["+str(timestamp)+"]"
     log = { 'scoreMax': score_max,
-            'scoreMean': score_mean }
+            'scoreMean': score_mean,
+            'best_solution': winner }
     with open(filename, 'wb') as f:
         pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
