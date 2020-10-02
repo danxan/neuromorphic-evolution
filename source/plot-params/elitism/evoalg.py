@@ -34,29 +34,6 @@ def eval_genome(genome, config):
         genome.fitness += ret
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
-    # the treshold at which the genome will be saved
-    save_tresh = 0.9
-    if genome.fitness > (num_games*2*save_tresh - 128):
-
-        # Getting the local directory path
-        local_dir = os.path.dirname(__file__)
-
-        timestamp = datetime.now()
-        timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
-
-        genome_dir = os.path.join(local_dir, 'good-genome/time['+timestamp+']-fitness['+str(genome.fitness)+'/')
-        os.makedirs(genome_dir)
-
-        genomepath = os.path.join(genome_dir,'genome')
-        # Save the good genome.
-        with open(genomepath, 'wb') as f:
-            pickle.dump(genome, f)
-
-        configpath = os.path.join(genome_dir,'config')
-
-        # Save the good genome's config.
-        config.save(configpath)
-
     return genome.fitness
 
 def eval_genomes(genomes, config):
@@ -223,9 +200,19 @@ def run(config_file):
         checkpointer = neat.Checkpointer(generation_interval=60000, time_interval_seconds=100000, filename_prefix=filename)
         p.add_reporter(checkpointer)
 
-        num_gen = 60000
+        score_max = []
+        score_mean = []
+        num_gen = 1000
         pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-        winner = p.run(pe.evaluate, n=num_gen)
+        winner = p.run(pe.evaluate, n=num_gen, score_max=score_max, score_mean=score_mean)
+
+        timestamp = datetime.now().strftime("%Y-%b-%d-%H:%M:%S:%f")
+        filename = "results/100gen_elitism["+str(er)+"]_scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_time=["+str(timestamp)+"]"
+        log = { 'scoreMax': score_max,
+                'scoreMean': score_mean,
+                'elitism_rate': er}
+        with open(filename, 'wb') as f:
+            pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
         max_fit_gens = stats.get_fitness_stat(max)
         max_fit_epochs.append(max(max_fit_gens))

@@ -13,8 +13,8 @@ class Game:
     def __init__(self, game_width):
         self.game_cnt = 0
         self.direction = 0
-        self.game_width = 8
-        self.game_height = 16
+        self.game_width = 16
+        self.game_height = 36
 
         self.moves_cnt = 0
 
@@ -98,7 +98,7 @@ class Game:
         self.paddle_pos = random.randint(0, self.game_width-1)# along the x-axis / cols
         self.direction = random.randint(-1,1)
 
-        score = -1 # return value
+        score = 0 # return value
         w = self.game_width # to make code readable
 
         while self.block_pos[0] < self.game_height-1: # until the block is at the bottom of the board
