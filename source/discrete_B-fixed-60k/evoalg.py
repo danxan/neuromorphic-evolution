@@ -208,12 +208,20 @@ def run(config_file):
     winner = p.run(pe.evaluate, n=60000, score_max=score_max, score_mean=score_mean)
 
     timestamp = datetime.now().strftime("%Y-%b-%d-%H:%M:%S:%f")
+    filename = "results/1000first_neat-rnn_t["+str(timestamp)+"]"
+    with open(filename, 'wb') as f:
+        pickle.dump(score_max, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    '''
+
     filename = "results/neat_rnn_bf["+str(winner.fitness)+"]_scoremax[-1]="+str(score_max[-1])+"_scoremean[-1]="+str(score_mean[-1])+"_time="+str(timestamp)
     with open(filename, 'wb') as f:
         log = { 'scoreMax': score_max,
                 'scoreMean': score_mean,
                 'best_solution': winner }
         pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    '''
 
     # Display the winning genome
     print('\nBest genome:\n%f', winner)
