@@ -184,7 +184,7 @@ def run(config_file):
     score_max = []
     score_mean = []
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = p.run(pe.evaluate, n=100, score_max=score_max, score_mean=score_mean )
+    winner = p.run(pe.evaluate, n=1, score_max=score_max, score_mean=score_mean )
 
     timestamp = datetime.now().strftime("%Y-%b-%d-%H:%M:%S:%f")
     filename = "results/1000first_neat-ctrnn_t["+str(timestamp)+"]"

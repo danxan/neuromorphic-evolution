@@ -240,6 +240,10 @@ class Sga(object):
         timestamp = datetime.now()
         timer = timestamp-starttime
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
+        filename = "results/1000first_rnn_t["+str(timestamp)+"]"
+        with open(filename, 'wb') as f:
+            pickle.dump(scores, f, protocol=pickle.HIGHEST_PROTOCOL)
+
         print("Time this took: {}".format(timer))
 
 
@@ -349,9 +353,8 @@ class Sga(object):
 
 
 if __name__ == '__main__':
-    for i in range(1000):
-        sga = Sga(num_ind=10, num_trials=128, gameheight=32, gamewidth=16)
-        sga.run_sga_gen(100, 100, 10)
+    sga = Sga(num_ind=1000, num_trials=128, gameheight=32, gamewidth=16)
+    sga.run_sga_gen(1, 100, 10)
 
 
 
