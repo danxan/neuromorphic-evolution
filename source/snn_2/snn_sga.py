@@ -972,12 +972,21 @@ def run_generations(comm, numprocs, num_gen, num_ind, num_trials, gameheight, ga
             start = start+runtime
 
             # Collect number of spikes for each spike detector
-            ns = np.zeros((num_ind, num_trials, no))
+            ns = np.zeros((num_ind, num_trials, no)) # this has to be strange in order
             #print("rank {}: before loop ns={}".format(Rank(),ns))
             for i in range(num_ind):
                 for j in range(num_trials):
-                    ns[i][j][0] = GetStatus(inds[i][j].sds[0])[0]['n_events']
-                    ns[i][j][1] = GetStatus(inds[i][j].sds[1])[0]['n_events']
+                    ret1 = GetStatus(inds[i][j].sds[0])[0]
+                    ret2 = GetStatus(inds[i][j].sds[1])[0]
+                    if ret1['n_events'] == 0:
+                        ns[i][j][0] = -1
+                    else:
+                        ns[i][j][0] = ret1['events']['times'][0]
+
+                    if ret2['n_events'] == 0:
+                        ns[i][j][1] = -1
+                    else:
+                        ns[i][j][1] = ret2['events']['times'][0]
 
                     # Clear spike detector
                     SetStatus(inds[i][j].sds[0], {'n_events': 0})
@@ -995,12 +1004,21 @@ def run_generations(comm, numprocs, num_gen, num_ind, num_trials, gameheight, ga
             #print("{} has ns value {}".format(Rank(), ns))
 
             # MAKE DECISION
-            ld = ns[:,:,0] > ns[:,:,1]
-            rd = ns[:,:,0] < ns[:,:,1]
+            # Temporal decoding:
+            interval = 1.0
+
+            ns_diff = np.abs(ns[:,:,0] - ns[:,:,1])
+            ns_nofire = (ns[:,:,0] == -1) or (ns[:,:,1] == -1)
+
+            ld = (interval < ns_diff)
+            rd = (interval > ns_diff)
+
             decisions = (rd + 0) - (ld + 0)
+            decisions[ns_nofire] = 0
 
             paddlestates = (paddlestates+decisions)%gamewidth
             # END OF STEP
+
 
         # END OF STEPS
         # Evaluate gamestates
@@ -1201,12 +1219,21 @@ def run_epoch(comm, numprocs, num_top, num_ind, num_tests, num_trials, gameheigh
             start = start+runtime
 
             # Collect number of spikes for each spike detector
-            ns = np.zeros((num_ind, num_trials, no))
+            ns = np.zeros((num_ind, num_trials, no)) # this has to be strange in order
             #print("rank {}: before loop ns={}".format(Rank(),ns))
             for i in range(num_ind):
                 for j in range(num_trials):
-                    ns[i][j][0] = GetStatus(inds[i][j].sds[0])[0]['n_events']
-                    ns[i][j][1] = GetStatus(inds[i][j].sds[1])[0]['n_events']
+                    ret1 = GetStatus(inds[i][j].sds[0])[0]
+                    ret2 = GetStatus(inds[i][j].sds[1])[0]
+                    if ret1['n_events'] == 0:
+                        ns[i][j][0] = -1
+                    else:
+                        ns[i][j][0] = ret1['events']['times'][0]
+
+                    if ret2['n_events'] == 0:
+                        ns[i][j][1] = -1
+                    else:
+                        ns[i][j][1] = ret2['events']['times'][0]
 
                     # Clear spike detector
                     SetStatus(inds[i][j].sds[0], {'n_events': 0})
@@ -1224,12 +1251,21 @@ def run_epoch(comm, numprocs, num_top, num_ind, num_tests, num_trials, gameheigh
             #print("{} has ns value {}".format(Rank(), ns))
 
             # MAKE DECISION
-            ld = ns[:,:,0] > ns[:,:,1]
-            rd = ns[:,:,0] < ns[:,:,1]
+            # Temporal decoding:
+            interval = 1.0
+
+            ns_diff = np.abs(ns[:,:,0] - ns[:,:,1])
+            ns_nofire = (ns[:,:,0] == -1) or (ns[:,:,1] == -1)
+
+            ld = (interval < ns_diff)
+            rd = (interval > ns_diff)
+
             decisions = (rd + 0) - (ld + 0)
+            decisions[ns_nofire] = 0
 
             paddlestates = (paddlestates+decisions)%gamewidth
             # END OF STEP
+
 
         # END OF STEPS
         # Evaluate gamestates
