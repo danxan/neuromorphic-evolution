@@ -1,6 +1,6 @@
+import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from ann_sga import *
 
 def load_maxmin(filenames, type="none"):
     ''' loads scoremax and scoremean from files and into two lists '''
@@ -22,7 +22,6 @@ def load_maxmin(filenames, type="none"):
 def convert_to_percent(max_fitness, value):
     ''' Expects numpyarray, list or int/float, returns numpy array or float '''
     value = np.array(value)
-    print(type(value))
     return value*100/max_fitness
 
 def plot_fitness(ax, max_fitness, maxscores, meanscores, param_dict):
@@ -38,13 +37,30 @@ def plot_fitness(ax, max_fitness, maxscores, meanscores, param_dict):
     ax.legend()
     return ax
 
+def plot_param(ax, max_fitness, maxscores, minscores, meanscores, xrate, xlabel, param_dict):
+    maxscores = np.array(maxscores)
+    maxscores = convert_to_percent(max_fitness, maxscores)
+    minscores = np.array(minscores)
+    minscores = convert_to_percent(max_fitness, minscores)
+    meanscores = np.array(meanscores)
+    meanscores = convert_to_percent(max_fitness, meanscores)
+    #ci = 1.96 * np.std(maxscores)/np.mean(maxscores)
+    ax.set_ylabel('Fitness (%)')
+    ax.set_xlabel(xlabel)
+    ax.set_ylim(0,100)
+    ax.plot(xrate, meanscores, **param_dict)
+    ax.fill_between(xrate, minscores, maxscores, color='yellow', alpha=.1)
+    ax.legend()
+    return ax
 
-def plot_box1000(ax, scores, names, param_dict):
+
+def plot_box1000(ax, max_fitness, scores, names, param_dict):
     '''
     Expects lists with data for eac run to be plotted.
     scores: list of scores for each run
     names: names of each run
     '''
+    print(scores)
     for s in scores:
         s = convert_to_percent(max_fitness, s)
 
@@ -52,8 +68,10 @@ def plot_box1000(ax, scores, names, param_dict):
     ax.set_ylabel('Fitness (%)')
     ax.set_ylim(0,100)
 
-    ax.boxplot(scores,  notch=True)
-    ax.xticks(names)
+    print(scores)
+
+    ax.boxplot(scores, notch=True)
+    ax.set_xticklabels(names)
     return ax
 
 def plot_box100x100(ax, max_fitness, maxscores, meanscores, param_dict):
@@ -103,6 +121,31 @@ def plot_box100x100(ax, max_fitness, maxscores, meanscores, param_dict):
     return ax
 
 
+def findfiles(dir, pattern):
+    import os
+    import fnmatch
+    filenames = []
+    for filename in os.listdir(dir):
+        word = '*'+pattern+'*'
+        if fnmatch.fnmatch(filename, word):
+            filename = dir+filename
+            filenames.append(filename)
+
+    return filenames
+
+def hundredtothousand(dir, pattern):
+    filenames = findfiles(dir, pattern)
+    if len(filenames) < 10:
+        print("Need at least 10 files of 100invidividuals to create a 1000first file")
+
+    scores = []
+    for file in filenames[:10]:
+        with open(file, 'rb') as f:
+            scores.append(pickle.load(f))
+
+    filename = dir+"1000first_nest"
+    with open(filename, 'wb') as f:
+        pickle.dump(scores, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == '__main__':
@@ -116,62 +159,172 @@ if __name__ == '__main__':
     parser.add_argument("--dir")
     parser.add_argument("--type")
     parser.add_argument("--plot")
-    parser.add_argument("--thousand")
+    parser.add_argument("--hundreds")
+    parser.add_argument("--neatparam")
     args = parser.parse_args()
 
+    with plt.style.context('ggplot'):
 
-    if args.open:
-        with open(args.fname, 'rb') as f:
-            fig = plt.figure()
-            fig, ax = plt.subplots()
-            up = pickle.Unpickler(f)
-            if args.type == "sga":
-                sga = up.load()
-                plot_fitness(ax, 128,  res['score_max_gen'], res['score_mean_gen'], {})
+        max_fitness = 128
+
+        if args.open:
+            with open(args.fname, 'rb') as f:
+                fig = plt.figure()
+                fig, ax = plt.subplots()
+                up = pickle.Unpickler(f)
+                if args.type == "sga":
+                    sga = up.load()
+                    plot_fitness(ax, 128,  res['score_max_gen'], res['score_mean_gen'], {})
+                else:
+                    res = up.load()
+
+
+            plt.show()
+        elif args.search:
+            filenames = findfiles(args.dir, args.search)
+
+            score_max, score_mean = load_file(filenames, type=args.type)
+
+            if args.plot == "box":
+                fig = plt.figure()
+                fig, ax = plt.subplots()
+                ret = plot_box100x100(ax, 128, score_max, score_mean, {})
+
             else:
-                res = up.load()
+                for i, filename in enumerate(filenames):
+                    plt.ion()
+                    fig = plt.figure()
+                    fig, ax = plt.subplots()
+                    with open(filename, 'rb') as f:
+                        up = pickle.Unpickler(f)
+                        if args.type == "sga":
+                            sga = up.load()
+                            ret = plot_fitness(ax, 128,  sga.score_max_gen, sga.score_mean_gen, {})
+                        else:
+                            res = up.load()
+                            ret = plot_fitness(ax, 128,  res['score_max_gen'], res['score_mean_gen'], {})
+            plt.show(True)
+            input()
 
+        elif args.hundreds:
 
-        plt.show()
-    elif args.search:
-        import os
-        import fnmatch
-        filenames = []
-        for filename in os.listdir(args.dir):
-            word = args.search
-            word = '*'+args.search+'*'
-            if fnmatch.fnmatch(filename, word):
-                filename = args.dir+filename
-                filenames.append(filename)
+            plotdict = {'rnn':  {'dir': 'ann/results/', 'pattern': '1000first'},
+                        'nest r-snn': {'dir': 'snn/results/', 'pattern': '1000first'},
+                        'nest r-snn t': {'dir': 'snn2/results/', 'pattern': '1000first'},
+                        'neat rnn': {'dir': 'discrete_B-fixed-60k/results/', 'pattern': '1000first'},
+                        'neat ct-rnn': {'dir': 'neat_ctrnn/results/', 'pattern': '1000first'},
+                        'neat iznn': {'dir': 'neat_iznn/results/', 'pattern': '1000first'},
+                        'neat iznn t': {'dir': 'neat_iznn2/results/', 'pattern': '1000first'}
+                        }
 
-        score_max, score_mean = load_file(filenames, type=args.type)
+            names = []
+            scores = []
 
-        if args.plot == "box":
-            print("hey")
+            plt.ion()
             fig = plt.figure()
             fig, ax = plt.subplots()
-            ret = plot_box100x100(ax, 128, score_max, score_mean, {})
+            for key in plotdict.keys():
+                if key == 'nest r-snn':
+                    hundredtothousand(dir, '100first')
+                elif key == 'nest r-snn t':
+                    hundredtothousand(dir, '100first')
+                names.append(key)
+                dir     = plotdict[key]['dir']
+                pattern = plotdict[key]['pattern']
 
-        else:
-            print(filenames)
-            for i, filename in enumerate(filenames):
+                filenames = findfiles(dir, pattern)
+                if filenames:
+                    with open(filenames[0], 'rb') as f:
+                        s = pickle.load(f)
+                        scores.append(s)
+                else:
+                    names.remove(key)
+
+
+            ax = plot_box1000(ax, max_fitness, scores, names, {})
+            plt.savefig("initial_thousand.eps", format='eps')
+            plt.show(True)
+            input()
+
+        elif args.neatparam:
+            plotdict = {'population-size':  {'dir': 'plot-params/popsize/results/', 'pattern': '100gen', 'smax':[], 'smin':[], 'smean':[], 'rate':[]},
+                    'elitism-rate': {'dir': 'plot-params/elitism/results/', 'pattern': '100gen', 'smax':[], 'smin':[], 'smean':[], 'rate':[]},
+                    'stagnation-rate': {'dir': 'plot-params/stagnation/results/', 'pattern': '100gen', 'smax':[], 'smin':[], 'smean':[], 'rate':[]},
+                    'survival-rate': {'dir': 'plot-params/survival/results/', 'pattern': '100gen', 'smax':[], 'smin':[], 'smean':[],'rate':[]}
+                        }
+
+
+            for key in plotdict.keys():
                 plt.ion()
                 fig = plt.figure()
                 fig, ax = plt.subplots()
-                with open(filename, 'rb') as f:
-                    up = pickle.Unpickler(f)
-                    if args.type == "sga":
-                        sga = up.load()
-                        ret = plot_fitness(ax, 128,  sga.score_max_gen, sga.score_mean_gen, {})
-                    else:
-                        res = up.load()
-                        ret = plot_fitness(ax, 128,  res['score_max_gen'], res['score_mean_gen'], {})
-        plt.show(True)
-        input()
+                dir = plotdict[key]['dir']
+                pattern = plotdict[key]['pattern']
 
-    elif args.thousand:
-        import os
-        import fnmatch
+                filenames = findfiles(dir, pattern)
+                if filenames:
+                    for fname in filenames:
+                        with open(fname, 'rb') as f:
+                            s = pickle.load(f)
+                            smax = s['scoreMax']
+                            plotdict[key]['smax'].append(np.max(smax))
+                            plotdict[key]['smin'].append(np.min(smax))
+                            plotdict[key]['smean'].append(np.mean(smax))
+
+
+                            if key=='population-size':
+                                r = s['popsize']
+                            elif key=='stagnation-rate':
+                                r = s['stagnation']
+                            elif key=='survival-rate':
+                                r = s['survival']
+                            elif key=='elitism-rate':
+                                r = s['elitism_rate']
+
+                            plotdict[key]['rate'].append(r)
+
+                rate = np.sort(plotdict[key]['rate'])
+                ratesort = np.argsort(rate)[::-1]
+                smax = plotdict[key]['smax']
+                smax = [smax[ratesort[i]] for i in range(len(ratesort))]
+                smin = plotdict[key]['smin']
+                smin = [smin[ratesort[i]] for i in range(len(ratesort))]
+                smean = plotdict[key]['smean']
+                smean = [smean[ratesort[i]] for i in range(len(ratesort))]
+                rate = np.sort(rate)
+                print(rate)
+                ax = plot_param(ax, 128, smax, smin, smean, rate, key, {})
+                fig.savefig(key+'.eps', format='eps')
+                fig.show()
+                input()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
