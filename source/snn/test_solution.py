@@ -1097,9 +1097,16 @@ def run_generations(comm, numprocs, num_gen, num_ind, num_trials, gameheight, ga
 
         gen += 1
         print("Current number of top solutions: {}".format(len(top_solutions)))
+        '''
+        if Rank() == 0:
+            filename = "results/100first_nest_t["+str(timestamp)+"]"
+            with open(filename, 'wb') as f:
+                pickle.dump(scores, f, protocol=pickle.HIGHEST_PROTOCOL)
+        '''
         # END OF GENERATION
+
     if Rank() == 0:
-        filename = "results/run_gens_np["+str(P)+"g["+str(gen)+"]_scoremax[-1]["+str(scoreMax[-1])+"]_scoremin[-1]["+str(scoreMin[-1])+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
+        filename = "results/run_gens_np["+str(P)+"g["+str(gen)+"of"+str(num_gen)+"]_scoremax[-1]["+str(scoreMax[-1])+"]_scoremean[-1]["+str(scoreMean[-1])+"]_bf["+str(best_solution.fitness)+"]_time["+str(timestamp)+"]"
         with open(filename, 'wb') as f:
             pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -1564,7 +1571,7 @@ if __name__ == '__main__':
     num_trials = 128
     gameheight = 36
     gamewidth = 16
-    num_gen = 100
+    num_gen = 1000
 
     comm = MPI.COMM_WORLD
     numprocs = NumProcesses()
@@ -1574,8 +1581,7 @@ if __name__ == '__main__':
     genomes, best_solution, mean_smax = create_genomes(comm, num_ind)
     mean_smax = 80
 
-    for i in range(100):
-        run_generations(comm, numprocs, num_gen, num_ind, num_trials, gameheight, gamewidth, genomes, best_solution, mean_smax)
+    run_generations(comm, numprocs, num_gen, num_ind, num_trials, gameheight, gamewidth, genomes, best_solution, mean_smax)
 
     '''
     filename = sys.argv[1]

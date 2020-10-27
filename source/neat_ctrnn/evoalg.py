@@ -179,35 +179,26 @@ def run(config_file):
     p.add_reporter(stats)
 
     filename = os.path.join(local_dir, 'neat-checkpoint-')
-    p.add_reporter(neat.Checkpointer(generation_interval=100, time_interval_seconds=43200, filename_prefix=filename))
+    p.add_reporter(neat.Checkpointer(generation_interval=50000, time_interval_seconds=43200, filename_prefix=filename))
 
     score_max = []
     score_mean = []
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = p.run(pe.evaluate, n=1, score_max=score_max, score_mean=score_mean )
+    winner = p.run(pe.evaluate, n=60000, score_max=score_max, score_mean=score_mean )
 
     timestamp = datetime.now().strftime("%Y-%b-%d-%H:%M:%S:%f")
-    filename = "results/1000first_neat-ctrnn_t["+str(timestamp)+"]"
-    with open(filename, 'wb') as f:
-        pickle.dump(score_max, f, protocol=pickle.HIGHEST_PROTOCOL)
-    '''
-    filename = "results/100gen_scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_time=["+str(timestamp)+"]"
+    filename = "results/60000gen_scoremax[-1]=["+str(score_max[-1])+"]_scoremean[-1]=["+str(score_mean[-1])+"]_time=["+str(timestamp)+"]"
     log = { 'scoreMax': score_max,
-            'scoreMean': score_mean }
+            'scoreMean': score_mean,
+            'best_solution': winner }
     with open(filename, 'wb') as f:
         pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
-    '''
 
     # Display the winning genome
     print('\nBest genome:\n%f', winner)
 
     local_dir = os.path.dirname(__file__)
 
-    filename = os.path.join(local_dir, "avg_fitness-ctrnn.svg")
-    visualize.plot_stats(stats, ylog=False, view=True, filename=filename)
-
-    filename = os.path.join(local_dir, "species-ctrnn.svg")
-    visualize.plot_species(stats, view=True, filename=filename)
 
 if __name__ == '__main__':
     # Detemine path to configuration file. This path manipulation is

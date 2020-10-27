@@ -33,26 +33,26 @@ def eval_genome(genome, config):
         # print('genome id: %d \ngenome fitness: %d'%(genome_id,genome.fitness))
 
     # the treshold at which the genome will be saved
-    #if genome.fitness > (num_games*2*0.80 - 128):
+    if genome.fitness > (num_games*0.90):
 
-    #    # Getting the local directory path
-    #    local_dir = os.path.dirname(__file__)
+        # Getting the local directory path
+        local_dir = os.path.dirname(__file__)
 
-    #    timestamp = datetime.now()
-    #    timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
+        timestamp = datetime.now()
+        timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
 
-    #    genomedir = os.path.join(local_dir, "good-genome/gg["+timestamp+']/')
-    #    os.makedirs(genomedir)
+        genomedir = os.path.join(local_dir, "good-genome/fitness["+str(genome.fitness)+"]_t["+timestamp+']/')
+        os.makedirs(genomedir)
 
-    #    genomepath = os.path.join(genomedir, 'genome')
-    #    # Save the good genome.
-    #    with open(genomepath, 'wb') as f:
-    #        pickle.dump(genome, f)
+        genomepath = os.path.join(genomedir, 'genome')
+        # Save the good genome.
+        with open(genomepath, 'wb') as f:
+            pickle.dump(genome, f)
 
-    #    configpath = os.path.join(genomedir, 'config')
+        configpath = os.path.join(genomedir, 'config')
 
-    #    # Save the good genome's config.
-    #    config.save(configpath)
+        # Save the good genome's config.
+        config.save(configpath)
 
     return genome.fitness
 
@@ -189,7 +189,8 @@ def run(config_file):
 
     # Restore from checkpoint
     #print("restore pop")
-    #p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-33419")
+    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-59952")
+
 
     # Getting the local directory path
     local_dir = os.path.dirname(__file__)
@@ -200,39 +201,30 @@ def run(config_file):
     p.add_reporter(stats)
 
     filename = os.path.join(local_dir, 'neat-checkpoint-')
-    p.add_reporter(neat.Checkpointer(generation_interval=60000, time_interval_seconds=43200, filename_prefix=filename))
+    p.add_reporter(neat.Checkpointer(generation_interval=50000, time_interval_seconds=43200, filename_prefix=filename))
 
     score_max = []
     score_mean = []
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = p.run(pe.evaluate, n=1, score_max=score_max, score_mean=score_mean)
+    winner = p.run(pe.evaluate, n=60000, score_max=score_max, score_mean=score_mean)
 
     timestamp = datetime.now().strftime("%Y-%b-%d-%H:%M:%S:%f")
-    filename = "results/1000first_neat-rnn_t["+str(timestamp)+"]"
     with open(filename, 'wb') as f:
         pickle.dump(score_max, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-    '''
-
-    filename = "results/neat_rnn_bf["+str(winner.fitness)+"]_scoremax[-1]="+str(score_max[-1])+"_scoremean[-1]="+str(score_mean[-1])+"_time="+str(timestamp)
+    filename = "results/60000gen_neat_rnn_fixed4h_bf["+str(winner.fitness)+"]_scoremax[-1]="+str(score_max[-1])+"_scoremean[-1]="+str(score_mean[-1])+"_time="+str(timestamp)
     with open(filename, 'wb') as f:
         log = { 'scoreMax': score_max,
                 'scoreMean': score_mean,
                 'best_solution': winner }
         pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-    '''
 
     # Display the winning genome
     print('\nBest genome:\n%f', winner)
 
     local_dir = os.path.dirname(__file__)
 
-    filename = os.path.join(local_dir, "avg_fitness-recurrent.svg")
-    visualize.plot_stats(stats, ylog=False, view=True, filename=filename)
-
-    filename = os.path.join(local_dir, "species-recurrent.svg")
-    visualize.plot_species(stats, view=True, filename=filename)
 
 if __name__ == '__main__':
     # Detemine path to configuration file. This path manipulation is
