@@ -12,7 +12,7 @@ class Genome(object):
         self.fitness = 0
 
         self.ni = 2
-        self.nh = 5
+        self.nh = 4
         self.no = 2
 
         # The threshold is based on how many nodes that could possibly be connected to it, and assuming that weights are around 1.

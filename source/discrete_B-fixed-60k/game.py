@@ -14,7 +14,7 @@ class Game:
         self.game_cnt = 0
         self.direction = 0
         self.game_width = 16
-        self.game_height = 32
+        self.game_height = 36
 
         self.moves_cnt = 0
 
