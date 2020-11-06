@@ -1,1 +1,0 @@
-cmake -Dwith-python=3 -DPYTHON_EXECUTABLE=/home/dansan/neuromorphic/source/snn/necoenv/bin/python -DCMAKE_INSTALL_PREFIX:PATH=/home/dansan/nest2.20 /home/dansan/neuromorphic/source/nest-simulator-2.20.0-build/ -Dwith-mpi=ON -Dwith-boost=OFF

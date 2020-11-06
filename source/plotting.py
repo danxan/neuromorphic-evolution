@@ -49,7 +49,7 @@ def plot_param(ax, max_fitness, maxscores, minscores, meanscores, xrate, xlabel,
     ax.set_xlabel(xlabel)
     ax.set_ylim(0,100)
     ax.plot(xrate, meanscores, **param_dict)
-    ax.fill_between(xrate, minscores, maxscores, color='yellow', alpha=.1)
+    ax.fill_between(xrate, minscores, maxscores, color='yellow', alpha=0.09)
     ax.legend()
     return ax
 
@@ -157,10 +157,12 @@ if __name__ == '__main__':
     parser.add_argument("--open")
     parser.add_argument("--search")
     parser.add_argument("--dir")
+    parser.add_argument("--pattern")
     parser.add_argument("--type")
     parser.add_argument("--plot")
     parser.add_argument("--hundreds")
     parser.add_argument("--neatparam")
+    parser.add_argument("--confplot")
     args = parser.parse_args()
 
     with plt.style.context('ggplot'):
@@ -294,9 +296,107 @@ if __name__ == '__main__':
                 rate = np.sort(rate)
                 print(rate)
                 ax = plot_param(ax, 128, smax, smin, smean, rate, key, {})
-                fig.savefig(key+'.eps', format='eps')
+                fig.savefig(key+'.pdf', format='pdf')
                 fig.show()
                 input()
+
+        # end elif
+        elif args.confplot:
+            import pandas as pd
+
+            plt.ion()
+            fig = plt.figure()
+            fig, ax = plt.subplots()
+
+            filenames = findfiles(args.dir, args.pattern)
+
+            scoremax = []
+            scoremean = []
+
+            fcnt = 0
+            for fname in filenames:
+                with open(fname, 'rb') as f:
+                    s = pickle.load(f)
+                    smax = s['scoreMax']
+                    smean = s['scoreMean']
+                    print(len(smax))
+                    print(len(smean))
+
+                    scoremax.append(smax)
+                    scoremean.append(smean)
+
+                    fcnt += 1
+
+            smax_dict = {'max': [], 'mean':[], 'min':[]}
+            smean_dict = {'max':[], 'mean':[], 'min':[]}
+
+
+            for i in range(len(scoremax[0])):
+                tmpmax = []
+                tmpmean = []
+                for j in range(fcnt):
+                    #print(len(scoremax[j]))
+                    #print(len(scoremax[j]))
+                    tmpmax.append(scoremax[j][i])
+                    tmpmean.append(scoremean[j][i])
+
+                smax_dict['max'].append(np.max(tmpmax))
+                smax_dict['mean'].append(np.mean(tmpmax))
+                smax_dict['min'].append(np.min(tmpmax))
+
+                smean_dict['max'].append(np.max(tmpmean))
+                smean_dict['mean'].append(np.mean(tmpmean))
+                smean_dict['min'].append(np.min(tmpmean))
+
+            maxscores = np.array(smax_dict['max'])
+            print(maxscores)
+            maxscores = convert_to_percent(max_fitness, maxscores)
+            minscores = np.array(smax_dict['min'])
+            print(minscores)
+            minscores = convert_to_percent(max_fitness, minscores)
+            meanscores = np.array(smax_dict['mean'])
+            print(meanscores)
+            meanscores = convert_to_percent(max_fitness, meanscores)
+            #ci = 1.96 * np.std(maxscores)/np.mean(maxscores)
+            ax.set_ylabel('Fitness (%)')
+            ax.set_xlabel('Generations')
+            ax.set_ylim(0,100)
+            ax.plot(list(range(len(maxscores))), meanscores, label='Max')
+            ax.fill_between(list(range(len(maxscores))), minscores, maxscores, color='yellow', alpha=0.1)
+
+            maxscores = np.array(smean_dict['max'])
+            maxscores = convert_to_percent(max_fitness, maxscores)
+            minscores = np.array(smean_dict['min'])
+            minscores = convert_to_percent(max_fitness, minscores)
+            meanscores = np.array(smean_dict['mean'])
+            meanscores = convert_to_percent(max_fitness, meanscores)
+            #ci = 1.96 * np.std(maxscores)/np.mean(maxscores)
+            ax.plot(list(range(len(maxscores))), meanscores, label='Mean')
+            ax.fill_between(list(range(len(maxscores))), minscores, maxscores, color='cyan', alpha=0.1)
+
+            ax.legend()
+
+            fig.show()
+            input()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -219,6 +219,12 @@ def run(config_file):
             'best_solution': winner }
     with open(filename, 'wb') as f:
         pickle.dump(log, f, protocol=pickle.HIGHEST_PROTOCOL)
+    '''
+    max_fit_gens = stats.get_fitness_stat(max)
+    max_fit_epochs.append(max(max_fit_gens))
+
+    mean_fit_epochs.append(mean(stats.get_fitness_stat(mean)))
+    '''
 
     # Display the winning genome
     print('\nBest genome:\n%f', winner)
