@@ -237,12 +237,14 @@ class Sga(object):
             Mean fitness was {}. \n\
             ".format(self.gencnt, self.best_solution.fitness, self.score_max_gen[-1], self.score_mean_gen[-1]))
 
+        '''
         timestamp = datetime.now()
         timer = timestamp-starttime
         timestamp = timestamp.strftime("%Y-%b-%d-%H:%M:%S:%f")
         filename = "results/1000first_rnn_t["+str(timestamp)+"]"
         with open(filename, 'wb') as f:
             pickle.dump(scores, f, protocol=pickle.HIGHEST_PROTOCOL)
+        '''
 
         print("Time this took: {}".format(timer))
 
@@ -340,21 +342,24 @@ class Sga(object):
         for gen in range(num_gen):
             self.run_generation(mean_smax)
 
+        '''
             if gen%100 == 0:
                 ts = datetime.now()
                 filename = "results/ann_sga_gen["+str(self.gencnt)+"of"+str(self.num_gen)+"]_bf["+str(self.best_solution.fitness)+"]_scoremax_gen[-1]["+str(self.score_max_gen[-1])+"]_t["+str(ts)+"]"
                 with open(filename, 'wb') as f:
                     pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
+        '''
 
         self.num_top = len(self.top_solutions)
-        filename = "results/ann_sga_gen["+str(self.gencnt)+"of"+str(self.num_gen)+"]_bf["+str(self.best_solution.fitness)+"]_scoremax_gen[-1]["+str(self.score_max_gen[-1])+"]"
+        filename = "results/ann_sga_60k_bf["+str(self.best_solution.fitness)+"]_scoremax_gen[-1]["+str(self.score_max_gen[-1])+"]"
         with open(filename, 'wb') as f:
             pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == '__main__':
-    sga = Sga(num_ind=1000, num_trials=128, gameheight=32, gamewidth=16)
-    sga.run_sga_gen(1, 100, 10)
+    for i in range(5):
+        sga = Sga(num_ind=150, num_trials=128, gameheight=32, gamewidth=16)
+        sga.run_sga_gen(60000, 100, 1)
 
 
 
